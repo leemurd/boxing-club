@@ -1,0 +1,14 @@
+// 1. Подключаем базовые функции/переменные, если нужно
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// 2. Переопределяем то, что необходимо
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1024px,
+        xxl: 1024px
+);
+
+@import "bootstrap/scss/bootstrap";

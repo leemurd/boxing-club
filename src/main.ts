@@ -1,5 +1,4 @@
-// import '@/presentation/assets/main.css'
-import '@/presentation/assets/main.scss'
+import '@/presentation/styles/main.scss'
 import 'bootstrap'
 
 import { createApp } from 'vue'

@@ -5,13 +5,13 @@ import CombinationBuilderView from '@/presentation/pages/CombinationBuilderView.
 const routes = [
   {
     path: '/',
-    name: 'PunchesCatalog',
-    component: PunchesCatalog,
-  },
-  {
-    path: '/combinations',
     name: 'CombinationBuilderView',
     component: CombinationBuilderView,
+  },
+  {
+    path: '/punches',
+    name: 'PunchesCatalog',
+    component: PunchesCatalog,
   },
 ];
 
