@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
-import { container } from '@/infrastructure/di/container';
-import { TYPES } from '@/infrastructure/di/types';
+// import { container } from '@/infrastructure/di/container';
+// import { TYPES } from '@/infrastructure/di/types';
 // import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase';
 import type { Punch } from '@/domain/entities/Punch';
 
