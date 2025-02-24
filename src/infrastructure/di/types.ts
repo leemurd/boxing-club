@@ -1,4 +1,3 @@
 export const TYPES = {
-  IPunchRepository: Symbol.for('IPunchRepository'),
-  GetPunchesUseCase: Symbol.for('GetPunchesUseCase'),
+  IPositionedActionRepository: Symbol.for('IPositionedActionRepository'),
 };

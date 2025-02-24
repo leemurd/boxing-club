@@ -13,17 +13,17 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { container } from '@/infrastructure/di/container';
 import { TYPES } from '@/infrastructure/di/types';
-import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase';
+// import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase';
 import type { Punch } from '@/domain/entities/Punch';
 
 export default defineComponent({
   name: 'PunchesCatalog',
   setup() {
-    const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase);
+    // const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase);
     const punches = ref<Punch[]>([]);
 
     onMounted(async () => {
-      punches.value = await getPunchesUseCase.execute();
+      // punches.value = await getPunchesUseCase.execute();
     });
 
     return {

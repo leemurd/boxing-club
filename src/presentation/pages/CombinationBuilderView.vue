@@ -3,6 +3,7 @@
     <div class="combination-builder-wrap">
       <h1>Combo creator</h1>
 
+      <!-- 1) Выбираем категорию (punch/defense/movement) -->
       <div class="input-group input-group-lg mb-3">
         <label
           class="input-group-text min-width-220px-lg-max"
@@ -17,40 +18,49 @@
             v-for="type in typeOptions"
             :value="type"
             :key="type"
-          >{{ type }}</option>
+          >
+            {{ type }}
+          </option>
         </select>
       </div>
 
+      <!-- 2) Выбираем конкретное действие из списка (фильтруется по позиции и типу) -->
       <div class="input-group input-group-lg mb-3">
         <label
           class="input-group-text min-width-220px-lg-max"
           for="inputGroupSelect02"
         >Select action</label>
         <select
-          v-model="selectedPunchId"
+          v-model="selectedActionId"
           class="form-select"
           id="inputGroupSelect02"
         >
           <option
-            v-for="punch in availableActions"
-            :value="punch.id"
-            :key="punch.id"
-          >{{ punch.name }}</option>
+            v-for="action in availableActions"
+            :value="action.id"
+            :key="action.id"
+          >
+            {{ action.name }}
+          </option>
         </select>
       </div>
 
       <button
         class="btn btn-primary btn-block w-100"
-        @click="addPunchToCombo"
+        @click="addActionToCombo"
       >Add action</button>
 
+      <!-- 3) Превью выбранных действий -->
       <div>
-        <p>Preview:</p>
+        <p>Preview (current stance: {{ currentStance }}):</p>
         <ul>
-          <li v-for="punch in comboPunches" :key="punch.id">{{ punch.name }}</li>
+          <li v-for="(act, idx) in comboActions" :key="idx">
+            {{ act.name }} (→ {{ act.toPosition }})
+          </li>
         </ul>
       </div>
 
+      <!-- 4) Завершаем комбинацию с названием -->
       <div class="input-group input-group-lg mb-3">
         <input
           v-model="comboTitle"
@@ -65,9 +75,10 @@
           type="button"
           id="button-addon2"
           @click="buildCombo"
-        >Button</button>
+        >Save combo</button>
       </div>
 
+      <!-- 5) Отображаем созданную комбинацию -->
       <div v-if="createdCombo">
         <h4>Созданная комбинация: {{ createdCombo.title }}</h4>
         <ul>
@@ -80,104 +91,124 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue'
-import { container } from '@/infrastructure/di/container'
-import { TYPES } from '@/infrastructure/di/types'
-import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase'
-import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase'
-import { CombinationBuilder } from '@/domain/services/CombinationBuilder'
-import type { Combination } from '@/domain/entities/Combination'
-import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
-import { ActionCategory, type ActionCategoryValue } from '@/domain/entities/ActionCategory.ts'
+import { defineComponent, ref, onMounted, watch } from 'vue';
+import { container } from '@/infrastructure/di/container';
+import { TYPES } from '@/infrastructure/di/types';
+
+// Новый репозиторий
+import { IPositionedActionRepository } from '@/domain/repositories/IPositionedActionRepository';
+import { PositionedAction } from '@/domain/entities/PositionedAction';
+
+import { CombinationBuilder } from '@/domain/services/CombinationBuilder';
+import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase';
+import type { Combination } from '@/domain/entities/Combination';
+
+import { ActionCategory, type ActionCategoryValue } from '@/domain/entities/ActionCategory';
+import { Stance } from '@/domain/entities/Stance';
 
 export default defineComponent({
   name: 'CombinationBuilderView',
   setup() {
-    const allPunches = ref<BoxingAction[]>([])
-    const availableActions = ref<BoxingAction[]>([])
-    const selectedPunchId = ref<number | null>(null)
-    const typeOptions = Object.values(ActionCategory)
-    const selectedType = ref<ActionCategoryValue>(ActionCategory.PUNCH)
+    // 1. DI: получаем репозиторий
+    const actionRepo = container.get<IPositionedActionRepository>(TYPES.IPositionedActionRepository);
 
-    const comboPunches = ref<BoxingAction[]>([])
-    const comboTitle = ref<string>('')
-    const createdCombo = ref<Combination | null>(null)
+    // 2. States / Refs
+    const allActions = ref<PositionedAction[]>([]);
+    const availableActions = ref<PositionedAction[]>([]);
 
-    const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase)
+    // Текущая стойка
+    const currentStance = ref<Stance>(Stance.ORTHO_NEUTRAL);
 
-    const getAvailableActions = async () => {
-      availableActions.value = []
-      const lastAddedPunch = comboPunches.value[comboPunches.value.length - 1]
-      if (!lastAddedPunch) {
-        availableActions.value = allPunches.value.filter(item => item.category === selectedType.value)
-        selectedPunchId.value = availableActions.value[0]?.id
-        return
-      }
-      for (const item of lastAddedPunch.possibleNext) {
-        const action = await getPunchesUseCase.getPunchById(item)
-        if (action && action.category === selectedType.value) {
-          availableActions.value.push(action)
-        }
-      }
-      selectedPunchId.value = availableActions.value[0]?.id
-    }
+    // Выбранная категория
+    const typeOptions = Object.values(ActionCategory);
+    const selectedType = ref<ActionCategoryValue>(ActionCategory.PUNCH);
 
-    // Здесь мы пока что не регистрировали CreateCombinationUseCase в контейнере,
-    // поэтому просто создадим его вручную:
-    const combinationBuilder = new CombinationBuilder()
-    const createCombinationUseCase = new CreateCombinationUseCase(combinationBuilder)
+    // Выбранный ID действия
+    const selectedActionId = ref<number | null>(null);
 
+    // Выбранные действия (предварительный набор)
+    const comboActions = ref<PositionedAction[]>([]);
+    const comboTitle = ref<string>('');
+    const createdCombo = ref<Combination | null>(null);
+
+    // UseCase для сборки комбинации
+    const combinationBuilder = new CombinationBuilder();
+    const createCombinationUseCase = new CreateCombinationUseCase(combinationBuilder);
+
+    // 3. Загрузить все действия при монтировании
     onMounted(async () => {
-      allPunches.value = await getPunchesUseCase.execute()
-      selectedPunchId.value = allPunches.value[0]?.id ?? null
-      await getAvailableActions()
-    })
+      allActions.value = await actionRepo.getAll();
+      getAvailableActions();
+    });
 
-    function addPunchToCombo() {
-      if (!selectedPunchId.value) return
-      const punch = allPunches.value.find((p) => p.id === selectedPunchId.value)
-      if (punch) {
-        comboPunches.value.push(punch)
-        // можно параллельно вызывать combinationBuilder.addPunch(punch);
-        combinationBuilder.addAction(punch)
+    // 4. Метод получения доступных действий (по текущей стойке + типу)
+    const getAvailableActions = () => {
+      availableActions.value = allActions.value.filter(a => {
+        return a.fromPosition === currentStance.value && a.category === selectedType.value;
+      });
+      selectedActionId.value = availableActions.value[0]?.id ?? null;
+    };
 
-        getAvailableActions()
-      }
+    // 5. Метод "добавить действие в комбо"
+    function addActionToCombo() {
+      if (!selectedActionId.value) return;
+      const action = allActions.value.find(a => a.id === selectedActionId.value);
+      if (!action) return;
+
+      comboActions.value.push(action);
+      combinationBuilder.addAction(action);
+
+      // Переходим в новую стойку
+      currentStance.value = action.toPosition;
+
+      // Снова получаем список возможных дальнейших действий
+      getAvailableActions();
     }
 
+    // 6. Завершить сборку комбо
     function buildCombo() {
-      if (!comboTitle.value.trim()) return
-      createdCombo.value = createCombinationUseCase.buildCombination(comboTitle.value.trim())
-      // Обнулить для новой комбинации
-      comboPunches.value = []
-      combinationBuilder.reset()
-      comboTitle.value = ''
+      if (!comboTitle.value.trim()) return;
+      createdCombo.value = createCombinationUseCase.buildCombination(comboTitle.value.trim());
+      // Сбросить всё
+      comboActions.value = [];
+      combinationBuilder.reset();
+      comboTitle.value = '';
+      // Вернёмся в исходную стойку
+      currentStance.value = Stance.ORTHO_NEUTRAL;
+      getAvailableActions();
     }
 
-    watch(selectedType, async () => {
-      await getAvailableActions()
-    })
+    // 7. Watcher: если меняем тип (punch/defense/movement), нужно пересчитать доступные варианты
+    watch(selectedType, () => {
+      getAvailableActions();
+    });
 
     return {
-      allPunches,
-      selectedPunchId,
-      selectedType,
+      // template bindings
       typeOptions,
-      comboPunches,
+      selectedType,
+      availableActions,
+      selectedActionId,
+
+      comboActions,
       comboTitle,
       createdCombo,
-      addPunchToCombo,
+
+      addActionToCombo,
       buildCombo,
-      availableActions,
-    }
+
+      // для отладки
+      currentStance,
+    };
   },
-})
+});
 </script>
 
 <style scoped lang="scss">
 .min-width-220px-lg-max {
   min-width: 220px;
 }
+
 .combination-builder {
   display: flex;
   flex-direction: column;
