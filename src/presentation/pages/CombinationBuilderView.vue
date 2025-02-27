@@ -4,50 +4,33 @@
       <h1>Combo creator</h1>
 
       <div class="input-group input-group-lg mb-3">
-        <label
-          class="input-group-text min-width-220px-lg-max"
-          for="inputGroupSelect01"
-        >Choose action type</label>
-        <select
-          v-model="selectedType"
-          class="form-select text-capitalize"
-          id="inputGroupSelect01"
-        >
-          <option
-            v-for="type in typeOptions"
-            :value="type"
-            :key="type"
-          >{{ type }}</option>
+        <label class="input-group-text min-width-220px-lg-max" for="selectCategory">
+          Choose action category
+        </label>
+        <select v-model="selectedCategory" class="form-select text-capitalize" id="selectCategory">
+          <option v-for="cat in categoryOptions" :value="cat" :key="cat">{{ cat }}</option>
         </select>
       </div>
 
       <div class="input-group input-group-lg mb-3">
-        <label
-          class="input-group-text min-width-220px-lg-max"
-          for="inputGroupSelect02"
-        >Select action</label>
-        <select
-          v-model="selectedPunchId"
-          class="form-select"
-          id="inputGroupSelect02"
-        >
-          <option
-            v-for="punch in availableActions"
-            :value="punch.id"
-            :key="punch.id"
-          >{{ punch.name }}</option>
+        <label class="input-group-text min-width-220px-lg-max" for="selectAction">
+          Select action
+        </label>
+        <select v-model="selectedActionId" class="form-select" id="selectAction">
+          <option v-for="act in availableActions" :value="act.id" :key="act.id">{{ act.name }}</option>
         </select>
       </div>
 
-      <button
-        class="btn btn-primary btn-block w-100"
-        @click="addPunchToCombo"
-      >Add action</button>
+      <button class="btn btn-primary btn-block w-100" @click="addActionToCombo">
+        Add action
+      </button>
 
       <div>
         <p>Preview:</p>
         <ul>
-          <li v-for="punch in comboPunches" :key="punch.id">{{ punch.name }}</li>
+          <li v-for="item in comboActions" :key="item.id">
+            {{ item.name }}
+          </li>
         </ul>
       </div>
 
@@ -58,119 +41,120 @@
           class="form-control"
           placeholder="Combo title"
           aria-label="Combo title"
-          aria-describedby="button-addon2"
-        >
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-addon2"
-          @click="buildCombo"
-        >Button</button>
+        />
+        <button class="btn btn-outline-secondary" type="button" @click="buildCombo">
+          Save Combo
+        </button>
       </div>
 
       <div v-if="createdCombo">
-        <h4>Созданная комбинация: {{ createdCombo.title }}</h4>
+        <h4>Created combo: {{ createdCombo.title }}</h4>
         <ul>
-          <li v-for="punch in createdCombo.punches" :key="punch.id">{{ punch.name }}</li>
+          <li v-for="punch in createdCombo.punches" :key="punch.id">
+            {{ punch.name }}
+          </li>
         </ul>
       </div>
-
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue'
+import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import { container } from '@/infrastructure/di/container'
 import { TYPES } from '@/infrastructure/di/types'
-import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase'
-import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase'
 import { CombinationBuilder } from '@/domain/services/CombinationBuilder'
+import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase'
 import type { Combination } from '@/domain/entities/Combination'
-import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
-import { ActionCategory, type ActionCategoryValue } from '@/domain/entities/ActionCategory.ts'
+import type { BoxingAction } from '@/domain/entities/BoxingAction'
+import { BoxingActionCategory } from '@/domain/entities/BoxingAction'
+import { getNextActions } from '@/application/useCases/getNextActions'
+
+// Если вы по-прежнему используете GetPunchesUseCase, замените его на новый use-case
+// или импортируйте MOCK_ACTIONS напрямую.
+// Здесь для примера предполагаем, что GetPunchesUseCase возвращает все BoxingAction.
+import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
   setup() {
-    const allPunches = ref<BoxingAction[]>([])
-    const availableActions = ref<BoxingAction[]>([])
-    const selectedPunchId = ref<number | null>(null)
-    const typeOptions = Object.values(ActionCategory)
-    const selectedType = ref<ActionCategoryValue>(ActionCategory.PUNCH)
-
-    const comboPunches = ref<BoxingAction[]>([])
-    const comboTitle = ref<string>('')
+    const allActions = ref<BoxingAction[]>([])
+    const comboActions = ref<BoxingAction[]>([])
+    const comboTitle = ref('')
     const createdCombo = ref<Combination | null>(null)
 
+    const categoryOptions = [
+      BoxingActionCategory.PUNCH,
+      BoxingActionCategory.MOVEMENT,
+      BoxingActionCategory.DEFENSE
+    ]
+    const selectedCategory = ref<BoxingActionCategory>(BoxingActionCategory.PUNCH)
+    const selectedActionId = ref<number | null>(null)
+
     const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase)
-
-    const getAvailableActions = async () => {
-      availableActions.value = []
-      const lastAddedPunch = comboPunches.value[comboPunches.value.length - 1]
-      if (!lastAddedPunch) {
-        availableActions.value = allPunches.value.filter(item => item.category === selectedType.value)
-        selectedPunchId.value = availableActions.value[0]?.id
-        return
-      }
-      for (const item of lastAddedPunch.possibleNext) {
-        const action = await getPunchesUseCase.getPunchById(item)
-        if (action && action.category === selectedType.value) {
-          availableActions.value.push(action)
-        }
-      }
-      selectedPunchId.value = availableActions.value[0]?.id
-    }
-
-    // Здесь мы пока что не регистрировали CreateCombinationUseCase в контейнере,
-    // поэтому просто создадим его вручную:
     const combinationBuilder = new CombinationBuilder()
     const createCombinationUseCase = new CreateCombinationUseCase(combinationBuilder)
 
     onMounted(async () => {
-      allPunches.value = await getPunchesUseCase.execute()
-      selectedPunchId.value = allPunches.value[0]?.id ?? null
-      await getAvailableActions()
+      allActions.value = await getPunchesUseCase.execute()
+      updateAvailableActions()
     })
 
-    function addPunchToCombo() {
-      if (!selectedPunchId.value) return
-      const punch = allPunches.value.find((p) => p.id === selectedPunchId.value)
-      if (punch) {
-        comboPunches.value.push(punch)
-        // можно параллельно вызывать combinationBuilder.addPunch(punch);
-        combinationBuilder.addAction(punch)
+    const lastAction = computed(() => {
+      if (comboActions.value.length === 0) return null
+      return comboActions.value[comboActions.value.length - 1]
+    })
 
-        getAvailableActions()
+    const availableActions = computed<BoxingAction[]>(() => {
+      if (!lastAction.value) {
+        return allActions.value.filter(a => a.category === selectedCategory.value)
       }
+      const possible = getNextActions(lastAction.value, allActions.value)
+      return possible.filter(a => a.category === selectedCategory.value)
+    })
+
+    function updateAvailableActions() {
+      if (availableActions.value.length > 0) {
+        selectedActionId.value = availableActions.value[0].id
+      } else {
+        selectedActionId.value = null
+      }
+    }
+
+    function addActionToCombo() {
+      if (selectedActionId.value == null) return
+      const chosen = allActions.value.find(a => a.id === selectedActionId.value)
+      if (!chosen) return
+      comboActions.value.push(chosen)
+      combinationBuilder.addAction(chosen)
+      updateAvailableActions()
     }
 
     function buildCombo() {
       if (!comboTitle.value.trim()) return
       createdCombo.value = createCombinationUseCase.buildCombination(comboTitle.value.trim())
-      // Обнулить для новой комбинации
-      comboPunches.value = []
+      comboActions.value = []
       combinationBuilder.reset()
       comboTitle.value = ''
+      updateAvailableActions()
     }
 
-    watch(selectedType, async () => {
-      await getAvailableActions()
+    watch(selectedCategory, () => {
+      updateAvailableActions()
     })
 
     return {
-      allPunches,
-      selectedPunchId,
-      selectedType,
-      typeOptions,
-      comboPunches,
+      categoryOptions,
+      selectedCategory,
+      selectedActionId,
       comboTitle,
       createdCombo,
-      addPunchToCombo,
-      buildCombo,
       availableActions,
+      comboActions,
+      addActionToCombo,
+      buildCombo
     }
-  },
+  }
 })
 </script>
 
