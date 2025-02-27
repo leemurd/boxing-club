@@ -1,6 +1,10 @@
-import { type BoxingAction, BoxingActionCategory, BoxingActionSide } from '@/domain/entities/BoxingAction'
+import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingActionType } from '@/domain/entities/BoxingAction'
 
 export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): BoxingAction[] {
+  // if jab return all
+  if (lastAction.category === BoxingActionCategory.PUNCH && lastAction.type === BoxingActionType.Jab) {
+    return all
+  }
   if (lastAction.category === BoxingActionCategory.PUNCH) {
     if (lastAction.side === BoxingActionSide.LEAD) {
       return all.filter(a => {

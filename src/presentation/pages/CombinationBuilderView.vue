@@ -3,23 +3,46 @@
     <div class="combination-builder-wrap">
       <h1>Combo creator</h1>
 
-      <div class="input-group input-group-lg mb-3">
-        <label class="input-group-text min-width-220px-lg-max" for="selectCategory">
-          Choose action category
-        </label>
-        <select v-model="selectedCategory" class="form-select text-capitalize" id="selectCategory">
-          <option v-for="cat in categoryOptions" :value="cat" :key="cat">{{ cat }}</option>
-        </select>
+      <h4>Действие</h4>
+      <div class="btn-group mb-4 w-100" role="group">
+        <template v-for="(cat, index) in categoryOptions">
+          <input
+            type="radio"
+            class="btn-check"
+            name="height"
+            :id="`height${index}`"
+            autocomplete="off"
+            v-model="selectedCategory"
+            :value="cat"
+          >
+          <label class="btn btn-outline-primary" :for="`height${index}`">{{ cat }}</label>
+        </template>
       </div>
 
-      <div class="input-group input-group-lg mb-3">
-        <label class="input-group-text min-width-220px-lg-max" for="selectAction">
-          Select action
-        </label>
-        <select v-model="selectedActionId" class="form-select" id="selectAction">
-          <option v-for="act in availableActions" :value="act.id" :key="act.id">{{ act.name }}</option>
-        </select>
+      <h4>Вариант</h4>
+      <div class="btn-group-vertical mb-4 w-100" role="group">
+        <template v-for="act in availableActions">
+          <input
+            type="radio"
+            class="btn-check"
+            name="action"
+            :id="`action${act.id}`"
+            autocomplete="off"
+            v-model="selectedActionId"
+            :value="act.id"
+          >
+          <label class="btn btn-outline-primary" :for="`action${act.id}`">{{ act.name }}</label>
+        </template>
       </div>
+
+<!--      <div class="input-group input-group-lg mb-3">-->
+<!--        <label class="input-group-text min-width-220px-lg-max" for="selectAction">-->
+<!--          Вариант-->
+<!--        </label>-->
+<!--        <select v-model="selectedActionId" class="form-select" id="selectAction">-->
+<!--          <option v-for="act in availableActions" :value="act.id" :key="act.id">{{ act.name }}</option>-->
+<!--        </select>-->
+<!--      </div>-->
 
       <button class="btn btn-primary btn-block w-100" @click="addActionToCombo">
         Add action
@@ -166,6 +189,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   &-wrap {
     width: 400px;
   }
