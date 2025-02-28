@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col">
         <h4>Кто выше?</h4>
-        <div class="btn-group-vertical mb-4" role="group" aria-label="height relation">
+        <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="height relation">
           <template v-for="(item, index) in Object.keys(sizeMap)" :key="index">
             <input
               type="radio"
@@ -22,7 +22,7 @@
 
       <div class="col">
         <h4>Кто тяжелее?</h4>
-        <div class="btn-group-vertical mb-4" role="group" aria-label="weight relation">
+        <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="weight relation">
           <template v-for="(item, index) in Object.keys(sizeMap)" :key="index">
             <input
               type="radio"
@@ -42,7 +42,7 @@
       <div class="row">
         <div class="col d-flex flex-column">
           <h4>Я</h4>
-          <div class="btn-group mb-4" role="group" aria-label="my stance">
+          <div class="btn-group btn-group-sm mb-4" role="group" aria-label="my stance">
             <template v-for="(item, index) in Object.keys(stanceMap)" :key="index">
               <input
                 type="radio"
@@ -57,7 +57,7 @@
           </div>
 
           <h6>Стиль</h6>
-          <div class="btn-group-vertical mb-4" role="group" aria-label="my style">
+          <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="my style">
             <template v-for="(item, index) in Object.keys(boxingStyleMap)" :key="index">
               <input
                 type="radio"
@@ -72,7 +72,7 @@
           </div>
 
           <h6>Руки</h6>
-          <div class="btn-group-vertical mb-4" role="group" aria-label="my guard">
+          <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="my guard">
             <template v-for="(item, index) in Object.keys(boxingGuardMap)" :key="index">
               <input
                 type="radio"
@@ -89,7 +89,7 @@
 
         <div class="col d-flex flex-column">
           <h4>Противник</h4>
-          <div class="btn-group mb-4" role="group" aria-label="opp stance">
+          <div class="btn-group btn-group-sm mb-4" role="group" aria-label="opp stance">
             <template v-for="(item, index) in Object.keys(stanceMap)" :key="index">
               <input
                 type="radio"
@@ -104,7 +104,7 @@
           </div>
 
           <h6>Стиль</h6>
-          <div class="btn-group-vertical mb-4" role="group" aria-label="opp style">
+          <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="opp style">
             <template v-for="(item, index) in Object.keys(boxingStyleMap)" :key="index">
               <input
                 type="radio"
@@ -119,7 +119,7 @@
           </div>
 
           <h6>Руки</h6>
-          <div class="btn-group-vertical mb-4" role="group" aria-label="opp guard">
+          <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="opp guard">
             <template v-for="(item, index) in Object.keys(boxingGuardMap)" :key="index">
               <input
                 type="radio"

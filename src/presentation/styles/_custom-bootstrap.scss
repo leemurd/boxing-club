@@ -2,13 +2,15 @@
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 
+$container-max-width: 400px;
+
 // 2. Переопределяем то, что необходимо
 $container-max-widths: (
-        sm: 540px,
-        md: 720px,
-        lg: 960px,
-        xl: 1024px,
-        xxl: 1024px
+        sm: $container-max-width,
+        md: $container-max-width,
+        lg: $container-max-width,
+        xl: $container-max-width,
+        xxl: $container-max-width
 );
 
 @import "bootstrap/scss/bootstrap";

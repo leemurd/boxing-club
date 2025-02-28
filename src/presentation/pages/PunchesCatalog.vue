@@ -14,12 +14,13 @@ import { defineComponent, onMounted, ref } from 'vue';
 import { container } from '@/infrastructure/di/container';
 import { TYPES } from '@/infrastructure/di/types';
 import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase';
+import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
 
 export default defineComponent({
   name: 'PunchesCatalog',
   setup() {
     const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase);
-    const punches = ref([]);
+    const punches = ref<BoxingAction[]>([]);
 
     onMounted(async () => {
       punches.value = await getPunchesUseCase.execute();
