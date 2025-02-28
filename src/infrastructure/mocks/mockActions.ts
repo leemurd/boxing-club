@@ -2,24 +2,25 @@ import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingAction
 
 export const MOCK_ACTIONS: BoxingAction[] = [
   // punches
-  { id: 1, name: 'Jab', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.LEAD, type: BoxingActionType.Jab },
-  { id: 2, name: 'Cross', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.REAR, type: BoxingActionType.Cross },
-  { id: 3, name: 'Lead hook', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.LEAD, type: BoxingActionType.Hook },
-  { id: 4, name: 'Rear hook', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.REAR, type: BoxingActionType.Hook },
-  { id: 5, name: 'Lead uppercut', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.LEAD, type: BoxingActionType.Uppercut },
-  { id: 6, name: 'Rear uppercut', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.REAR, type: BoxingActionType.Uppercut },
+  { id: 1, name: 'jab', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.LEAD, type: BoxingActionType.Jab },
+  { id: 2, name: 'Кросс', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.REAR, type: BoxingActionType.Cross },
+  { id: 3, name: 'Левый hook', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.LEAD, type: BoxingActionType.Hook },
+  { id: 4, name: 'Правый hook', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.REAR, type: BoxingActionType.Hook },
+  { id: 5, name: 'Левый uppercut', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.LEAD, type: BoxingActionType.Uppercut },
+  { id: 6, name: 'Правый uppercut', category: BoxingActionCategory.PUNCH, side: BoxingActionSide.REAR, type: BoxingActionType.Uppercut },
   // movements
-  { id: 20, name: 'Duck', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.ANY, type: BoxingActionType.Duck },
-  { id: 21, name: 'Slip lead', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Slip },
-  { id: 22, name: 'Slip rear', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Slip },
-  { id: 23, name: 'Roll lead-rear', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Roll },
-  { id: 24, name: 'Roll rear-lead', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Roll },
-  { id: 25, name: 'Step back', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.ANY, type: BoxingActionType.Step },
-  { id: 26, name: 'Pivot left', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Pivot },
-  { id: 27, name: 'Pivot right', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Pivot },
-  { id: 28, name: 'Shift left', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Shift },
-  { id: 29, name: 'Shift right', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Shift },
+
+  { id: 21, name: 'Уклон влево', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Slip },
+  { id: 22, name: 'Уклон вправо', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Slip },
+  { id: 23, name: 'Нырок lead-rear', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Roll },
+  { id: 24, name: 'Нырок rear-lead', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Roll },
+  { id: 26, name: 'Циркуль влево', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Pivot },
+  { id: 27, name: 'Циркуль вправо', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Pivot },
+  { id: 28, name: 'Смена позиции влево', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.LEAD, type: BoxingActionType.Shift },
+  { id: 29, name: 'Смена позиции вправо', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.REAR, type: BoxingActionType.Shift },
+  { id: 20, name: 'Пригнуться', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.ANY, type: BoxingActionType.Duck },
+  { id: 25, name: 'Шаг назад', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.ANY, type: BoxingActionType.Step },
   // defense
-  { id: 40, name: 'Block lead', category: BoxingActionCategory.DEFENSE, side: BoxingActionSide.LEAD, type: BoxingActionType.Block },
-  { id: 41, name: 'Block rear', category: BoxingActionCategory.DEFENSE, side: BoxingActionSide.REAR, type: BoxingActionType.Block },
+  { id: 40, name: 'Блок влево', category: BoxingActionCategory.DEFENSE, side: BoxingActionSide.LEAD, type: BoxingActionType.Block },
+  { id: 41, name: 'Блок вправо', category: BoxingActionCategory.DEFENSE, side: BoxingActionSide.REAR, type: BoxingActionType.Block },
 ]

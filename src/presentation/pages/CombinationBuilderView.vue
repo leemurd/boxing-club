@@ -1,11 +1,14 @@
 <template>
   <div class="combination-builder">
     <div class="combination-builder-wrap">
-      <h1>Combo creator</h1>
+      <h1>Комбинатор</h1>
 
       <h4>Действие</h4>
       <div class="btn-group mb-4 w-100" role="group">
-        <template v-for="(cat, index) in categoryOptions">
+        <template
+          v-for="(cat, index) in categoryOptions"
+          :key="index"
+        >
           <input
             type="radio"
             class="btn-check"
@@ -21,7 +24,10 @@
 
       <h4>Вариант</h4>
       <div class="btn-group-vertical mb-4 w-100" role="group">
-        <template v-for="act in availableActions">
+        <template
+          v-for="(act, index) in availableActions"
+          :key="index"
+        >
           <input
             type="radio"
             class="btn-check"
@@ -31,30 +37,25 @@
             v-model="selectedActionId"
             :value="act.id"
           >
-          <label class="btn btn-outline-primary" :for="`action${act.id}`">{{ act.name }}</label>
+          <label class="btn btn-outline-secondary" :for="`action${act.id}`">{{ act.name }}</label>
         </template>
       </div>
 
-<!--      <div class="input-group input-group-lg mb-3">-->
-<!--        <label class="input-group-text min-width-220px-lg-max" for="selectAction">-->
-<!--          Вариант-->
-<!--        </label>-->
-<!--        <select v-model="selectedActionId" class="form-select" id="selectAction">-->
-<!--          <option v-for="act in availableActions" :value="act.id" :key="act.id">{{ act.name }}</option>-->
-<!--        </select>-->
-<!--      </div>-->
-
       <button class="btn btn-primary btn-block w-100" @click="addActionToCombo">
-        Add action
+        Добавить
       </button>
 
       <div>
         <p>Preview:</p>
-        <ul>
-          <li v-for="item in comboActions" :key="item.id">
-            {{ item.name }}
-          </li>
-        </ul>
+        <div class="d-flex justify-content-center flex-wrap mb-4">
+          <div
+            v-for="(item, index) in comboActions" :key="index"
+            class=""
+          >
+            <span class="badge text-bg-primary">{{ item.name }}</span>
+            <template v-if="index !== comboActions.length - 1">-> </template>
+          </div>
+        </div>
       </div>
 
       <div class="input-group input-group-lg mb-3">
@@ -69,6 +70,24 @@
           Save Combo
         </button>
       </div>
+
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Количество движений"
+          aria-label="Количество движений"
+          aria-describedby="button-addon2"
+          v-model="randomIterationsNumber"
+        >
+        <button
+          class="btn btn-outline-secondary flex-grow-1"
+          type="button"
+          id="button-addon2"
+          @click="onGenerateRandomCombo"
+        >Random</button>
+      </div>
+
 
       <div v-if="createdCombo">
         <h4>Created combo: {{ createdCombo.title }}</h4>
@@ -97,6 +116,7 @@ import { getNextActions } from '@/application/useCases/getNextActions'
 // или импортируйте MOCK_ACTIONS напрямую.
 // Здесь для примера предполагаем, что GetPunchesUseCase возвращает все BoxingAction.
 import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase'
+import { generateRandomCombo } from '@/application/useCases/generateRandomCombo.ts'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
@@ -104,6 +124,7 @@ export default defineComponent({
     const allActions = ref<BoxingAction[]>([])
     const comboActions = ref<BoxingAction[]>([])
     const comboTitle = ref('')
+    const randomIterationsNumber = ref<number>(5)
     const createdCombo = ref<Combination | null>(null)
 
     const categoryOptions = [
@@ -162,6 +183,14 @@ export default defineComponent({
       updateAvailableActions()
     }
 
+    function onGenerateRandomCombo() {
+      console.log('Generate random combo')
+      const randomCombo = generateRandomCombo(allActions.value, randomIterationsNumber.value)
+      comboActions.value = randomCombo
+      combinationBuilder.reset()
+      randomCombo.forEach(a => combinationBuilder.addAction(a))
+    }
+
     watch(selectedCategory, () => {
       updateAvailableActions()
     })
@@ -175,7 +204,9 @@ export default defineComponent({
       availableActions,
       comboActions,
       addActionToCombo,
-      buildCombo
+      buildCombo,
+      onGenerateRandomCombo,
+      randomIterationsNumber
     }
   }
 })
