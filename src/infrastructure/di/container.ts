@@ -7,6 +7,7 @@ import { type IBoxingActionRepository } from '@/domain/repositories/IBoxingActio
 import { BoxingActionRepositoryMock } from '@/infrastructure/repositoryImpl/BoxingActionRepositoryMock.ts';
 
 import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts';
+import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig.ts'
 
 const container = new Container();
 
@@ -21,5 +22,8 @@ container
   .bind<GetPunchesUseCase>(TYPES.GetPunchesUseCase)
   .to(GetPunchesUseCase)
   .inSingletonScope();
+
+container.bind(TYPES.FirebaseApp).toConstantValue(firebaseApp)
+// container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepositoryFirebase)
 
 export { container };

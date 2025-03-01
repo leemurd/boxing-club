@@ -1,5 +1,6 @@
 import '@/presentation/styles/main.scss'
 import 'bootstrap'
+import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
