@@ -6,7 +6,7 @@
       <div class="col">
         <h4>Кто выше?</h4>
         <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="height relation">
-          <template v-for="(item, index) in Object.keys(sizeMap)" :key="index">
+          <template v-for="(item, index) in sizeKeys" :key="index">
             <input
               type="radio"
               class="btn-check"
@@ -23,7 +23,7 @@
       <div class="col">
         <h4>Кто тяжелее?</h4>
         <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="weight relation">
-          <template v-for="(item, index) in Object.keys(sizeMap)" :key="index">
+          <template v-for="(item, index) in sizeKeys" :key="index">
             <input
               type="radio"
               class="btn-check"
@@ -43,7 +43,7 @@
         <div class="col d-flex flex-column">
           <h4>Я</h4>
           <div class="btn-group btn-group-sm mb-4" role="group" aria-label="my stance">
-            <template v-for="(item, index) in Object.keys(stanceMap)" :key="index">
+            <template v-for="(item, index) in stanceKeys" :key="index">
               <input
                 type="radio"
                 class="btn-check"
@@ -58,7 +58,7 @@
 
           <h6>Стиль</h6>
           <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="my style">
-            <template v-for="(item, index) in Object.keys(boxingStyleMap)" :key="index">
+            <template v-for="(item, index) in boxingStyleKeys" :key="index">
               <input
                 type="radio"
                 class="btn-check"
@@ -73,7 +73,7 @@
 
           <h6>Руки</h6>
           <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="my guard">
-            <template v-for="(item, index) in Object.keys(boxingGuardMap)" :key="index">
+            <template v-for="(item, index) in boxingGuardKeys" :key="index">
               <input
                 type="radio"
                 class="btn-check"
@@ -90,7 +90,7 @@
         <div class="col d-flex flex-column">
           <h4>Противник</h4>
           <div class="btn-group btn-group-sm mb-4" role="group" aria-label="opp stance">
-            <template v-for="(item, index) in Object.keys(stanceMap)" :key="index">
+            <template v-for="(item, index) in stanceKeys" :key="index">
               <input
                 type="radio"
                 class="btn-check"
@@ -105,7 +105,7 @@
 
           <h6>Стиль</h6>
           <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="opp style">
-            <template v-for="(item, index) in Object.keys(boxingStyleMap)" :key="index">
+            <template v-for="(item, index) in boxingStyleKeys" :key="index">
               <input
                 type="radio"
                 class="btn-check"
@@ -120,7 +120,7 @@
 
           <h6>Руки</h6>
           <div class="btn-group-vertical btn-group-sm mb-4" role="group" aria-label="opp guard">
-            <template v-for="(item, index) in Object.keys(boxingGuardMap)" :key="index">
+            <template v-for="(item, index) in boxingGuardKeys" :key="index">
               <input
                 type="radio"
                 class="btn-check"
@@ -155,18 +155,20 @@ import {
   type StanceSide,
   type BoxerStyle,
   type BoxerGuard
-} from '@/application/useCases/getEnemyCard'
+} from '@/application/useCases/getEnemyCard.ts'
 
 const sizeMap: Record<BodyRelation, string> = {
   [BodyRelation.I_AM_BIGGER]: 'Я',
   [BodyRelation.I_AM_SMALLER]: 'Противник',
   [BodyRelation.EQUAL]: 'Примерно одинаково',
 }
+const sizeKeys = Object.keys(sizeMap) as BodyRelation[]
 
 const stanceMap: Record<StanceSide, string> = {
   orthodox: 'Правша',
   southpaw: 'Левша',
 }
+const stanceKeys = Object.keys(sizeMap) as StanceSide[]
 
 const boxingStyleMap: Record<BoxerStyle, string> = {
   gamer: 'Игровик',
@@ -174,12 +176,14 @@ const boxingStyleMap: Record<BoxerStyle, string> = {
   technician: 'Технарь',
   counterpuncher: 'Контрпанчер',
 }
+const boxingStyleKeys = Object.keys(sizeMap) as BoxerStyle[]
 
 const boxingGuardMap: Record<BoxerGuard, string> = {
   closed: 'Закрытая стойка',
   classical: 'Классическая стойка',
   handsDown: 'Руки внизу',
 }
+const boxingGuardKeys = Object.keys(sizeMap) as BoxerGuard[]
 
 const heightRelation = ref(BodyRelation.I_AM_BIGGER)
 const weightRelation = ref(BodyRelation.I_AM_BIGGER)

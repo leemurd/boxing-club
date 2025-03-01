@@ -11,9 +11,9 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
-import { container } from '@/infrastructure/di/container';
-import { TYPES } from '@/infrastructure/di/types';
-import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase';
+import { container } from '@/infrastructure/di/container.ts';
+import { TYPES } from '@/infrastructure/di/types.ts';
+import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts';
 import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
 
 export default defineComponent({

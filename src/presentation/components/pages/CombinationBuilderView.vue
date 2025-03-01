@@ -41,22 +41,9 @@
         </template>
       </div>
 
-      <button class="btn btn-primary btn-block w-100" @click="addActionToCombo">
+      <button class="btn btn-primary btn-block w-100 mb-3" @click="addActionToCombo">
         Добавить
       </button>
-
-      <div>
-        <p>Preview:</p>
-        <div class="d-flex justify-content-center flex-wrap mb-4">
-          <div
-            v-for="(item, index) in comboActions" :key="index"
-            class=""
-          >
-            <span class="badge text-bg-primary m-1">{{ item.name }}</span>
-            <template v-if="index !== comboActions.length - 1">-</template>
-          </div>
-        </div>
-      </div>
 
       <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="inputGroup-sizing-sm">Count:</span>
@@ -76,7 +63,20 @@
         >Generate random combo</button>
       </div>
 
-      <div class="input-group input-group-sm mb-3">
+      <div v-if="comboActions.length" class="">
+        <p class="mb-1">Preview:</p>
+        <div class="d-flex justify-content-center flex-wrap">
+          <div
+            v-for="(item, index) in comboActions" :key="index"
+            class=""
+          >
+            <span class="badge text-bg-primary m-1">{{ item.name }}</span>
+            <template v-if="index !== comboActions.length - 1">-</template>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group input-group-sm my-3">
         <input
           v-model="comboTitle"
           type="text"
@@ -104,19 +104,19 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
-import { container } from '@/infrastructure/di/container'
-import { TYPES } from '@/infrastructure/di/types'
-import { CombinationBuilder } from '@/domain/services/CombinationBuilder'
-import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase'
-import type { Combination } from '@/domain/entities/Combination'
-import type { BoxingAction } from '@/domain/entities/BoxingAction'
-import { BoxingActionCategory } from '@/domain/entities/BoxingAction'
-import { getNextActions } from '@/application/useCases/getNextActions'
+import { container } from '@/infrastructure/di/container.ts'
+import { TYPES } from '@/infrastructure/di/types.ts'
+import { CombinationBuilder } from '@/domain/services/CombinationBuilder.ts'
+import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase.ts'
+import type { Combination } from '@/domain/entities/Combination.ts'
+import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
+import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
+import { getNextActions } from '@/application/useCases/getNextActions.ts'
 
 // Если вы по-прежнему используете GetPunchesUseCase, замените его на новый use-case
 // или импортируйте MOCK_ACTIONS напрямую.
 // Здесь для примера предполагаем, что GetPunchesUseCase возвращает все BoxingAction.
-import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase'
+import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts'
 import { generateRandomCombo } from '@/application/useCases/generateRandomCombo.ts'
 
 export default defineComponent({

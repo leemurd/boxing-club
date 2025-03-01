@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import PunchesCatalog from '@/presentation/pages/PunchesCatalog.vue';
-import CombinationBuilderView from '@/presentation/pages/CombinationBuilderView.vue';
-import EnemyCard from '@/presentation/pages/EnemyCard.vue'
-import Profile from '@/presentation/pages/Profile.vue'
-import Signup from '@/presentation/pages/Signup.vue'
-import Login from '@/presentation/pages/Login.vue'
+import PunchesCatalog from '@/presentation/components/pages/PunchesCatalog.vue';
+import CombinationBuilderView from '@/presentation/components/pages/CombinationBuilderView.vue';
+import EnemyCard from '@/presentation/components/pages/EnemyCard.vue'
+import Profile from '@/presentation/components/pages/Profile.vue'
+import Signup from '@/presentation/components/pages/auth/Signup.vue'
+import Login from '@/presentation/components/pages/auth/Login.vue'
 
 const routes = [
   {
