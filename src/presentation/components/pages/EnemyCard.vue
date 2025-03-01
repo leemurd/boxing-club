@@ -168,7 +168,7 @@ const stanceMap: Record<StanceSide, string> = {
   orthodox: 'Правша',
   southpaw: 'Левша',
 }
-const stanceKeys = Object.keys(sizeMap) as StanceSide[]
+const stanceKeys = Object.keys(stanceMap) as StanceSide[]
 
 const boxingStyleMap: Record<BoxerStyle, string> = {
   gamer: 'Игровик',
@@ -176,14 +176,14 @@ const boxingStyleMap: Record<BoxerStyle, string> = {
   technician: 'Технарь',
   counterpuncher: 'Контрпанчер',
 }
-const boxingStyleKeys = Object.keys(sizeMap) as BoxerStyle[]
+const boxingStyleKeys = Object.keys(boxingStyleMap) as BoxerStyle[]
 
 const boxingGuardMap: Record<BoxerGuard, string> = {
   closed: 'Закрытая стойка',
   classical: 'Классическая стойка',
   handsDown: 'Руки внизу',
 }
-const boxingGuardKeys = Object.keys(sizeMap) as BoxerGuard[]
+const boxingGuardKeys = Object.keys(boxingGuardMap) as BoxerGuard[]
 
 const heightRelation = ref(BodyRelation.I_AM_BIGGER)
 const weightRelation = ref(BodyRelation.I_AM_BIGGER)
