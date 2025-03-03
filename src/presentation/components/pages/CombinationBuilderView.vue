@@ -4,74 +4,102 @@
       <h1>Комбинатор</h1>
 
       <h4>Действие</h4>
-      <div class="btn-group btn-group-sm mb-4 w-100" role="group">
+      <div
+        class="btn-group btn-group-sm mb-4 w-100"
+        role="group"
+      >
         <template
           v-for="(cat, index) in categoryOptions"
           :key="index"
         >
           <input
+            :id="`height${index}`"
+            v-model="selectedCategory"
             type="radio"
             class="btn-check"
             name="height"
-            :id="`height${index}`"
             autocomplete="off"
-            v-model="selectedCategory"
             :value="cat"
           >
-          <label class="btn btn-outline-primary text-capitalize" :for="`height${index}`">{{ cat }}</label>
+          <label
+            class="btn btn-outline-secondary text-capitalize"
+            :for="`height${index}`"
+          >{{ cat }}</label>
         </template>
       </div>
 
       <h4>Вариант</h4>
-      <div class="btn-group-vertical btn-group-sm mb-4 w-100" role="group">
+      <div
+        class="btn-group-vertical btn-group-sm mb-4 w-100"
+        role="group"
+      >
         <template
           v-for="(act, index) in availableActions"
           :key="index"
         >
           <input
+            :id="`action${act.id}`"
+            v-model="selectedActionId"
             type="radio"
             class="btn-check"
             name="action"
-            :id="`action${act.id}`"
             autocomplete="off"
-            v-model="selectedActionId"
             :value="act.id"
           >
-          <label class="btn btn-outline-secondary" :for="`action${act.id}`">{{ act.name }}</label>
+          <label
+            class="btn btn-outline-secondary"
+            :for="`action${act.id}`"
+          >{{ act.name }}</label>
         </template>
       </div>
 
-      <button class="btn btn-primary btn-block w-100 mb-3" @click="addActionToCombo">
+      <button
+        class="btn btn-primary btn-block w-100 mb-3"
+        @click="addActionToCombo"
+      >
         Добавить
       </button>
 
       <div class="input-group input-group-sm mb-3">
-        <span class="input-group-text" id="inputGroup-sizing-sm">Count:</span>
+        <span
+          id="inputGroup-sizing-sm"
+          class="input-group-text"
+        >Count:</span>
         <input
+          v-model="randomIterationsNumber"
           type="number"
           class="form-control text-center"
           placeholder=""
           aria-label="Количество движений"
           aria-describedby="button-addon2"
-          v-model="randomIterationsNumber"
         >
         <button
+          id="button-addon2"
           class="btn btn-outline-success"
           type="button"
-          id="button-addon2"
           @click="onGenerateRandomCombo"
-        >Generate random combo</button>
+        >
+          Generate random combo
+        </button>
       </div>
 
-      <div v-if="comboActions.length" class="">
-        <p class="mb-1">Preview:</p>
+      <div
+        v-if="comboActions.length"
+        class=""
+      >
+        <p class="mb-1">
+          Preview:
+        </p>
         <div class="d-flex justify-content-center flex-wrap">
           <div
-            v-for="(item, index) in comboActions" :key="index"
+            v-for="(item, index) in comboActions"
+            :key="index"
             class=""
           >
             <span class="badge text-bg-primary m-1">{{ item.name }}</span>
-            <template v-if="index !== comboActions.length - 1">-</template>
+            <template v-if="index !== comboActions.length - 1">
+              -
+            </template>
           </div>
         </div>
       </div>
@@ -83,17 +111,23 @@
           class="form-control"
           placeholder="Combo title"
           aria-label="Combo title"
-        />
-        <button class="btn btn-success" type="button" @click="buildCombo">
+        >
+        <button
+          class="btn btn-success"
+          type="button"
+          @click="buildCombo"
+        >
           Save Combo
         </button>
       </div>
 
-
       <div v-if="createdCombo">
         <h4>Created combo: {{ createdCombo.title }}</h4>
         <ul>
-          <li v-for="punch in createdCombo.punches" :key="punch.id">
+          <li
+            v-for="punch in createdCombo.punches"
+            :key="punch.id"
+          >
             {{ punch.name }}
           </li>
         </ul>
