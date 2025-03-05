@@ -1,6 +1,15 @@
 @import "./_custom-bootstrap";
 
 html, body {
-  background-color: #1c1c1c;
-  color: #888;
+  background-color: $dark-bg-subtle-dark;
+  color: $gray-500;
 }
+
+//* {
+//  outline: none;
+//}
+//
+//.form-control:focus {
+//  //box-shadow: $input-focus-box-shadow;
+//  box-shadow: $input-focus-box-shadow;
+//}

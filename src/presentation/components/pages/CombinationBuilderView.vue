@@ -162,11 +162,7 @@ export default defineComponent({
     const randomIterationsNumber = ref<number>(5)
     const createdCombo = ref<Combination | null>(null)
 
-    const categoryOptions = [
-      BoxingActionCategory.PUNCH,
-      BoxingActionCategory.MOVEMENT,
-      BoxingActionCategory.DEFENSE
-    ]
+    const categoryOptions = [BoxingActionCategory.PUNCH, BoxingActionCategory.MOVEMENT, BoxingActionCategory.DEFENSE]
     const selectedCategory = ref<BoxingActionCategory>(BoxingActionCategory.PUNCH)
     const selectedActionId = ref<number | null>(null)
 
@@ -256,7 +252,6 @@ export default defineComponent({
   align-items: center;
   text-align: center;
   &-wrap {
-    //width: 400px;
     max-width: 430px;
   }
 }

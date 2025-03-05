@@ -1,7 +1,7 @@
 // 1. Подключаем базовые функции/переменные, если нужно
 @import "bootstrap/scss/functions";
-//@import "bootstrap/scss/variables";
-//@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
 
 $container-max-width: 400px;
 $container-max-widths: (
@@ -11,4 +11,10 @@ $container-max-widths: (
         xl: $container-max-width,
         xxl: $container-max-width
 );
+//$focus-ring-width:      .05rem !default;
+////$focus-ring-opacity:    .25 !default;
+////$focus-ring-color:      rgba($primary, $focus-ring-opacity) !default;
+////$focus-ring-blur:       0 !default;
+//$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
+//$input-focus-box-shadow: $focus-ring-box-shadow;
 @import "bootstrap/scss/bootstrap";

@@ -60,7 +60,9 @@
 
     <div class="d-flex">
       <div class="row">
-        <div class="col d-flex flex-column">
+        <div
+          class="col d-flex flex-column"
+        >
           <h4>Я</h4>
           <div
             class="btn-group btn-group-sm mb-4"
@@ -137,7 +139,9 @@
           </div>
         </div>
 
-        <div class="col d-flex flex-column">
+        <div
+          class="col d-flex flex-column"
+        >
           <h4>Противник</h4>
           <div
             class="btn-group btn-group-sm mb-4"
@@ -249,13 +253,13 @@ const sizeMap: Record<BodyRelation, string> = {
   [BodyRelation.I_AM_BIGGER]: 'Я',
   [BodyRelation.I_AM_SMALLER]: 'Противник',
   [BodyRelation.EQUAL]: 'Примерно одинаково'
-}
+};
 const sizeKeys = Object.keys(sizeMap) as BodyRelation[]
 
 const stanceMap: Record<StanceSide, string> = {
   orthodox: 'Правша',
   southpaw: 'Левша'
-}
+};
 const stanceKeys = Object.keys(stanceMap) as StanceSide[]
 
 const boxingStyleMap: Record<BoxerStyle, string> = {
@@ -294,7 +298,7 @@ function calculateStrategy() {
     oppStyle: oppStyle.value,
     myGuard: myGuard.value,
     oppGuard: oppGuard.value
-  }
+  };
   strategyResult.value = getExtendedFightStrategy(opts)
 }
 </script>

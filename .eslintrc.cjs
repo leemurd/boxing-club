@@ -1,13 +1,9 @@
 module.exports = {
-  root: true,
+  // root: true,
   env: {
     node: true
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:vue/vue3-recommended'
-    // 'plugin:prettier/recommended'
-  ],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:prettier/recommended'],
   // Используем vue-eslint-parser как основной парсер
   parser: 'vue-eslint-parser',
   parserOptions: {
@@ -17,6 +13,8 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    semi: ['error', 'never'],
+    // '@typescript-eslint/semi': ['error', 'never'],
     'vue/html-self-closing': [
       'error',
       {
@@ -133,7 +131,7 @@ module.exports = {
         functions: 'never'
       }
     ],
-    'linebreak-style': ['error', 'windows'],
+    'linebreak-style': ['error', 'unix'],
     'no-console': 'error',
     'no-debugger': 'error',
     'arrow-parens': ['error', 'as-needed'],
@@ -168,14 +166,31 @@ module.exports = {
     ],
     'no-bitwise': ['error', { allow: ['~'] }],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'max-len': ['error', { code: 120 }],
+    'max-len': ['error', { code: 130 }],
     'object-curly-newline': [
       'error',
       {
-        ObjectExpression: { multiline: true, consistent: true },
-        ObjectPattern: { multiline: true, consistent: true }
+        ObjectExpression: {
+          minProperties: 3,
+          multiline: true,
+          consistent: true
+        },
+        ObjectPattern: {
+          minProperties: 3,
+          multiline: true,
+          consistent: true
+        }
       }
     ],
-    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }]
+    'object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'lf'
+      }
+    ]
+    // 'vue/max-attributes-per-line': 'off',
+    // 'vue/html-closing-bracket-newline': 'off'
   }
 }

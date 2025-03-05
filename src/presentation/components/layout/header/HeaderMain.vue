@@ -1,35 +1,64 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav
+      class="navbar navbar-expand-lg bg-secondary-subtle"
+    >
       <div class="container-fluid">
-        <RouterLink
+        <router-link
           class="navbar-brand"
           to="/"
-        >Boxing Club</RouterLink>
+        >
+          Boxing Club
+        </router-link>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon" />
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div
+          id="navbarSupportedContent"
+          class="collapse navbar-collapse"
+        >
+          <ul class="navbar-nav w-100 mb-2 mb-lg-0">
             <li class="nav-item">
-              <RouterLink
+              <router-link
                 class="nav-link"
                 to="/"
-              >Create combo</RouterLink>
+              >
+                Combos
+              </router-link>
             </li>
             <li class="nav-item">
-              <RouterLink
-                class="nav-link"
-                to="/punches"
-              > Punches</RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink
+              <router-link
                 class="nav-link"
                 to="/enemy-card"
-              >Enemy card</RouterLink>
+              >
+                Enemies
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                class="nav-link"
+                to="/punches"
+              >
+                Library
+              </router-link>
+            </li>
+            <li class="nav-item ms-auto">
+              <router-link
+                class="nav-link"
+                to="/enemy-card"
+              >
+                My Profile
+              </router-link>
             </li>
           </ul>
         </div>

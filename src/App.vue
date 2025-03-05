@@ -4,9 +4,9 @@ import HeaderMain from '@/presentation/components/layout/header/HeaderMain.vue'
 </script>
 
 <template>
-  <header-main/>
+  <header-main />
   <div class="container">
-    <RouterView />
+    <router-view />
   </div>
 </template>
 
