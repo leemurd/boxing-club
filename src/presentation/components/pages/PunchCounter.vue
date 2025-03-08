@@ -50,8 +50,11 @@
       <hr>
     </template>
 
-    <div class="status">
-      <h3>Счет ударов: {{ punchCount }}</h3>
+    <div
+      v-if="recording"
+      class="status mt-5 mb-5"
+    >
+      <h1>Счет ударов: {{ punchCount }}</h1>
       <p v-if="timerActive">Осталось: {{ timeLeft }} сек</p>
     </div>
 
