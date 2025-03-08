@@ -106,10 +106,11 @@
       </div>
       <button type="submit">Зарегистрироваться</button>
     </form>
-    <p
+    <alert
       v-if="errorMessage"
-      class="error"
-    >{{ errorMessage }}</p>
+      :message="errorMessage"
+      class="mt-3"
+    />
   </div>
 </template>
 
@@ -121,6 +122,7 @@ import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { User } from '@/domain/entities/User'
+import Alert from '@/presentation/components/shared/Alert.vue'
 
 const authRepo = container.get<IAuthRepository>(TYPES.IAuthRepository)
 const userRepo = container.get<IUserRepository>(TYPES.IUserRepository)
@@ -168,8 +170,5 @@ async function handleRegister() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-.error {
-  color: red;
 }
 </style>

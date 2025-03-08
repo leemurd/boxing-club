@@ -2,10 +2,11 @@
   <div class="profile-page">
     <h1>Профиль пользователя</h1>
     <div v-if="loading">Загрузка...</div>
-    <div
+    <alert
       v-else-if="errorMessage"
-      class="error"
-    >{{ errorMessage }}</div>
+      :message="errorMessage"
+      class="mt-3"
+    />
     <div v-else-if="user">
       <p><strong>Email:</strong> {{ user.email }}</p>
       <p><strong>Имя:</strong> {{ user.firstName }}</p>
@@ -13,9 +14,11 @@
       <p><strong>Никнейм:</strong> {{ user.nickname }}</p>
       <button @click="handleLogout">Выйти</button>
     </div>
-    <div v-else>
-      <p>Пользователь не найден.</p>
-    </div>
+    <alert
+      v-else
+      message="Пользователь не найден."
+      class="mt-3"
+    />
   </div>
 </template>
 
@@ -28,6 +31,7 @@ import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { User } from '@/domain/entities/User'
+import Alert from '@/presentation/components/shared/Alert.vue'
 
 const user = ref<User | null>(null)
 const loading = ref(true)
@@ -63,7 +67,7 @@ async function loadUserProfile() {
 async function handleLogout() {
   try {
     await authRepo.signOut()
-    router.push('/login')
+    await router.push('/login')
   } catch (error: any) {
     errorMessage.value = error.message
   }
@@ -73,14 +77,3 @@ onMounted(() => {
   loadUserProfile()
 })
 </script>
-
-<style scoped>
-.profile-page {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.error {
-  color: red;
-}
-</style>

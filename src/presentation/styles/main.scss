@@ -1,15 +1,11 @@
 @import "./_custom-bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 html, body {
   background-color: $dark-bg-subtle-dark;
   color: $gray-500;
 }
 
-//* {
-//  outline: none;
-//}
-//
-//.form-control:focus {
-//  //box-shadow: $input-focus-box-shadow;
-//  box-shadow: $input-focus-box-shadow;
-//}
+a {
+  text-decoration: none;
+}

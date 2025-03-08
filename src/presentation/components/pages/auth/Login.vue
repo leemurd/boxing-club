@@ -1,7 +1,6 @@
 <template>
-  <div class="">
+  <div class="py-5">
     <form
-      class="mt-3"
       @submit.prevent="handleLogin"
     >
       <h1 class="text-center">Login</h1>
@@ -40,33 +39,46 @@
         Login
       </button>
 
-      <div
+      <p class="mt-3 text-center">
+        <small>
+          Don't have account?
+        </small> <RouterLink to="/signup">Sign up</RouterLink>
+      </p>
+
+      <alert
         v-if="errorMessage"
-        class="alert alert-warning mt-3"
-        role="alert"
-      >{{ errorMessage }}</div>
+        :message="errorMessage"
+        class="mt-3"
+      />
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { container } from '@/infrastructure/di/container'
 import { TYPES } from '@/infrastructure/di/types'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
+import Alert from '@/presentation/components/shared/Alert.vue'
 
 const authRepo = container.get<IAuthRepository>(TYPES.IAuthRepository)
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 const router = useRouter()
+const route = useRoute()
 
 async function handleLogin() {
   try {
     await authRepo.signIn(email.value, password.value)
     errorMessage.value = ''
-    await router.push('/') // перенаправляем на главную после успешного входа
+    const { redirect } = route.query
+    if (redirect && typeof redirect === 'string') {
+      await router.push(redirect)
+    } else {
+      await router.push('/') // перенаправляем на главную после успешного входа
+    }
   } catch (error: any) {
     errorMessage.value = error.message
   }

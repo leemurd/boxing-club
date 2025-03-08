@@ -111,6 +111,7 @@ module.exports = {
         shouldMatchCase: false
       }
     ],
+    'vue/require-default-prop': 'off',
     'vue/no-dupe-keys': [
       'error',
       {
@@ -137,7 +138,7 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     'no-console': 'error',
     'no-debugger': 'error',
-    'arrow-parens': ['error', 'as-needed'],
+    'arrow-parens': ['error', 'always'],
     'no-plusplus': 'off',
     'constructor-super': 'off',
     'no-mixed-operators': [
