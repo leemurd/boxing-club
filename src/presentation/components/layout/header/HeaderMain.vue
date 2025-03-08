@@ -5,6 +5,7 @@
         <router-link
           class="navbar-brand"
           to="/"
+          @click="collapseNavbar"
         >
           Boxing Club
         </router-link>
@@ -12,13 +13,12 @@
         <button
           class="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          @click="toggleNavbar"
         >
-          <span class="navbar-toggler-icon" />
+          <span class="navbar-toggler-icon"/>
         </button>
 
         <div
@@ -79,8 +79,19 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { Collapse } from 'bootstrap'
+import { RouterLink } from 'vue-router'
+
+function toggleNavbar() {
+  const navbar = document.getElementById('navbarSupportedContent')
+  if (navbar) {
+    let bsCollapse = Collapse.getInstance(navbar)
+    if (!bsCollapse) {
+      bsCollapse = new Collapse(navbar, { toggle: false })
+    }
+    bsCollapse.toggle()
+  }
+}
 
 function collapseNavbar() {
   const navbar = document.getElementById('navbarSupportedContent')
