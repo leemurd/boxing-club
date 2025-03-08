@@ -2,6 +2,7 @@ import '@/presentation/styles/main.scss'
 // import * as Popper from "@popperjs/core"
 // import all as bootstrap from 'bootstrap'
 // import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
+import 'bootstrap/dist/js/bootstrap.min.js'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

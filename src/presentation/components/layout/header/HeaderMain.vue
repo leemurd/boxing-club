@@ -30,6 +30,7 @@
               <router-link
                 class="nav-link"
                 to="/"
+                @click="collapseNavbar"
               >
                 Combos
               </router-link>
@@ -38,6 +39,7 @@
               <router-link
                 class="nav-link"
                 to="/enemy-card"
+                @click="collapseNavbar"
               >
                 Enemies
               </router-link>
@@ -46,6 +48,7 @@
               <router-link
                 class="nav-link"
                 to="/punches"
+                @click="collapseNavbar"
               >
                 Library
               </router-link>
@@ -54,14 +57,16 @@
               <router-link
                 class="nav-link"
                 to="/punch-counter"
+                @click="collapseNavbar"
               >
                 Punch-Counter
               </router-link>
             </li>
-            <li class="nav-item ms-auto">
+            <li class="nav-item ms-lg-auto">
               <router-link
                 class="nav-link"
                 to="/profile"
+                @click="collapseNavbar"
               >
                 My Profile
               </router-link>
@@ -75,4 +80,16 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { Collapse } from 'bootstrap'
+
+function collapseNavbar() {
+  const navbar = document.getElementById('navbarSupportedContent')
+  if (navbar) {
+    let bsCollapse = Collapse.getInstance(navbar)
+    if (!bsCollapse) {
+      bsCollapse = new Collapse(navbar, { toggle: false })
+    }
+    bsCollapse.hide()
+  }
+}
 </script>
