@@ -50,11 +50,37 @@
       <hr>
     </template>
 
+    <div class="status">
+      <h3>Счет ударов: {{ punchCount }}</h3>
+      <p v-if="timerActive">Осталось: {{ timeLeft }} сек</p>
+    </div>
+
+    <div class="controls">
+      <button
+        v-if="recording"
+        class="btn btn-danger btn-lg w-100"
+        @click="resetCounter"
+      >Сброс</button>
+    </div>
 
     <!-- Range input для порога и cooldown -->
-    <div class="range-controls">
-      <h5 class="">Микрофон:</h5>
-      <div>
+    <button
+      class="btn btn-secondary mt-3"
+      type="button"
+      aria-controls="navbarSupportedContent2"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      @click="toggleNavbar"
+    >
+      Настройки микрофона
+      <i :class="`bi-chevron-${isSettingsOpened ? 'contract' : 'expand'}`"/>
+    </button>
+
+    <div
+      id="navbarSupportedContent2"
+      class="collapse mt-3"
+    >
+      <div class="card card-body">
         <label>
           Чувствительность: {{ threshold }}
           <input
@@ -67,8 +93,6 @@
             @input="saveSettings"
           >
         </label>
-      </div>
-      <div>
         <label>
           Интервал между ударами (мс): {{ cooldown }}
           <input
@@ -84,30 +108,20 @@
       </div>
     </div>
 
-    <div class="status">
-      <p>Счет ударов: {{ punchCount }}</p>
-      <p v-if="timerActive">Осталось: {{ timeLeft }} сек</p>
-    </div>
-
-    <div class="controls">
-      <button
-        v-if="recording"
-        class="btn btn-danger btn-lg w-100"
-        @click="resetCounter"
-      >Сброс</button>
-    </div>
-
     <alert
       v-if="error"
       :message="error"
-      class="error"
+      color="danger"
+      class="mt-3"
     />
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import Alert from '@/presentation/components/shared/Alert.vue'
+import { Collapse } from 'bootstrap'
 
 const recording = ref(false)
 const timerActive = ref(false)
@@ -232,6 +246,21 @@ function resetCounter() {
   timeLeft.value = 0
 }
 
+// toggle microphone
+const isSettingsOpened = ref(false)
+
+function toggleNavbar() {
+  const navbar = document.getElementById('navbarSupportedContent2')
+  if (navbar) {
+    let bsCollapse = Collapse.getInstance(navbar)
+    if (!bsCollapse) {
+      bsCollapse = new Collapse(navbar, { toggle: false })
+    }
+    bsCollapse.toggle()
+    isSettingsOpened.value = !isSettingsOpened.value
+  }
+}
+
 onMounted(() => {
   loadSettings()
 })
@@ -242,21 +271,14 @@ onUnmounted(() => {
 
 <style scoped>
 .punch-counter {
-  max-width: 400px;
-  margin: 0 auto;
+  padding: 30px 10px;
   text-align: center;
-  padding: 1rem;
 }
 .mode-controls,
-.timer-controls,
-.range-controls {
+.timer-controls {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-.range-controls label {
-  display: block;
-  margin-bottom: 0.5rem;
 }
 </style>
