@@ -7,6 +7,7 @@ import Signup from '@/presentation/components/pages/auth/Signup.vue'
 import Login from '@/presentation/components/pages/auth/Login.vue'
 import NotFoundPage from '@/presentation/components/pages/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
+import PunchCounter from '@/presentation/components/pages/PunchCounter.vue'
 
 const routes = [
   {
@@ -31,6 +32,12 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/punch-counter',
+    name: 'PunchCounter',
+    component: PunchCounter,
     beforeEnter: requireAuth
   },
   {

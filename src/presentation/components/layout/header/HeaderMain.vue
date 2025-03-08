@@ -50,6 +50,14 @@
                 Library
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link
+                class="nav-link"
+                to="/punch-counter"
+              >
+                Punch-Counter
+              </router-link>
+            </li>
             <li class="nav-item ms-auto">
               <router-link
                 class="nav-link"
