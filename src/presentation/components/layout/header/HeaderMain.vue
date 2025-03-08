@@ -1,8 +1,6 @@
 <template>
   <header>
-    <nav
-      class="navbar navbar-expand-lg bg-secondary-subtle"
-    >
+    <nav class="navbar navbar-expand-lg bg-secondary-subtle">
       <div class="container-fluid">
         <router-link
           class="navbar-brand"
@@ -55,7 +53,7 @@
             <li class="nav-item ms-auto">
               <router-link
                 class="nav-link"
-                to="/enemy-card"
+                to="/profile"
               >
                 My Profile
               </router-link>

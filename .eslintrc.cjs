@@ -27,6 +27,9 @@ module.exports = {
         math: 'always'
       }
     ],
+    'vue/multi-word-component-names': 'off',
+    // 'vue/html-closing-bracket-newline': 'always',
+    'vue/html-closing-bracket-newline': 'warn',
     'vue/html-indent': [
       'error',
       2,
