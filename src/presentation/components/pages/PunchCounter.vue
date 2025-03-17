@@ -9,7 +9,7 @@
       >
         <div>Free mode:</div>
         <b-button
-          color="primary"
+          color="dark"
           size="large"
           @click="startManualRecording"
         >
@@ -291,7 +291,7 @@ onUnmounted(() => {
 
 <style scoped>
 .punch-counter {
-  padding: 30px 10px;
+  padding: 0 10px;
   text-align: center;
   &-total {
     background: red;

@@ -1,5 +1,5 @@
 <template>
-  <div class="py-5">
+  <div>
     <form
       @submit.prevent="handleLogin"
     >

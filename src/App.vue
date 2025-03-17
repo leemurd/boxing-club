@@ -5,7 +5,7 @@ import HeaderMain from '@/presentation/components/layout/header/HeaderMain.vue'
 
 <template>
   <header-main />
-  <div class="container">
+  <div class="container mt-4 mb-3">
     <router-view />
   </div>
 </template>

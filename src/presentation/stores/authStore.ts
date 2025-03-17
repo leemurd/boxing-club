@@ -6,6 +6,7 @@ import { TYPES } from '@/infrastructure/di/types'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { User } from '@/domain/entities/User'
+import { useThemeStore } from '@/presentation/stores/themeStore.ts'
 
 export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref<User | null>(null)
@@ -24,6 +25,8 @@ export const useAuthStore = defineStore('auth', () => {
         isLoggedIn.value = true
         const fetchedUser = await userRepo.getUser(user.uid)
         currentUser.value = fetchedUser
+        const themeStore = useThemeStore()
+        await themeStore.loadThemeFromFirebase()
       } else {
         isLoggedIn.value = false
         currentUser.value = null
@@ -35,8 +38,10 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await authRepo.signIn(email, password)
       error.value = ''
+      isLoggedIn.value = true
     } catch (err: any) {
       error.value = err.message
+      isLoggedIn.value = false
     }
   }
 
@@ -69,6 +74,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await authRepo.signOut()
       error.value = ''
+      isLoggedIn.value = false
     } catch (err: any) {
       error.value = err.message
     }

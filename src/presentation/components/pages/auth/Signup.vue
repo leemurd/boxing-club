@@ -1,6 +1,6 @@
 <template>
   <div class="register-page">
-    <h1>Sign up</h1>
+    <h1 class="text-center">Sign up</h1>
     <form @submit.prevent="handleRegister">
       <div class="mb-3">
         <label
@@ -140,7 +140,5 @@ async function handleRegister() {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  //gap: 1rem;
-  padding: 30px 0;
 }
 </style>

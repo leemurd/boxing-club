@@ -7,13 +7,6 @@
           to="/"
           @click="collapseNavbar"
         >
-          <!--                    <img-->
-          <!--                      :src="logo"-->
-          <!--                      alt="logo"-->
-          <!--                      class="navbar-brand-icon"-->
-          <!--                    >-->
-          <!--                    Adidas-->
-          <!--          Acting-->
           Family
           Boxing
           Club
@@ -36,7 +29,7 @@
         >
           <ul class="navbar-nav align-items-center w-100 mb-2 mb-lg-0">
             <li
-              v-for="(route, index) in routes"
+              v-for="(route, index) in visibleRoutes"
               :key="index"
               class="nav-item"
               :class="[index === routes.length - 1 ? 'ms-lg-auto' : '']"
@@ -62,9 +55,10 @@ import {
   type RouteLocation,
   RouterLink
 } from 'vue-router'
-// import logo from '@/presentation/assets/adidas-logo.svg'
-// import logo from '@/presentation/assets/adidas-logo-white.svg'
-// import logo from '@/presentation/assets/adidas-logo-filled-white.svg'
+import { useAuthStore } from '@/presentation/stores/authStore.ts'
+import { computed } from 'vue'
+
+const authStore = useAuthStore()
 
 const routes = [
   {
@@ -85,6 +79,19 @@ const routes = [
     name: 'Profile'
   }
 ] as RouteLocation[]
+
+const logoutRoutes = [
+  {
+    path: '/login',
+    name: 'Login'
+  },
+  {
+    path: '/signup',
+    name: 'Sign up'
+  }
+]
+
+const visibleRoutes = computed(() => authStore.isLoggedIn ? routes : logoutRoutes)
 
 function toggleNavbar() {
   const navbar = document.getElementById('navbarSupportedContent')

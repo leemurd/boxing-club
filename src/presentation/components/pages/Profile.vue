@@ -1,6 +1,6 @@
 <template>
   <div class="profile-page">
-    <h1>Профиль пользователя</h1>
+    <h1 class="text-center">Account</h1>
     <div v-if="loading">Загрузка...</div>
     <b-alert
       v-else-if="errorMessage"
@@ -8,11 +8,33 @@
       class="mt-3"
     />
     <div v-else-if="user">
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Имя:</strong> {{ user.firstName }}</p>
-      <p><strong>Фамилия:</strong> {{ user.lastName }}</p>
-      <p><strong>Никнейм:</strong> {{ user.nickname }}</p>
-      <button @click="handleLogout">Выйти</button>
+      <div class="card border-0">
+        <div class="card-body">
+          <h5 class="card-title">{{ `${user.firstName} ${user.lastName}` }}</h5>
+          <p class="card-text">{{ user.email }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <theme-toggle/>
+          </li>
+        </ul>
+        <div class="card-body align-items-center d-flex gap-2">
+          <b-button
+            color="dark"
+            outline
+            class="col"
+            size="small"
+          >
+            Edit
+          </b-button>
+          <b-button
+            color="red"
+            class="col"
+            size="small"
+            @click="handleLogout"
+          >Log out</b-button>
+        </div>
+      </div>
     </div>
     <b-alert
       v-else
@@ -32,6 +54,8 @@ import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { User } from '@/domain/entities/User'
 import BAlert from '@/presentation/components/shared/BAlert.vue'
+import ThemeToggle from '@/presentation/components/profile/ThemeToggle.vue'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 const user = ref<User | null>(null)
 const loading = ref(true)

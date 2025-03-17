@@ -3,9 +3,9 @@
     :is="tag"
     :class="{
       'btn': true,
-      [`btn-${BtnColorMap[color]}`]: !outline,
+      [`btn-${colorMap[color]}`]: !outline,
       [`btn-${BtnSizeMap[size]}`]: size !== 'medium',
-      [`btn-outline-${BtnColorMap[color]}`]: outline,
+      [`btn-outline-${colorMap[color]}`]: outline,
     }"
   >
     <slot/>
@@ -13,19 +13,35 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
+import { useThemeStore } from '@/presentation/stores/themeStore.ts'
 
-type ButtonColor = 'primary' | 'secondary' | 'blue' | 'green' | 'dark' | 'red'
+type ButtonColor = 'primary' | 'secondary' | 'blue' | 'green' | 'dark' | 'red' | 'light'
 type ButtonSize = 'small' | 'medium' | 'large'
 
-const BtnColorMap: Record<ButtonColor, string> = {
+const themeStore = useThemeStore()
+
+const BtnColorDarkMap: Record<ButtonColor, string> = {
   primary: 'light',
   secondary: 'secondary',
   blue: 'primary',
   green: 'success',
-  dark: 'dark',
-  red: 'danger'
+  dark: 'light',
+  red: 'danger',
+  light: 'dark'
 }
+
+const BtnColorMap: Record<ButtonColor, string> = {
+  primary: 'primary',
+  secondary: 'dark',
+  blue: 'primary',
+  green: 'success',
+  dark: 'dark',
+  red: 'danger',
+  light: 'light'
+}
+
+const colorMap = computed(() => themeStore.isDarkTheme ? BtnColorDarkMap : BtnColorMap)
 
 const BtnSizeMap: Record<ButtonSize, string> = {
   small: 'sm',
