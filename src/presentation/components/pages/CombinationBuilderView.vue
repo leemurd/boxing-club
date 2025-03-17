@@ -21,10 +21,15 @@
             autocomplete="off"
             :value="cat"
           >
-          <label
-            class="btn btn-outline-secondary text-capitalize"
+          <b-button
+            color="secondary"
+            outline
+            tag="label"
             :for="`height${index}`"
-          >{{ cat }}</label>
+            class="text-capitalize"
+          >
+            {{ cat }}
+          </b-button>
         </template>
       </div>
 
@@ -46,19 +51,25 @@
             autocomplete="off"
             :value="act.id"
           >
-          <label
-            class="btn btn-outline-secondary"
+          <b-button
+            color="secondary"
+            outline
+            tag="label"
             :for="`action${act.id}`"
-          >{{ act.name }}</label>
+            class="text-capitalize"
+          >
+            {{ act.name }}
+          </b-button>
         </template>
       </div>
 
-      <button
-        class="btn btn-primary btn-block w-100 mb-3"
+      <b-button
+        color="primary"
+        class="btn-block w-100 mb-3"
         @click="addActionToCombo"
       >
-        Добавить
-      </button>
+        Add
+      </b-button>
 
       <div class="input-group input-group-sm mb-3">
         <span
@@ -73,14 +84,15 @@
           aria-label="Количество движений"
           aria-describedby="button-addon2"
         >
-        <button
+
+        <b-button
           id="button-addon2"
-          class="btn btn-outline-success"
+          color="secondary"
           type="button"
           @click="onGenerateRandomCombo"
         >
           Generate random combo
-        </button>
+        </b-button>
       </div>
 
       <div
@@ -112,13 +124,15 @@
           placeholder="Combo title"
           aria-label="Combo title"
         >
-        <button
-          class="btn btn-success"
+
+        <b-button
+          id="button-addon2"
+          color="blue"
           type="button"
           @click="buildCombo"
         >
           Save Combo
-        </button>
+        </b-button>
       </div>
 
       <div v-if="createdCombo">
@@ -152,9 +166,11 @@ import { getNextActions } from '@/application/useCases/getNextActions.ts'
 // Здесь для примера предполагаем, что GetPunchesUseCase возвращает все BoxingAction.
 import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts'
 import { generateRandomCombo } from '@/application/useCases/generateRandomCombo.ts'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
+  components: { BButton },
   setup() {
     const allActions = ref<BoxingAction[]>([])
     const comboActions = ref<BoxingAction[]>([])

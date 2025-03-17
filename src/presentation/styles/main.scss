@@ -1,3 +1,5 @@
+@import "mixins";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 @import "./_custom-bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -8,4 +10,24 @@ html, body {
 
 a {
   text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include slabFont;
+}
+
+.btn {
+  @include slabFont;
+  //&-primary, &-light, &-secondary {
+  //  @include slabFont;
+  //}
+
+}
+
+.font-slab {
+  @include slabFont;
+}
+
+.font-sans {
+  font-family: var(--bs-body-font-family);
 }

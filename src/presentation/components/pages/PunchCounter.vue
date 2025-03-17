@@ -7,13 +7,14 @@
       <div
         class="mode-controls"
       >
-        <div>Свободный режим</div>
-        <button
-          class="btn btn-primary btn-lg"
+        <div>Free mode:</div>
+        <b-button
+          color="primary"
+          size="large"
           @click="startManualRecording"
         >
-          Запись
-        </button>
+          Record
+        </b-button>
       </div>
 
       <hr>
@@ -25,7 +26,7 @@
       <div
         class="timer-controls"
       >
-        <label for="intervalSelect">Запись с обратным отсчетом</label>
+        <label for="intervalSelect">Record with timer:</label>
         <select
           id="intervalSelect"
           v-model.number="selectedInterval"
@@ -36,15 +37,16 @@
             :key="option"
             :value="option"
           >
-            {{ option }} сек
+            {{ option }} sec
           </option>
         </select>
-        <button
-          class="btn btn-primary btn-lg"
+        <b-button
+          color="primary"
+          size="large"
           @click="startTimerRecording"
         >
-          Начать запись с таймером
-        </button>
+          Start recording with timer
+        </b-button>
       </div>
 
       <hr>
@@ -52,32 +54,46 @@
 
     <div
       v-if="recording"
-      class="status mt-5 mb-5"
+      class="punch-counter-total mt-5 mb-5"
     >
-      <h1>Счет ударов: {{ punchCount }}</h1>
+      <h1 class="punch-counter-total__title">
+        Счет ударов: {{ punchCount }}
+        <div
+          class="spinner-grow punch-counter-total__spinner"
+          style="width: 5rem; height: 5rem;"
+          role="status"
+        />
+      </h1>
       <p v-if="timerActive">Осталось: {{ timeLeft }} сек</p>
     </div>
 
     <div class="controls">
-      <button
+      <b-button
         v-if="recording"
-        class="btn btn-danger btn-lg w-100"
+        color="red"
+        size="large"
+        class="w-100"
         @click="resetCounter"
-      >Сброс</button>
+      >
+        Reset
+      </b-button>
     </div>
 
     <!-- Range input для порога и cooldown -->
-    <button
-      class="btn btn-secondary mt-3"
+    <b-button
+      color="secondary"
+      class="mt-3 font-sans"
       type="button"
+      size="small"
+      :outline="!isSettingsOpened"
       aria-controls="navbarSupportedContent2"
       aria-expanded="false"
       aria-label="Toggle navigation"
       @click="toggleNavbar"
     >
-      Настройки микрофона
+      microphone settings:
       <i :class="`bi-chevron-${isSettingsOpened ? 'contract' : 'expand'}`"/>
-    </button>
+    </b-button>
 
     <div
       id="navbarSupportedContent2"
@@ -85,7 +101,7 @@
     >
       <div class="card card-body">
         <label>
-          Чувствительность: {{ threshold }}
+          Level: {{ threshold }}
           <input
             v-model.number="threshold"
             type="range"
@@ -97,7 +113,7 @@
           >
         </label>
         <label>
-          Интервал между ударами (мс): {{ cooldown }}
+          Min gap between punches (мс): {{ cooldown }}
           <input
             v-model.number="cooldown"
             type="range"
@@ -111,7 +127,7 @@
       </div>
     </div>
 
-    <alert
+    <b-alert
       v-if="error"
       :message="error"
       color="danger"
@@ -123,8 +139,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import Alert from '@/presentation/components/shared/Alert.vue'
+import BAlert from '@/presentation/components/shared/BAlert.vue'
 import { Collapse } from 'bootstrap'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 const recording = ref(false)
 const timerActive = ref(false)
@@ -276,6 +293,18 @@ onUnmounted(() => {
 .punch-counter {
   padding: 30px 10px;
   text-align: center;
+  &-total {
+    background: red;
+    &__title {
+      position: relative;
+    }
+    &__spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 .mode-controls,
 .timer-controls {

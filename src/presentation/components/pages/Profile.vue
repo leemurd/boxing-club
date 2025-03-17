@@ -2,7 +2,7 @@
   <div class="profile-page">
     <h1>Профиль пользователя</h1>
     <div v-if="loading">Загрузка...</div>
-    <alert
+    <b-alert
       v-else-if="errorMessage"
       :message="errorMessage"
       class="mt-3"
@@ -14,7 +14,7 @@
       <p><strong>Никнейм:</strong> {{ user.nickname }}</p>
       <button @click="handleLogout">Выйти</button>
     </div>
-    <alert
+    <b-alert
       v-else
       message="Пользователь не найден."
       class="mt-3"
@@ -31,7 +31,7 @@ import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { User } from '@/domain/entities/User'
-import Alert from '@/presentation/components/shared/Alert.vue'
+import BAlert from '@/presentation/components/shared/BAlert.vue'
 
 const user = ref<User | null>(null)
 const loading = ref(true)

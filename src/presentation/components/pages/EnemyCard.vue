@@ -1,10 +1,10 @@
 <template>
   <div class="enemy-card">
-    <h1>Enemy Card</h1>
+    <h3>Enemy Card</h3>
 
     <div class="row">
       <div class="col">
-        <h4>Кто выше?</h4>
+        <h6>Кто выше?</h6>
         <div
           class="btn-group-vertical btn-group-sm mb-4"
           role="group"
@@ -22,16 +22,20 @@
               name="height"
               :value="item"
             >
-            <label
-              class="btn btn-outline-primary"
+            <b-button
+              color="secondary"
+              outline
+              tag="label"
               :for="`height_${item}`"
-            >{{ sizeMap[item] }}</label>
+            >
+              {{ sizeMap[item] }}
+            </b-button>
           </template>
         </div>
       </div>
 
       <div class="col">
-        <h4>Кто тяжелее?</h4>
+        <h6>Кто тяжелее?</h6>
         <div
           class="btn-group-vertical btn-group-sm mb-4"
           role="group"
@@ -49,10 +53,14 @@
               name="weight"
               :value="item"
             >
-            <label
-              class="btn btn-outline-primary"
+            <b-button
+              color="secondary"
+              outline
+              tag="label"
               :for="`weight_${item}`"
-            >{{ sizeMap[item] }}</label>
+            >
+              {{ sizeMap[item] }}
+            </b-button>
           </template>
         </div>
       </div>
@@ -63,7 +71,7 @@
         <div
           class="col d-flex flex-column"
         >
-          <h4>Я</h4>
+          <h6>Я</h6>
           <div
             class="btn-group btn-group-sm mb-4"
             role="group"
@@ -81,10 +89,14 @@
                 name="myStance"
                 :value="item"
               >
-              <label
-                class="btn btn-outline-primary"
+              <b-button
+                color="secondary"
+                outline
+                tag="label"
                 :for="`stance_${item}`"
-              >{{ stanceMap[item] }}</label>
+              >
+                {{ stanceMap[item] }}
+              </b-button>
             </template>
           </div>
 
@@ -106,10 +118,14 @@
                 name="myStyle"
                 :value="item"
               >
-              <label
-                class="btn btn-outline-primary"
+              <b-button
+                color="secondary"
+                outline
+                tag="label"
                 :for="`myStyle_${item}`"
-              >{{ boxingStyleMap[item] }}</label>
+              >
+                {{ boxingStyleMap[item] }}
+              </b-button>
             </template>
           </div>
 
@@ -131,10 +147,14 @@
                 name="myGuard"
                 :value="item"
               >
-              <label
-                class="btn btn-outline-primary"
+              <b-button
+                color="secondary"
+                outline
+                tag="label"
                 :for="`myGuard_${item}`"
-              >{{ boxingGuardMap[item] }}</label>
+              >
+                {{ boxingGuardMap[item] }}
+              </b-button>
             </template>
           </div>
         </div>
@@ -142,7 +162,7 @@
         <div
           class="col d-flex flex-column"
         >
-          <h4>Противник</h4>
+          <h6>Противник</h6>
           <div
             class="btn-group btn-group-sm mb-4"
             role="group"
@@ -160,10 +180,14 @@
                 name="oppStance"
                 :value="item"
               >
-              <label
-                class="btn btn-outline-primary"
+              <b-button
+                color="secondary"
+                outline
+                tag="label"
                 :for="`oppStance_${item}`"
-              >{{ stanceMap[item] }}</label>
+              >
+                {{ stanceMap[item] }}
+              </b-button>
             </template>
           </div>
 
@@ -185,10 +209,14 @@
                 name="oppStyle"
                 :value="item"
               >
-              <label
-                class="btn btn-outline-primary"
+              <b-button
+                color="secondary"
+                outline
+                tag="label"
                 :for="`oppStyle_${item}`"
-              >{{ boxingStyleMap[item] }}</label>
+              >
+                {{ boxingStyleMap[item] }}
+              </b-button>
             </template>
           </div>
 
@@ -210,22 +238,34 @@
                 name="oppGuard"
                 :value="item"
               >
-              <label
-                class="btn btn-outline-primary"
+              <b-button
+                color="secondary"
+                outline
+                tag="label"
                 :for="`oppGuard_${item}`"
-              >{{ boxingGuardMap[item] }}</label>
+              >
+                {{ boxingGuardMap[item] }}
+              </b-button>
             </template>
           </div>
         </div>
       </div>
     </div>
 
-    <button
-      class="btn btn-success mb-3"
+<!--    <button-->
+<!--      class="btn btn-primary mb-3"-->
+<!--      @click="calculateStrategy"-->
+<!--    >-->
+<!--      Получить стратегию-->
+<!--    </button>-->
+
+    <b-button
+      color="blue"
+      class="mb-3"
       @click="calculateStrategy"
     >
       Получить стратегию
-    </button>
+    </b-button>
 
     <ul v-if="strategyResult?.length">
       <li
@@ -248,18 +288,19 @@ import {
   type BoxerStyle,
   type BoxerGuard
 } from '@/application/useCases/getEnemyCard.ts'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 const sizeMap: Record<BodyRelation, string> = {
   [BodyRelation.I_AM_BIGGER]: 'Я',
   [BodyRelation.I_AM_SMALLER]: 'Противник',
   [BodyRelation.EQUAL]: 'Примерно одинаково'
-};
+}
 const sizeKeys = Object.keys(sizeMap) as BodyRelation[]
 
 const stanceMap: Record<StanceSide, string> = {
   orthodox: 'Правша',
   southpaw: 'Левша'
-};
+}
 const stanceKeys = Object.keys(stanceMap) as StanceSide[]
 
 const boxingStyleMap: Record<BoxerStyle, string> = {
@@ -298,7 +339,7 @@ function calculateStrategy() {
     oppStyle: oppStyle.value,
     myGuard: myGuard.value,
     oppGuard: oppGuard.value
-  };
+  }
   strategyResult.value = getExtendedFightStrategy(opts)
 }
 </script>

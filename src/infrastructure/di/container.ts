@@ -21,7 +21,7 @@ container
 // Регистрируем UseCase
 container.bind<GetPunchesUseCase>(TYPES.GetPunchesUseCase).to(GetPunchesUseCase).inSingletonScope()
 container.bind<IAuthRepository>(TYPES.IAuthRepository).to(AuthRepositoryFirebase).inSingletonScope()
-container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepositoryFirebase)
+container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepositoryFirebase).inSingletonScope()
 container.bind(TYPES.FirebaseApp).toConstantValue(firebaseApp)
 
 export { container }
