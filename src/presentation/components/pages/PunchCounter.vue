@@ -1,7 +1,5 @@
 <template>
   <div class="punch-counter">
-    <h1>Punch Counter</h1>
-
     <!-- Ручной режим -->
     <template v-if="!recording && !timerActive">
       <div
@@ -99,7 +97,7 @@
       id="navbarSupportedContent2"
       class="collapse mt-3"
     >
-      <div class="card card-body">
+      <div class="card card-body border-0">
         <label>
           Level: {{ threshold }}
           <input

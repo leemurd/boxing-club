@@ -1,6 +1,5 @@
 <template>
   <div class="profile-page">
-    <h1 class="text-center">Account</h1>
     <div v-if="loading">Загрузка...</div>
     <b-alert
       v-else-if="errorMessage"

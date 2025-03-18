@@ -1,6 +1,5 @@
 <template>
   <div class="register-page">
-    <h1 class="text-center">Sign up</h1>
     <form @submit.prevent="handleRegister">
       <div class="mb-3">
         <label

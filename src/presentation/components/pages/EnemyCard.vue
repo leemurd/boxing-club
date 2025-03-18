@@ -1,7 +1,5 @@
 <template>
   <div class="enemy-card">
-    <h3>Enemy Card</h3>
-
     <div class="row">
       <div class="col">
         <h6>Кто выше?</h6>
@@ -251,13 +249,6 @@
         </div>
       </div>
     </div>
-
-<!--    <button-->
-<!--      class="btn btn-primary mb-3"-->
-<!--      @click="calculateStrategy"-->
-<!--    >-->
-<!--      Получить стратегию-->
-<!--    </button>-->
 
     <b-button
       color="blue"

@@ -3,7 +3,6 @@
     <form
       @submit.prevent="handleLogin"
     >
-      <h1 class="text-center">Login</h1>
       <div class="mb-3">
         <label
           for="email"

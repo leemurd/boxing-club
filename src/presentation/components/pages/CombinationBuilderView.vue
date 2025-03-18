@@ -1,11 +1,9 @@
 <template>
   <div class="combination-builder">
     <div class="combination-builder-wrap">
-      <h1>Комбинатор</h1>
-
       <h4>Действие</h4>
       <div
-        class="btn-group btn-group-sm mb-4 w-100"
+        class="btn-group mb-4 w-100"
         role="group"
       >
         <template
@@ -35,7 +33,7 @@
 
       <h4>Вариант</h4>
       <div
-        class="btn-group-vertical btn-group-sm mb-4 w-100"
+        class="btn-group-vertical mb-4 w-100"
         role="group"
       >
         <template
@@ -43,7 +41,7 @@
           :key="index"
         >
           <input
-            :id="`action${act.id}`"
+            :id="`action${index}`"
             v-model="selectedActionId"
             type="radio"
             class="btn-check"
@@ -55,7 +53,7 @@
             color="secondary"
             outline
             tag="label"
-            :for="`action${act.id}`"
+            :for="`action${index}`"
             class="text-capitalize"
           >
             {{ act.name }}
@@ -95,6 +93,25 @@
         </b-button>
       </div>
 
+      <div class="input-group input-group-sm my-3">
+        <input
+          v-model="comboTitle"
+          type="text"
+          class="form-control"
+          placeholder="Combo title"
+          aria-label="Combo title"
+        >
+
+        <b-button
+          id="button-addon2"
+          color="blue"
+          type="button"
+          @click="buildCombo"
+        >
+          Save Combo
+        </b-button>
+      </div>
+
       <div
         v-if="comboActions.length"
         class=""
@@ -114,25 +131,6 @@
             </template>
           </div>
         </div>
-      </div>
-
-      <div class="input-group input-group-sm my-3">
-        <input
-          v-model="comboTitle"
-          type="text"
-          class="form-control"
-          placeholder="Combo title"
-          aria-label="Combo title"
-        >
-
-        <b-button
-          id="button-addon2"
-          color="blue"
-          type="button"
-          @click="buildCombo"
-        >
-          Save Combo
-        </b-button>
       </div>
 
       <div v-if="createdCombo">
@@ -198,10 +196,10 @@ export default defineComponent({
 
     const availableActions = computed<BoxingAction[]>(() => {
       if (!lastAction.value) {
-        return allActions.value.filter(a => a.category === selectedCategory.value)
+        return allActions.value.filter((a) => a.category === selectedCategory.value)
       }
       const possible = getNextActions(lastAction.value, allActions.value)
-      return possible.filter(a => a.category === selectedCategory.value)
+      return possible.filter((a) => a.category === selectedCategory.value)
     })
 
     function onUpdateAvailableActions() {
@@ -214,7 +212,7 @@ export default defineComponent({
 
     function addActionToCombo() {
       if (selectedActionId.value == null) return
-      const chosen = allActions.value.find(a => a.id === selectedActionId.value)
+      const chosen = allActions.value.find((a) => a.id === selectedActionId.value)
       if (!chosen) return
       comboActions.value.push(chosen)
       combinationBuilder.addAction(chosen)
@@ -234,7 +232,7 @@ export default defineComponent({
       const randomCombo = generateRandomCombo(allActions.value, randomIterationsNumber.value)
       comboActions.value = randomCombo
       combinationBuilder.reset()
-      randomCombo.forEach(a => combinationBuilder.addAction(a))
+      randomCombo.forEach((a) => combinationBuilder.addAction(a))
     }
 
     watch(selectedCategory, () => {

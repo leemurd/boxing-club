@@ -75,8 +75,8 @@ const routes = [
     path: '/punch-counter',
     name: 'Punch-Counter'
   },{
-    path: '/profile',
-    name: 'Profile'
+    path: '/account',
+    name: 'Account'
   }
 ] as RouteLocation[]
 
