@@ -8,27 +8,24 @@
           for="email"
           class="form-label"
         >Email address</label>
-        <input
+        <b-input
           id="email"
           v-model="email"
           type="email"
-          class="form-control"
-          aria-describedby="emailHelp"
           required
-        >
+        />
       </div>
       <div class="mb-3">
         <label
           for="password"
           class="form-label"
         >Password</label>
-        <input
+        <b-input
           id="password"
           v-model="password"
           type="password"
-          class="form-control"
           required
-        >
+        />
       </div>
 
       <b-button
@@ -61,6 +58,7 @@ import { useRouter, useRoute } from 'vue-router'
 import BAlert from '@/presentation/components/shared/BAlert.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
+import BInput from '@/presentation/components/shared/BInput.vue'
 
 const email = ref('')
 const password = ref('')

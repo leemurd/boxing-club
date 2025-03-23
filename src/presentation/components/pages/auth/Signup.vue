@@ -6,78 +6,74 @@
           for="email"
           class="form-label"
         >Email</label>
-        <input
+        <b-input
           id="email"
           v-model="email"
           type="email"
           required
-          class="form-control"
-        >
+        />
       </div>
       <div class="mb-3">
         <label
           for="firstName"
           class="form-label"
         >First name</label>
-        <input
+        <b-input
           id="firstName"
           v-model="firstName"
           type="text"
           required
-          class="form-control"
-        >
+        />
       </div>
       <div class="mb-3">
         <label
           for="lastName"
           class="form-label"
         >Last name</label>
-        <input
+        <b-input
           id="lastName"
           v-model="lastName"
           type="text"
           required
-          class="form-control"
-        >
+        />
       </div>
       <div class="mb-3">
         <label
           for="nickname"
           class="form-label"
         >Nickname</label>
-        <input
+        <b-input
           id="nickname"
           v-model="nickname"
           type="text"
           required
-          class="form-control"
-        >
+        />
       </div>
       <div class="mb-3">
         <label
           for="password"
           class="form-label"
         >Password</label>
-        <input
+        <b-input
           id="password"
           v-model="password"
           type="password"
+          class="text-center"
           required
-          class="form-control"
-        >
+        />
       </div>
       <div class="mb-3">
         <label
           for="confirmPassword"
           class="form-label"
         >Repeat password</label>
-        <input
+        <b-input
           id="confirmPassword"
           v-model="confirmPassword"
           type="password"
+          class="text-center"
           required
-          class="form-control"
-        >
+        />
       </div>
       <b-button
         color="blue"
@@ -108,6 +104,7 @@ import { useRouter } from 'vue-router'
 import BAlert from '@/presentation/components/shared/BAlert.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
+import BInput from '@/presentation/components/shared/BInput.vue'
 
 const email = ref('')
 const firstName = ref('')

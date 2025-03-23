@@ -2,115 +2,13 @@
   <div class="combination-builder">
     <div class="combination-builder-wrap">
       <h4>Действие</h4>
-      <div
-        class="btn-group mb-4 w-100"
-        role="group"
-      >
-        <template
-          v-for="(cat, index) in categoryOptions"
-          :key="index"
-        >
-          <input
-            :id="`height${index}`"
-            v-model="selectedCategory"
-            type="radio"
-            class="btn-check"
-            name="height"
-            autocomplete="off"
-            :value="cat"
-          >
-          <b-button
-            color="secondary"
-            outline
-            tag="label"
-            :for="`height${index}`"
-            class="text-capitalize"
-          >
-            {{ cat }}
-          </b-button>
-        </template>
-      </div>
-
-      <h4>Вариант</h4>
-      <div
-        class="btn-group-vertical mb-4 w-100"
-        role="group"
-      >
-        <template
-          v-for="(act, index) in availableActions"
-          :key="index"
-        >
-          <input
-            :id="`action${index}`"
-            v-model="selectedActionId"
-            type="radio"
-            class="btn-check"
-            name="action"
-            autocomplete="off"
-            :value="act.id"
-          >
-          <b-button
-            color="secondary"
-            outline
-            tag="label"
-            :for="`action${index}`"
-            class="text-capitalize"
-          >
-            {{ act.name }}
-          </b-button>
-        </template>
-      </div>
-
-      <b-button
-        color="primary"
-        class="btn-block w-100 mb-3"
-        @click="addActionToCombo"
-      >
-        Add
-      </b-button>
-
-      <div class="input-group input-group-sm mb-3">
-        <span
-          id="inputGroup-sizing-sm"
-          class="input-group-text"
-        >Count:</span>
-        <input
-          v-model="randomIterationsNumber"
-          type="number"
-          class="form-control text-center"
-          placeholder=""
-          aria-label="Количество движений"
-          aria-describedby="button-addon2"
-        >
-
-        <b-button
-          id="button-addon2"
-          color="secondary"
-          type="button"
-          @click="onGenerateRandomCombo"
-        >
-          Generate random combo
-        </b-button>
-      </div>
-
-      <div class="input-group input-group-sm my-3">
-        <input
-          v-model="comboTitle"
-          type="text"
-          class="form-control"
-          placeholder="Combo title"
-          aria-label="Combo title"
-        >
-
-        <b-button
-          id="button-addon2"
-          color="blue"
-          type="button"
-          @click="buildCombo"
-        >
-          Save Combo
-        </b-button>
-      </div>
+      <b-button-group
+        v-model="selectedCategory"
+        color="secondary"
+        outline
+        class="w-100 mb-4"
+        :items="categoryOptions"
+      />
 
       <div
         v-if="comboActions.length"
@@ -131,6 +29,68 @@
             </template>
           </div>
         </div>
+      </div>
+
+      <h4>Вариант</h4>
+      <b-button-group
+        v-if="selectedCategory && selectedActionId"
+        v-model="selectedActionId"
+        color="secondary"
+        outline
+        vertical
+        option-value="id"
+        class="w-100 mb-4"
+        :items="availableActions"
+      >
+        <template #default="{ item }">
+          {{ item.name }}
+        </template>
+      </b-button-group>
+
+      <b-button
+        color="primary"
+        class="btn-block w-100 mb-3"
+        @click="addActionToCombo"
+      >
+        Add
+      </b-button>
+
+      <div class="input-group input-group-sm mb-3">
+        <span
+          id="inputGroup-sizing-sm"
+          class="input-group-text"
+        >Count:</span>
+        <b-input
+          v-model="randomIterationsNumber"
+          type="number"
+          class="text-center"
+        />
+
+        <b-button
+          id="button-addon2"
+          color="secondary"
+          type="button"
+          @click="onGenerateRandomCombo"
+        >
+          Generate random combo
+        </b-button>
+      </div>
+
+      <div class="input-group input-group-sm my-3">
+        <b-input
+          v-model="comboTitle"
+          type="text"
+          placeholder="Combo title"
+        />
+
+        <b-button
+          id="button-addon2"
+          color="blue"
+          type="button"
+          @click="buildCombo"
+        >
+          Save Combo
+        </b-button>
       </div>
 
       <div v-if="createdCombo">
@@ -165,10 +125,16 @@ import { getNextActions } from '@/application/useCases/getNextActions.ts'
 import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts'
 import { generateRandomCombo } from '@/application/useCases/generateRandomCombo.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
+import BInput from '@/presentation/components/shared/BInput.vue'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
-  components: { BButton },
+  components: {
+    BInput,
+ BButtonGroup,
+BButton
+},
   setup() {
     const allActions = ref<BoxingAction[]>([])
     const comboActions = ref<BoxingAction[]>([])

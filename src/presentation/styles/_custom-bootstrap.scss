@@ -12,10 +12,5 @@ $container-max-widths: (
         xxl: $container-max-width
 );
 $spinner-animation-speed: 1.3s;
-//$focus-ring-width:      .05rem !default;
-////$focus-ring-opacity:    .25 !default;
-////$focus-ring-color:      rgba($primary, $focus-ring-opacity) !default;
-////$focus-ring-blur:       0 !default;
-//$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
-//$input-focus-box-shadow: $focus-ring-box-shadow;
+
 @import "bootstrap/scss/bootstrap";

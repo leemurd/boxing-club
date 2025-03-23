@@ -7,7 +7,7 @@ import HeaderMain from '@/presentation/components/layout/header/HeaderMain.vue'
   <header-main />
   <div class="container pt-4 pb-3">
 
-    <h1 class="text-center mb-5">{{ $route.meta.name }}</h1>
+    <h1 class="text-center mb-2">{{ $route.meta.name }}</h1>
     <router-view />
   </div>
 </template>

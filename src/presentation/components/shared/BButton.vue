@@ -15,9 +15,11 @@
 <script setup lang="ts">
 import { computed, defineProps } from 'vue'
 import { useThemeStore } from '@/presentation/stores/themeStore.ts'
-
-type ButtonColor = 'primary' | 'secondary' | 'blue' | 'green' | 'dark' | 'red' | 'light'
-type ButtonSize = 'small' | 'medium' | 'large'
+import {
+  BtnSizeMap,
+  type ButtonColor,
+  type ButtonSize
+} from '@/presentation/components/shared/types.ts'
 
 const themeStore = useThemeStore()
 
@@ -42,12 +44,6 @@ const BtnColorMap: Record<ButtonColor, string> = {
 }
 
 const colorMap = computed(() => themeStore.isDarkTheme ? BtnColorDarkMap : BtnColorMap)
-
-const BtnSizeMap: Record<ButtonSize, string> = {
-  small: 'sm',
-  medium: '',
-  large: 'lg'
-}
 
 withDefaults(defineProps<{
   tag?: string;

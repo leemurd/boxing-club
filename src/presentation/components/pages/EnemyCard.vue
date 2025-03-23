@@ -3,259 +3,149 @@
     <div class="row">
       <div class="col">
         <h6>Кто выше?</h6>
-        <div
-          class="btn-group-vertical btn-group-sm mb-4"
-          role="group"
-          aria-label="height relation"
+        <b-button-group
+          v-model="heightRelation"
+          color="secondary"
+          vertical
+          outline
+          size="small"
+          class="w-100 mb-4"
+          :items="sizeKeys"
         >
-          <template
-            v-for="(item, index) in sizeKeys"
-            :key="index"
-          >
-            <input
-              :id="`height_${item}`"
-              v-model="heightRelation"
-              type="radio"
-              class="btn-check"
-              name="height"
-              :value="item"
-            >
-            <b-button
-              color="secondary"
-              outline
-              tag="label"
-              :for="`height_${item}`"
-            >
-              {{ sizeMap[item] }}
-            </b-button>
+          <template #default="{ item }">
+            {{ sizeMap[item] }}
           </template>
-        </div>
+        </b-button-group>
       </div>
 
       <div class="col">
         <h6>Кто тяжелее?</h6>
-        <div
-          class="btn-group-vertical btn-group-sm mb-4"
-          role="group"
-          aria-label="weight relation"
+        <b-button-group
+          v-model="weightRelation"
+          color="secondary"
+          vertical
+          outline
+          size="small"
+          class="w-100 mb-4"
+          :items="sizeKeys"
         >
-          <template
-            v-for="(item, index) in sizeKeys"
-            :key="index"
-          >
-            <input
-              :id="`weight_${item}`"
-              v-model="weightRelation"
-              type="radio"
-              class="btn-check"
-              name="weight"
-              :value="item"
-            >
-            <b-button
-              color="secondary"
-              outline
-              tag="label"
-              :for="`weight_${item}`"
-            >
-              {{ sizeMap[item] }}
-            </b-button>
+          <template #default="{ item }">
+            {{ sizeMap[item] }}
           </template>
-        </div>
+        </b-button-group>
       </div>
     </div>
 
-    <div class="d-flex">
-      <div class="row">
-        <div
-          class="col d-flex flex-column"
+    <!--    <div class="d-flex">-->
+    <div class="row">
+      <div
+        class="col-6 d-flex flex-column"
+      >
+        <h6>Я</h6>
+        <b-button-group
+          v-model="myHandedness"
+          color="secondary"
+          outline
+          vertical
+          size="small"
+          class="w-100 mb-4"
+          :items="stanceKeys"
         >
-          <h6>Я</h6>
-          <div
-            class="btn-group btn-group-sm mb-4"
-            role="group"
-            aria-label="my stance"
-          >
-            <template
-              v-for="(item, index) in stanceKeys"
-              :key="index"
-            >
-              <input
-                :id="`stance_${item}`"
-                v-model="myHandedness"
-                type="radio"
-                class="btn-check"
-                name="myStance"
-                :value="item"
-              >
-              <b-button
-                color="secondary"
-                outline
-                tag="label"
-                :for="`stance_${item}`"
-              >
-                {{ stanceMap[item] }}
-              </b-button>
-            </template>
-          </div>
+          <template #default="{ item }">
+            {{ stanceMap[item] }}
+          </template>
+        </b-button-group>
 
-          <h6>Стиль</h6>
-          <div
-            class="btn-group-vertical btn-group-sm mb-4"
-            role="group"
-            aria-label="my style"
-          >
-            <template
-              v-for="(item, index) in boxingStyleKeys"
-              :key="index"
-            >
-              <input
-                :id="`myStyle_${item}`"
-                v-model="myStyle"
-                type="radio"
-                class="btn-check"
-                name="myStyle"
-                :value="item"
-              >
-              <b-button
-                color="secondary"
-                outline
-                tag="label"
-                :for="`myStyle_${item}`"
-              >
-                {{ boxingStyleMap[item] }}
-              </b-button>
-            </template>
-          </div>
-
-          <h6>Руки</h6>
-          <div
-            class="btn-group-vertical btn-group-sm mb-4"
-            role="group"
-            aria-label="my guard"
-          >
-            <template
-              v-for="(item, index) in boxingGuardKeys"
-              :key="index"
-            >
-              <input
-                :id="`myGuard_${item}`"
-                v-model="myGuard"
-                type="radio"
-                class="btn-check"
-                name="myGuard"
-                :value="item"
-              >
-              <b-button
-                color="secondary"
-                outline
-                tag="label"
-                :for="`myGuard_${item}`"
-              >
-                {{ boxingGuardMap[item] }}
-              </b-button>
-            </template>
-          </div>
-        </div>
-
-        <div
-          class="col d-flex flex-column"
+        <h6>Стиль</h6>
+        <b-button-group
+          v-model="myStyle"
+          color="secondary"
+          vertical
+          outline
+          size="small"
+          class="w-100 mb-4"
+          :items="boxingStyleKeys"
         >
-          <h6>Противник</h6>
-          <div
-            class="btn-group btn-group-sm mb-4"
-            role="group"
-            aria-label="opp stance"
-          >
-            <template
-              v-for="(item, index) in stanceKeys"
-              :key="index"
-            >
-              <input
-                :id="`oppStance_${item}`"
-                v-model="oppHandedness"
-                type="radio"
-                class="btn-check"
-                name="oppStance"
-                :value="item"
-              >
-              <b-button
-                color="secondary"
-                outline
-                tag="label"
-                :for="`oppStance_${item}`"
-              >
-                {{ stanceMap[item] }}
-              </b-button>
-            </template>
-          </div>
+          <template #default="{ item }">
+            {{ boxingStyleMap[item] }}
+          </template>
+        </b-button-group>
 
-          <h6>Стиль</h6>
-          <div
-            class="btn-group-vertical btn-group-sm mb-4"
-            role="group"
-            aria-label="opp style"
-          >
-            <template
-              v-for="(item, index) in boxingStyleKeys"
-              :key="index"
-            >
-              <input
-                :id="`oppStyle_${item}`"
-                v-model="oppStyle"
-                type="radio"
-                class="btn-check"
-                name="oppStyle"
-                :value="item"
-              >
-              <b-button
-                color="secondary"
-                outline
-                tag="label"
-                :for="`oppStyle_${item}`"
-              >
-                {{ boxingStyleMap[item] }}
-              </b-button>
-            </template>
-          </div>
+        <h6>Руки</h6>
+        <b-button-group
+          v-model="myGuard"
+          color="secondary"
+          vertical
+          outline
+          size="small"
+          class="w-100 mb-4"
+          :items="boxingGuardKeys"
+        >
+          <template #default="{ item }">
+            {{ boxingGuardMap[item] }}
+          </template>
+        </b-button-group>
+      </div>
 
-          <h6>Руки</h6>
-          <div
-            class="btn-group-vertical btn-group-sm mb-4"
-            role="group"
-            aria-label="opp guard"
-          >
-            <template
-              v-for="(item, index) in boxingGuardKeys"
-              :key="index"
-            >
-              <input
-                :id="`oppGuard_${item}`"
-                v-model="oppGuard"
-                type="radio"
-                class="btn-check"
-                name="oppGuard"
-                :value="item"
-              >
-              <b-button
-                color="secondary"
-                outline
-                tag="label"
-                :for="`oppGuard_${item}`"
-              >
-                {{ boxingGuardMap[item] }}
-              </b-button>
-            </template>
-          </div>
-        </div>
+      <div
+        class="col-6 d-flex flex-column"
+      >
+        <h6>Противник</h6>
+
+        <b-button-group
+          v-model="oppHandedness"
+          color="secondary"
+          outline
+          vertical
+          size="small"
+          class="w-100 mb-4"
+          :items="stanceKeys"
+        >
+          <template #default="{ item }">
+            {{ stanceMap[item] }}
+          </template>
+        </b-button-group>
+
+        <h6>Стиль</h6>
+        <b-button-group
+          v-model="oppStyle"
+          color="secondary"
+          vertical
+          outline
+          size="small"
+          class="w-100 mb-4"
+          :items="boxingStyleKeys"
+        >
+          <template #default="{ item }">
+            {{ boxingStyleMap[item] }}
+          </template>
+        </b-button-group>
+
+        <h6>Руки</h6>
+        <b-button-group
+          v-model="oppGuard"
+          color="secondary"
+          vertical
+          outline
+          size="small"
+          class="w-100 mb-4"
+          :items="boxingGuardKeys"
+        >
+          <template #default="{ item }">
+            {{ boxingGuardMap[item] }}
+          </template>
+        </b-button-group>
       </div>
     </div>
+    <!--    </div>-->
 
     <b-button
-      color="blue"
-      class="mb-3"
+      color="dark"
+      class="mb-3 w-100"
+      size="large"
       @click="calculateStrategy"
     >
-      Получить стратегию
+      Get strategy
     </b-button>
 
     <ul v-if="strategyResult?.length">
@@ -280,32 +170,33 @@ import {
   type BoxerGuard
 } from '@/application/useCases/getEnemyCard.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 
 const sizeMap: Record<BodyRelation, string> = {
-  [BodyRelation.I_AM_BIGGER]: 'Я',
-  [BodyRelation.I_AM_SMALLER]: 'Противник',
-  [BodyRelation.EQUAL]: 'Примерно одинаково'
+  [BodyRelation.I_AM_BIGGER]: 'Me',
+  [BodyRelation.I_AM_SMALLER]: 'Opponent',
+  [BodyRelation.EQUAL]: 'Similar'
 }
 const sizeKeys = Object.keys(sizeMap) as BodyRelation[]
 
 const stanceMap: Record<StanceSide, string> = {
-  orthodox: 'Правша',
-  southpaw: 'Левша'
+  orthodox: 'Orthodox',
+  southpaw: 'Southpaw'
 }
 const stanceKeys = Object.keys(stanceMap) as StanceSide[]
 
 const boxingStyleMap: Record<BoxerStyle, string> = {
-  gamer: 'Игровик',
-  puncher: 'Панчер',
-  technician: 'Технарь',
-  counterpuncher: 'Контрпанчер'
+  gamer: 'Player',
+  puncher: 'Puncher',
+  technician: 'Technician',
+  counterpuncher: 'Counterpuncher'
 }
 const boxingStyleKeys = Object.keys(boxingStyleMap) as BoxerStyle[]
 
 const boxingGuardMap: Record<BoxerGuard, string> = {
-  closed: 'Закрытая стойка',
-  classical: 'Классическая стойка',
-  handsDown: 'Руки внизу'
+  closed: 'Closed stance',
+  classical: 'Classical stance',
+  handsDown: 'Hand down'
 }
 const boxingGuardKeys = Object.keys(boxingGuardMap) as BoxerGuard[]
 
@@ -339,6 +230,5 @@ function calculateStrategy() {
 .enemy-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 </style>

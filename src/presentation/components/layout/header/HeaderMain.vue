@@ -62,19 +62,26 @@ const authStore = useAuthStore()
 
 const routes = [
   {
+    path: '/trainings',
+    name: 'Trainings'
+  },
+  {
+    path: '/progress',
+    name: 'Progress'
+  },
+  {
     path: '/',
     name: 'Combos'
   },
   {
-    path: '/punches',
-    name: 'Library'
-  },{
     path: '/enemy-card',
     name: 'Enemies'
-  },{
-    path: '/punch-counter',
-    name: 'Punch-Counter'
-  },{
+  },
+  // {
+  //   path: '/punch-counter',
+  //   name: 'Punch-Counter'
+  // },
+  {
     path: '/account',
     name: 'Account'
   }
@@ -84,8 +91,7 @@ const logoutRoutes = [
   {
     path: '/login',
     name: 'Login'
-  },
-  {
+  },{
     path: '/signup',
     name: 'Sign up'
   }

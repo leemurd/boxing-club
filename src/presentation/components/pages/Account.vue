@@ -50,20 +50,19 @@ import { getAuth } from 'firebase/auth'
 import { container } from '@/infrastructure/di/container'
 import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
-import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { User } from '@/domain/entities/User'
 import BAlert from '@/presentation/components/shared/BAlert.vue'
 import ThemeToggle from '@/presentation/components/profile/ThemeToggle.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import { useAuthStore } from '@/presentation/stores/authStore.ts'
 
 const user = ref<User | null>(null)
 const loading = ref(true)
 const errorMessage = ref('')
 const router = useRouter()
 
-// Получаем репозитории через DI
 const userRepo = container.get<IUserRepository>(TYPES.IUserRepository)
-const authRepo = container.get<IAuthRepository>(TYPES.IAuthRepository)
+const authStore = useAuthStore()
 
 async function loadUserProfile() {
   try {
@@ -89,7 +88,7 @@ async function loadUserProfile() {
 
 async function handleLogout() {
   try {
-    await authRepo.signOut()
+    await authStore.logout()
     await router.push('/login')
   } catch (error: any) {
     errorMessage.value = error.message

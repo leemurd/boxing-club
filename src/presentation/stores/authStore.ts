@@ -7,6 +7,7 @@ import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { User } from '@/domain/entities/User'
 import { useThemeStore } from '@/presentation/stores/themeStore.ts'
+import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
 
 export const useAuthStore = defineStore('auth', () => {
   const currentUser = ref<User | null>(null)
@@ -17,6 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
   const authRepo = container.get<IAuthRepository>(TYPES.IAuthRepository)
   const userRepo = container.get<IUserRepository>(TYPES.IUserRepository)
   const auth = getAuth()
+  const exerciseStore = useExerciseStore()
 
   function init() {
     onAuthStateChanged(auth, async (user) => {
@@ -75,6 +77,7 @@ export const useAuthStore = defineStore('auth', () => {
       await authRepo.signOut()
       error.value = ''
       isLoggedIn.value = false
+      exerciseStore.clearStats()
     } catch (err: any) {
       error.value = err.message
     }

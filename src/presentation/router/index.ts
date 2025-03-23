@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PunchesCatalog from '@/presentation/components/pages/PunchesCatalog.vue'
 import CombinationBuilderView from '@/presentation/components/pages/CombinationBuilderView.vue'
 import EnemyCard from '@/presentation/components/pages/EnemyCard.vue'
 import Account from '@/presentation/components/pages/Account.vue'
@@ -8,6 +7,8 @@ import Login from '@/presentation/components/pages/auth/Login.vue'
 import NotFoundPage from '@/presentation/components/pages/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/pages/PunchCounter.vue'
+import Trainings from '@/presentation/components/pages/Trainings.vue'
+import ProgressPage from '@/presentation/components/pages/ProgressPage.vue'
 
 const routes = [
   {
@@ -17,15 +18,6 @@ const routes = [
     beforeEnter: requireAuth,
     meta: {
       name: 'Combination Builder'
-    }
-  },
-  {
-    path: '/punches',
-    name: 'PunchesCatalog',
-    component: PunchesCatalog,
-    beforeEnter: requireAuth,
-    meta: {
-      name: 'Punches Catalog'
     }
   },
   {
@@ -44,6 +36,24 @@ const routes = [
     beforeEnter: requireAuth,
     meta: {
       name: 'Account'
+    }
+  },
+  {
+    path: '/progress',
+    name: 'Progress',
+    component: ProgressPage,
+    beforeEnter: requireAuth,
+    meta: {
+      name: 'Progress'
+    }
+  },
+  {
+    path: '/trainings',
+    name: 'Trainings',
+    component: Trainings,
+    beforeEnter: requireAuth,
+    meta: {
+      name: 'Trainings'
     }
   },
   {
