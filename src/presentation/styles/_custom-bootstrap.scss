@@ -12,5 +12,6 @@ $container-max-widths: (
         xxl: $container-max-width
 );
 $spinner-animation-speed: 1.3s;
+$container-padding-x: 2.5rem;
 
 @import "bootstrap/scss/bootstrap";

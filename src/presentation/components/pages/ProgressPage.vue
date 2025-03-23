@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-page container py-4">
+  <div class="progress-page py-4">
     <!-- Селект для выбора временного интервала -->
     <div class="mb-3">
       <label
@@ -38,7 +38,7 @@
 
     <!-- Статистика по упражнениям -->
     <div class="mb-4">
-      <h4>Exercise Statistics</h4>
+      <h4>Statistics</h4>
       <ul class="list-group">
         <template
           v-for="exercise in exercises"
@@ -46,13 +46,12 @@
         >
           <li
             v-if="getStats(exercise.id, TimeRange.ALL)"
-            class="list-group-item"
+            class="list-group-item small py-1 px-2"
           >
             {{ exercise.name }}:
-            {{ timeRange }}: {{ getStats(exercise.id, timeRange) }},
-            total: {{ getStats(exercise.id, TimeRange.ALL) }}
             <small class="text-muted">
-              ({{ exercise.measurement }})
+              {{ timeRange }}: {{ getStats(exercise.id, timeRange) }},
+              total: {{ getStats(exercise.id, TimeRange.ALL) }}
             </small>
           </li>
         </template>
@@ -61,7 +60,7 @@
 
     <!-- История выполненных упражнений -->
     <div>
-      <h4>Exercise History</h4>
+      <h4>History</h4>
       <ul class="list-group">
         <li
           v-for="entry in history"
@@ -69,7 +68,7 @@
           class="list-group-item d-flex justify-content-between align-items-center py-1 px-2"
         >
           <small class="text-muted">{{ getExerciseById(entry.exerciseId)?.name }}</small>
-          <span class="badge text-bg-primary rounded-pill">{{ entry.amount }}</span>
+          <span class="badge text-bg-primary rounded-pill small">{{ entry.amount }}</span>
         </li>
       </ul>
     </div>
@@ -112,7 +111,5 @@ const getExerciseById = (id: string): Exercise | undefined => store.exercises.fi
 
 <style scoped>
 .progress-page {
-  max-width: 400px;
-  margin: auto;
 }
 </style>
