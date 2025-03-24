@@ -24,23 +24,27 @@ import {
 const themeStore = useThemeStore()
 
 const BtnColorDarkMap: Record<ButtonColor, string> = {
-  primary: 'light',
+  primary: 'light', //
   secondary: 'secondary',
   blue: 'primary',
   green: 'success',
-  dark: 'light',
+  dark: 'light', //
   red: 'danger',
-  light: 'dark'
+  light: 'dark', //
+  info: 'info',
+  warning: 'warning'
 }
 
 const BtnColorMap: Record<ButtonColor, string> = {
   primary: 'primary',
-  secondary: 'dark',
+  secondary: 'secondary',
   blue: 'primary',
   green: 'success',
   dark: 'dark',
   red: 'danger',
-  light: 'light'
+  light: 'light',
+  info: 'info',
+  warning: 'warning'
 }
 
 const colorMap = computed(() => themeStore.isDarkTheme ? BtnColorDarkMap : BtnColorMap)

@@ -1,7 +1,7 @@
 <template>
   <div class="combination-builder">
     <div class="combination-builder-wrap">
-      <h4>Действие</h4>
+      <h6>Action</h6>
       <b-button-group
         v-model="selectedCategory"
         color="secondary"
@@ -23,15 +23,16 @@
             :key="index"
             class=""
           >
-            <span class="badge text-bg-primary m-1">{{ item.name }}</span>
-            <template v-if="index !== comboActions.length - 1">
-              -
-            </template>
+            <span class="badge text-bg-primary my-1">{{ item.name }}</span>
+            <span
+              v-if="index !== comboActions.length - 1"
+              class="mx-1"
+            >-</span>
           </div>
         </div>
       </div>
 
-      <h4>Вариант</h4>
+      <h6>Option</h6>
       <b-button-group
         v-if="selectedCategory && selectedActionId"
         v-model="selectedActionId"

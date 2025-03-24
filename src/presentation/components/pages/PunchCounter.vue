@@ -124,22 +124,16 @@
         </label>
       </div>
     </div>
-
-    <b-alert
-      v-if="error"
-      :message="error"
-      color="danger"
-      class="mt-3"
-    />
-
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { Collapse } from 'bootstrap'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const recording = ref(false)
 const timerActive = ref(false)
@@ -205,7 +199,7 @@ async function startManualRecording() {
     lastPunchTime = 0
     detectPunch()
   } catch (err: any) {
-    error.value = err.message || 'Ошибка доступа к микрофону'
+    error.value = err.message || 'Microphone connection failed'
   }
 }
 
@@ -278,6 +272,10 @@ function toggleNavbar() {
     isSettingsOpened.value = !isSettingsOpened.value
   }
 }
+
+watch(() => error.value, (val) => {
+  if (val) toast.error(val)
+})
 
 onMounted(() => {
   loadSettings()

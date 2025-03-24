@@ -10,6 +10,9 @@ import type { ManageFavoriteExercisesUseCase } from '@/application/useCases/Mana
 import { ref } from 'vue'
 import type { Exercise } from '@/domain/entities/Exercise.ts'
 import { TimeRange } from '@/presentation/components/shared/types.ts'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 export const useExerciseStore = defineStore('exercise', () => {
   const stats = ref()
@@ -25,7 +28,7 @@ export const useExerciseStore = defineStore('exercise', () => {
       await container.get<LogExerciseUseCase>(TYPES.LogExerciseUseCase).execute(userId, exerciseId, amount, unit)
       await loadStats()
     } catch (err) {
-      console.error(err)
+      toast.error(err)
     }
   }
   async function loadStats() {
@@ -34,7 +37,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     try {
       stats.value = await container.get<GetUserStatsUseCase>(TYPES.GetUserStatsUseCase).execute(userId)
     } catch (err) {
-      console.error(err)
+      toast.error(err)
     }
   }
   async function loadHistory(days: number) {
@@ -43,7 +46,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     try {
       history.value = await container.get<GetExerciseHistoryUseCase>(TYPES.GetExerciseHistoryUseCase).execute(userId, days)
     } catch (err) {
-      console.error(err)
+      toast.error(err)
     }
   }
   async function loadFavorites() {
@@ -54,7 +57,7 @@ export const useExerciseStore = defineStore('exercise', () => {
         .get<ManageFavoriteExercisesUseCase>(TYPES.ManageFavoriteExercisesUseCase)
         .getFavorites(userId)
     } catch (err) {
-      console.error(err)
+      toast.error(err)
     }
   }
   async function updateFavorites(favs: string[]) {
@@ -64,7 +67,7 @@ export const useExerciseStore = defineStore('exercise', () => {
       await container.get<ManageFavoriteExercisesUseCase>(TYPES.ManageFavoriteExercisesUseCase).updateFavorites(userId, favs)
       favorites.value = favs
     } catch (err) {
-      console.error(err)
+      toast.error(err)
     }
   }
   function getStatsForPeriod(exerciseId: string, timeRange: TimeRange): number {
@@ -97,6 +100,6 @@ export const useExerciseStore = defineStore('exercise', () => {
     updateFavorites,
     getStatsForPeriod,
     loadExercises,
-    clearStats,
+    clearStats
   }
 })

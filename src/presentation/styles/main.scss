@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
 @import "./_custom-bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
+@import "vue-toastification";
+@import "typography";
 
 html, body {
   min-height: 100%;
@@ -13,27 +15,7 @@ html, body {
   height: 100%;
 }
 
-a {
-  text-decoration: none;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  @include slabFont;
-}
-
-h1 {
-  font-size: 18px;
-}
-
 .btn {
   @include slabFont;
 
-}
-
-.font-slab {
-  @include slabFont;
-}
-
-.font-sans {
-  font-family: var(--bs-body-font-family);
 }

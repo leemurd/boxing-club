@@ -1,15 +1,33 @@
 <template>
   <div class="exercise-logger">
     <h6 class="text-center mb-3">{{ selectedExercise?.name }}</h6>
+    <div class="small text-center text-muted">Add {{ selectedExercise?.measurement }}</div>
 
-    <div class="input-group mb-2">
-      <span class="input-group-text fs-6">Add</span>
-      <b-input
-        v-model="numOfRepetitions"
-        type="number"
-        placeholder="Count of repetitions"
-      />
-      <span class="input-group-text">{{ selectedExercise?.measurement }}</span>
+    <div class="d-flex gap-2 mb-2">
+      <div class="col">
+        <b-button
+          color="secondary"
+          outline
+          class="px-3 w-100"
+          @click="numOfRepetitions--"
+        >-</b-button>
+      </div>
+      <div class="col">
+        <b-input
+          v-model="numOfRepetitions"
+          type="number"
+          placeholder="Count"
+          class="text-center"
+        />
+      </div>
+      <div class="col">
+        <b-button
+          color="secondary"
+          outline
+          class="px-3 w-100"
+          @click="numOfRepetitions++"
+        >+</b-button>
+      </div>
     </div>
 
     <b-button
@@ -19,34 +37,6 @@
     >
       Add progress
     </b-button>
-
-    <div
-      v-show="false"
-      class="input-group mb-3"
-    >
-      <b-input
-        v-model="numOfRepetitions"
-        type="number"
-        placeholder="Count of repetitions"
-      />
-      <b-button
-        color="primary"
-        class="col-7"
-        @click="logRepetitions(numOfRepetitions)"
-      >
-        Add {{ selectedExercise?.measurement }}
-      </b-button>
-    </div>
-
-    <b-alert
-      v-if="showNotification"
-      message="Progress added successfully."
-      closable
-      auto-close
-      color="success"
-      class="mt-2"
-      @click="showNotification = false"
-    />
   </div>
 </template>
 
@@ -56,21 +46,23 @@ import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import type { Exercise } from '@/domain/entities/Exercise'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
+import { useToast } from "vue-toastification"
 
 const props = defineProps<{ selectedExercise: Exercise | null }>()
 const store = useExerciseStore()
+const toast = useToast()
 const numOfRepetitions = ref<number>(10)
-const showNotification = ref(false)
 
 // Повторения
 const logRepetitions = async (amount: number) => {
   if (props.selectedExercise) {
     try {
       await store.logExercise(props.selectedExercise.id, amount, 'repetitions')
-      showNotification.value = true
+      toast.success(
+        `${numOfRepetitions.value} ${props.selectedExercise?.measurement} of ${props.selectedExercise?.name} added successfully`
+      )
     } catch (e) {
-      console.error(e)
+      toast.error(e)
     }
   }
 }
@@ -78,4 +70,7 @@ const logRepetitions = async (amount: number) => {
 </script>
 
 <style lang="scss" scoped>
+.max-w50pr {
+  max-width: 50%;
+}
 </style>

@@ -25,8 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
       loading.value = false
       if (user) {
         isLoggedIn.value = true
-        const fetchedUser = await userRepo.getUser(user.uid)
-        currentUser.value = fetchedUser
+        currentUser.value = await userRepo.getUser(user.uid)
         const themeStore = useThemeStore()
         await themeStore.loadThemeFromFirebase()
       } else {

@@ -42,12 +42,6 @@
           Don't have an account?
         </small> <RouterLink to="/signup">Sign up</RouterLink>
       </p>
-
-      <b-alert
-        v-if="errorMessage"
-        :message="errorMessage"
-        class="mt-3"
-      />
     </form>
   </div>
 </template>
@@ -55,14 +49,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import BInput from '@/presentation/components/shared/BInput.vue'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const email = ref('')
 const password = ref('')
-const errorMessage = ref('')
 const router = useRouter()
 const route = useRoute()
 
@@ -79,7 +74,7 @@ async function handleLogin() {
       await router.push('/') // перенаправляем на главную после успешного входа
     }
   } else {
-    errorMessage.value = authStore.error
+    toast.error(authStore.error)
   }
 }
 </script>

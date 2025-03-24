@@ -1,11 +1,6 @@
 <template>
   <div class="profile-page">
     <div v-if="loading">Загрузка...</div>
-    <b-alert
-      v-else-if="errorMessage"
-      :message="errorMessage"
-      class="mt-3"
-    />
     <div v-else-if="user">
       <div class="card border-0">
         <div class="card-body">
@@ -55,10 +50,12 @@ import BAlert from '@/presentation/components/shared/BAlert.vue'
 import ThemeToggle from '@/presentation/components/profile/ThemeToggle.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
 
 const user = ref<User | null>(null)
 const loading = ref(true)
-const errorMessage = ref('')
 const router = useRouter()
 
 const userRepo = container.get<IUserRepository>(TYPES.IUserRepository)
@@ -74,13 +71,13 @@ async function loadUserProfile() {
       if (fetchedUser) {
         user.value = fetchedUser
       } else {
-        errorMessage.value = 'Профиль не найден'
+        toast.error('Undefined user')
       }
     } else {
-      errorMessage.value = 'Пользователь не авторизован'
+      toast.error('User isn\'t authorized')
     }
   } catch (error: any) {
-    errorMessage.value = error.message
+    toast.error(error?.message || error)
   } finally {
     loading.value = false
   }
@@ -91,7 +88,7 @@ async function handleLogout() {
     await authStore.logout()
     await router.push('/login')
   } catch (error: any) {
-    errorMessage.value = error.message
+    toast.error(error?.message || error)
   }
 }
 
