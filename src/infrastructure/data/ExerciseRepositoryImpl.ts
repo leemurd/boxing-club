@@ -1,8 +1,9 @@
 import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
 import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
 import { db } from '@/infrastructure/firebase/firebaseConfig'
-import { collection, doc, setDoc, getDoc, getDocs } from 'firebase/firestore'
-import type { MeasurementUnit } from '@/domain/entities/Exercise.ts'
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import { ExerciseCategory, type MeasurementUnit } from '@/domain/entities/Exercise.ts'
+import { EXERCISES } from '@/domain/constants/exercises.ts'
 
 export class ExerciseRepositoryImpl implements IExerciseRepository {
   private logsCollection(userId: string) {
@@ -18,7 +19,7 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
     const newRecord: Omit<TrainingRecord, 'id'> = {
       userId,
       exerciseId,
-      category: '', // Можно заполнить, если нужно, либо получать из другого источника
+      category: EXERCISES.find((item) => item.id === exerciseId)?.category || ExerciseCategory.PHYSICS,
       measurement: unit,
       amount,
       timestamp

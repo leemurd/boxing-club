@@ -18,7 +18,7 @@
       <b-button-group
         v-if="selectedExerciseId"
         v-model="selectedExerciseId"
-        color="secondary"
+        color="dark"
         outline
         vertical
         option-value="id"

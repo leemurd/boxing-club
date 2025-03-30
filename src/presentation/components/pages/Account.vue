@@ -14,14 +14,6 @@
         </ul>
         <div class="card-body align-items-center d-flex gap-2">
           <b-button
-            color="dark"
-            outline
-            class="col"
-            size="small"
-          >
-            Edit
-          </b-button>
-          <b-button
             color="red"
             class="col"
             size="small"

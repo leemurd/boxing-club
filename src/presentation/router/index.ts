@@ -7,35 +7,20 @@ import Login from '@/presentation/components/pages/auth/Login.vue'
 import NotFoundPage from '@/presentation/components/pages/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/pages/PunchCounter.vue'
-import Trainings from '@/presentation/components/pages/Trainings.vue'
+import ExercisesPage from '@/presentation/components/pages/ExercisesPage.vue'
 import ProgressPage from '@/presentation/components/pages/ProgressPage.vue'
+
+// type RouterTag = ['userRoute'] | ['authRoute']
 
 const routes = [
   {
     path: '/',
-    name: 'CombinationBuilderView',
-    component: CombinationBuilderView,
+    name: 'Exercises',
+    component: ExercisesPage,
     beforeEnter: requireAuth,
     meta: {
-      name: 'Combination Builder'
-    }
-  },
-  {
-    path: '/enemy-card',
-    name: 'EnemyCard',
-    component: EnemyCard,
-    beforeEnter: requireAuth,
-    meta: {
-      name: 'Enemy Card'
-    }
-  },
-  {
-    path: '/account',
-    name: 'Account',
-    component: Account,
-    beforeEnter: requireAuth,
-    meta: {
-      name: 'Account'
+      name: 'Exercises',
+      tags: ['userRoute']
     }
   },
   {
@@ -44,16 +29,38 @@ const routes = [
     component: ProgressPage,
     beforeEnter: requireAuth,
     meta: {
-      name: 'Progress'
+      name: 'Progress',
+      tags: ['userRoute']
     }
   },
   {
-    path: '/trainings',
-    name: 'Trainings',
-    component: Trainings,
+    path: '/combinations',
+    name: 'CombinationBuilderView',
+    component: CombinationBuilderView,
     beforeEnter: requireAuth,
     meta: {
-      name: 'Trainings'
+      name: 'Combos',
+      tags: ['userRoute']
+    }
+  },
+  {
+    path: '/enemy-card',
+    name: 'EnemyCard',
+    component: EnemyCard,
+    beforeEnter: requireAuth,
+    meta: {
+      name: 'Enemy Card',
+      tags: ['userRoute']
+    }
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account,
+    beforeEnter: requireAuth,
+    meta: {
+      name: 'Account',
+      tags: ['userRoute']
     }
   },
   {
@@ -63,6 +70,7 @@ const routes = [
     beforeEnter: requireAuth,
     meta: {
       name: 'Punch counter'
+      // tags: ['userRoute']
     }
   },
   {
@@ -70,7 +78,8 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: {
-      name: 'Log in'
+      name: 'Log in',
+      tags: ['authRoute']
     }
   },
   {
@@ -78,7 +87,8 @@ const routes = [
     name: 'Signup',
     component: Signup,
     meta: {
-      name: 'Sign up'
+      name: 'Sign up',
+      tags: ['authRoute']
     }
   },
   {

@@ -32,14 +32,14 @@
               v-for="(route, index) in visibleRoutes"
               :key="index"
               class="nav-item"
-              :class="[index === routes.length - 1 ? 'ms-lg-auto' : '']"
+              :class="[index === visibleRoutes.length - 1 ? 'ms-lg-auto' : '']"
             >
               <router-link
                 class="nav-link"
                 :to="route.path"
                 @click="collapseNavbar"
               >
-                {{ route.name }}
+                {{ route.meta.name }}
               </router-link>
             </li>
           </ul>
@@ -51,53 +51,17 @@
 
 <script setup lang="ts">
 import { Collapse } from 'bootstrap'
-import {
-  type RouteLocation,
-  RouterLink
-} from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { computed } from 'vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
+const routes = router.getRoutes()
 
-const routes = [
-  {
-    path: '/trainings',
-    name: 'Trainings'
-  },
-  {
-    path: '/progress',
-    name: 'Progress'
-  },
-  {
-    path: '/',
-    name: 'Combos'
-  },
-  {
-    path: '/enemy-card',
-    name: 'Enemies'
-  },
-  // {
-  //   path: '/punch-counter',
-  //   name: 'Punch-Counter'
-  // },
-  {
-    path: '/account',
-    name: 'Account'
-  }
-] as RouteLocation[]
-
-const logoutRoutes = [
-  {
-    path: '/login',
-    name: 'Login'
-  },{
-    path: '/signup',
-    name: 'Sign up'
-  }
-]
-
-const visibleRoutes = computed(() => authStore.isLoggedIn ? routes : logoutRoutes)
+const userRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('userRoute')))
+const authRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('authRoute')))
+const visibleRoutes = computed(() => authStore.isLoggedIn ? userRoutes.value : authRoutes.value)
 
 function toggleNavbar() {
   const navbar = document.getElementById('navbarSupportedContent')
@@ -152,10 +116,6 @@ function collapseNavbar() {
       font-size: 16px;
       font-weight: 500;
       transition: font-size 0.3s;
-      &.active {
-        font-size: 20px;
-        font-weight: bold;
-      }
     }
   }
 }

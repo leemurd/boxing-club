@@ -54,6 +54,12 @@ export const EXERCISES: Exercise[] = [
     measurement: 'repetitions'
   },
   {
+    id: '34',
+    name: 'Pull-ups on the horizontal bar',
+    category: ExerciseCategory.PHYSICS,
+    measurement: 'repetitions'
+  },
+  {
     id: '16_s',
     name: 'Jumping rope',
     category: ExerciseCategory.PHYSICS,
@@ -71,18 +77,11 @@ export const EXERCISES: Exercise[] = [
     category: ExerciseCategory.PHYSICS,
     measurement: 'repetitions'
   },
-  {
-    id: '22',
-    name: 'Crunches (hooks)',
-    category: ExerciseCategory.PHYSICS,
-    measurement: 'repetitions'
-  },
   // {
-  //   id: '33_s',
-  //   name: 'Custom (PHYSICS)',
+  //   id: '22',
+  //   name: 'Crunches (hooks)',
   //   category: ExerciseCategory.PHYSICS,
-  //   measurement: 'minutes',
-  //   isCustom: true
+  //   measurement: 'repetitions'
   // },
 
   // Группа "Практика"
