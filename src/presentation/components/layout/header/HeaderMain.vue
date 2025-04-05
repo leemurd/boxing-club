@@ -118,6 +118,7 @@ watch(() => route.name, () => {
   &-brand {
     @include slabFont;
     font-weight: 500;
+    font-size: 15px;
     &-logo {
       height: 25px;
       width: auto;
