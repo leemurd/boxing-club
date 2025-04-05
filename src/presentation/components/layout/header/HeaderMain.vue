@@ -25,19 +25,22 @@
           id="navbarSupportedContent"
           class="collapse navbar-collapse"
         >
-          <ul class="navbar-nav align-items-center w-100 mb-2 mb-lg-0">
+          <ul
+            v-if="!isLoading"
+            class="navbar-nav align-items-center w-100 mb-2 mb-lg-0"
+          >
             <li
-              v-for="(route, index) in visibleRoutes"
+              v-for="(routeItem, index) in visibleRoutes"
               :key="index"
               class="nav-item"
               :class="[index === visibleRoutes.length - 1 ? 'ms-lg-auto' : '']"
             >
               <router-link
                 class="nav-link"
-                :to="route.path"
+                :to="routeItem.path"
                 @click="collapseNavbar"
               >
-                {{ route.meta.name }}
+                {{ routeItem.meta.name }}
               </router-link>
             </li>
           </ul>
@@ -57,10 +60,18 @@ const router = useRouter()
 const authStore = useAuthStore()
 const routes = router.getRoutes()
 const route = useRoute()
+const isLoading = computed(() => authStore.loading)
 
 const userRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('userRoute')))
 const authRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('authRoute')))
-const visibleRoutes = computed(() => authStore.isLoggedIn ? userRoutes.value : authRoutes.value)
+// const visibleRoutes = computed(() => authStore.isLoggedIn ? userRoutes.value : authRoutes.value)
+const visibleRoutes = computed(() => {
+  if (isLoading.value) {
+    return []
+  } else {
+    return authStore.isLoggedIn ? userRoutes.value : authRoutes.value
+  }
+})
 
 function toggleNavbar() {
   const navbar = document.getElementById('navbarSupportedContent')
@@ -85,6 +96,10 @@ function collapseNavbar() {
     },250)
   }
 }
+
+// onMounted(() => {
+//   debugger
+// })
 </script>
 
 <style lang="scss" scoped>

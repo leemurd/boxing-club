@@ -10,8 +10,6 @@ import PunchCounter from '@/presentation/components/pages/PunchCounter.vue'
 import ExercisesPage from '@/presentation/components/pages/ExercisesPage.vue'
 import ProgressPage from '@/presentation/components/pages/ProgressPage.vue'
 
-// type RouterTag = ['userRoute'] | ['authRoute']
-
 const routes = [
   {
     path: '/',
