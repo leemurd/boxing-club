@@ -54,7 +54,7 @@
 import { Collapse } from 'bootstrap'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -64,7 +64,6 @@ const isLoading = computed(() => authStore.loading)
 
 const userRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('userRoute')))
 const authRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('authRoute')))
-// const visibleRoutes = computed(() => authStore.isLoggedIn ? userRoutes.value : authRoutes.value)
 const visibleRoutes = computed(() => {
   if (isLoading.value) {
     return []
@@ -97,9 +96,13 @@ function collapseNavbar() {
   }
 }
 
-// onMounted(() => {
-//   debugger
-// })
+watch(() => route.name, () => {
+  collapseNavbar()
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+})
 </script>
 
 <style lang="scss" scoped>

@@ -14,7 +14,6 @@
           class="nav-link"
           :to="route.path"
           active-class="active fw-semibold"
-          @click="scrollTop"
         >
           {{ route.meta.name }}
         </router-link>
@@ -42,10 +41,6 @@ const visibleRoutes = computed(() => {
     return authStore.isLoggedIn ? userRoutes.value : authRoutes.value
   }
 })
-
-const scrollTop = () => {
-  window.scrollTo(0, 0)
-}
 </script>
 
 <style scoped lang="scss">
