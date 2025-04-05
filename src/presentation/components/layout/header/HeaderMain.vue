@@ -3,10 +3,15 @@
     <nav class="navbar navbar-expand-lg bg-secondary-subtle">
       <div class="container-fluid">
         <router-link
-          class="navbar-brand"
+          class="navbar-brand d-flex align-items-center"
           to="/"
           @click="collapseNavbar"
         >
+          <img
+            class="navbar-brand-logo"
+            :src="logo"
+            alt="My Boxing Logo"
+          >
           My Boxing {{ route.meta.name }}
         </router-link>
 
@@ -51,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import logo from '@/presentation/assets/app-logo.png'
 import { Collapse } from 'bootstrap'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
@@ -112,6 +118,11 @@ watch(() => route.name, () => {
   &-brand {
     @include slabFont;
     font-weight: 500;
+    &-logo {
+      height: 20px;
+      width: auto;
+      margin-right: 8px;
+    }
     &-icon {
       height: 21px;
       margin-top: -3px;
