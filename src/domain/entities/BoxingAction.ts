@@ -24,7 +24,6 @@ export enum BoxingActionType {
   Block = 'block'
 }
 
-
 export interface BoxingAction {
   id: number
   name: string

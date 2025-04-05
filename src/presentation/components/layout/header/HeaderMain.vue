@@ -1,15 +1,13 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg bg-secondary-subtle bg-dark">
+    <nav class="navbar navbar-expand-lg bg-secondary-subtle">
       <div class="container-fluid">
         <router-link
           class="navbar-brand"
           to="/"
           @click="collapseNavbar"
         >
-          Family
-          Boxing
-          Club
+          My Boxing {{ route.meta.name }}
         </router-link>
 
         <button
@@ -51,13 +49,14 @@
 
 <script setup lang="ts">
 import { Collapse } from 'bootstrap'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { computed } from 'vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const routes = router.getRoutes()
+const route = useRoute()
 
 const userRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('userRoute')))
 const authRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('authRoute')))
@@ -94,7 +93,7 @@ function collapseNavbar() {
 .navbar {
   &-brand {
     @include slabFont;
-    font-weight: 800;
+    font-weight: 500;
     &-icon {
       height: 21px;
       margin-top: -3px;
