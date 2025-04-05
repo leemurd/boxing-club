@@ -104,3 +104,7 @@ export const router = createRouter({
   routes,
   linkActiveClass: 'active'
 })
+
+router.afterEach((to) => {
+  document.title = to.meta?.name + ' | My Boxing' || 'My Boxing'
+})

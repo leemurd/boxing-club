@@ -119,9 +119,10 @@ watch(() => route.name, () => {
     @include slabFont;
     font-weight: 500;
     &-logo {
-      height: 20px;
+      height: 25px;
       width: auto;
       margin-right: 8px;
+      margin-bottom: -1px;
     }
     &-icon {
       height: 21px;
