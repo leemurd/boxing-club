@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import logo from '@/presentation/assets/app-logo.png'
+import logo from '@/presentation/assets/app-logo3.png'
 import { Collapse } from 'bootstrap'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
