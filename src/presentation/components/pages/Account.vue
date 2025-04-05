@@ -17,7 +17,7 @@
             color="red"
             class="col"
             size="small"
-            @click="handleLogout"
+            @click="confirmLogout"
           >Log out</b-button>
         </div>
       </div>
@@ -43,6 +43,19 @@ import ThemeToggle from '@/presentation/components/profile/ThemeToggle.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { useToast } from 'vue-toastification'
+import { useModalService } from '@/presentation/composition/useModalService'
+import { ModalKey } from '@/presentation/modals/modalKeys.ts'
+
+const { openModalByKey } = useModalService()
+
+function confirmLogout() {
+  openModalByKey(ModalKey.CONFIRMATION, {
+    title: 'Confirm logout',
+    message: 'Are you sure?',
+    onApply: handleLogout
+  })
+}
+//
 
 const toast = useToast()
 

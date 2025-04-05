@@ -27,6 +27,15 @@ module.exports = {
         math: 'always'
       }
     ],
+    'vue/script-indent': [
+      'error',
+      2,
+      {
+        baseIndent: 0,
+        switchCase: 1,
+        ignores: []
+      }
+    ],
     'vue/multi-word-component-names': 'off',
     // 'vue/html-closing-bracket-newline': 'always',
     'vue/html-closing-bracket-newline': 'warn',
@@ -136,7 +145,7 @@ module.exports = {
       }
     ],
     'linebreak-style': ['error', 'unix'],
-    'no-console': 'error',
+    'no-console': 'off',
     'no-debugger': 'error',
     'arrow-parens': ['error', 'always'],
     'no-plusplus': 'off',

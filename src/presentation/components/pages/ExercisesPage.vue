@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise'
 import ExerciseLogger from '@/presentation/components/trainings/ExerciseLogger.vue'
