@@ -41,8 +41,10 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  'close': () => void
+  (e: 'close'): void
 }>()
+
+
 
 const closeBtn = ref()
 

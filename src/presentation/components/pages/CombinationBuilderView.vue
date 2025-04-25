@@ -44,7 +44,7 @@
         :items="availableActions"
       >
         <template #default="{ item }">
-          {{ item.name }}
+          {{ item?.name }}
         </template>
       </b-button-group>
 
@@ -133,9 +133,9 @@ export default defineComponent({
   name: 'CombinationBuilderView',
   components: {
     BInput,
- BButtonGroup,
-BButton
-},
+    BButtonGroup,
+    BButton
+  },
   setup() {
     const allActions = ref<BoxingAction[]>([])
     const comboActions = ref<BoxingAction[]>([])

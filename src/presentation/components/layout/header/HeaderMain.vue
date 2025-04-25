@@ -1,66 +1,108 @@
 <template>
-  <header>
-    <nav class="navbar navbar-expand-lg bg-secondary-subtle">
-      <div class="container-fluid">
-        <router-link
-          class="navbar-brand d-flex align-items-center"
-          to="/"
-          @click="collapseNavbar"
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+    <div class="container-fluid">
+      <router-link
+        class="navbar-brand d-flex align-items-center"
+        to="/"
+      >
+        <img
+          class="navbar-brand-logo"
+          :src="logo"
+          alt="My Boxing Logo"
         >
-          <img
-            class="navbar-brand-logo"
-            :src="logo"
-            alt="My Boxing Logo"
+        My Boxing {{ route.meta.name }}
+      </router-link>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        aria-label="Toggle navigation"
+        @click="toggleOffcanvas"
+      >
+        <span class="navbar-toggler-icon"/>
+      </button>
+
+      <!-- Offcanvas -->
+      <div
+        id="offcanvasNavbar"
+        ref="offcanvasEl"
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        aria-labelledby="offcanvasNavbarLabel"
+      >
+        <div class="offcanvas-header">
+          <router-link
+            class="navbar-brand d-flex align-items-center"
+            to="/"
           >
-          My Boxing {{ route.meta.name }}
-        </router-link>
+            <img
+              class="navbar-brand-logo"
+              :src="logo"
+              alt="My Boxing Logo"
+            >
+            My Boxing {{ route.meta.name }}
+          </router-link>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            @click="closeOffcanvas"
+          />
+        </div>
 
-        <button
-          class="navbar-toggler btn-sm"
-          type="button"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="true"
-          aria-label="Toggle navigation"
-          @click="toggleNavbar"
-        >
-          <span class="navbar-toggler-icon"/>
-        </button>
-
-        <div
-          id="navbarSupportedContent"
-          class="collapse navbar-collapse"
-        >
+        <div class="offcanvas-body">
           <ul
             v-if="!isLoading"
-            class="navbar-nav align-items-center w-100 mb-2 mb-lg-0"
+            class="navbar-nav flex-grow-1 pe-3"
           >
             <li
               v-for="(routeItem, index) in visibleRoutes"
               :key="index"
               class="nav-item"
-              :class="[index === visibleRoutes.length - 1 ? 'ms-lg-auto' : '']"
             >
               <router-link
                 class="nav-link"
                 :to="routeItem.path"
-                @click="collapseNavbar"
+                @click="closeOffcanvas"
               >
                 {{ routeItem.meta.name }}
               </router-link>
             </li>
           </ul>
+
+          <ul class="navbar-nav flex-grow-1 pe-3 mt-4">
+            <li class="nav-item">
+              <a
+                class="nav-link fs-4"
+                href="#"
+                @click.stop.prevent="toggleTimerFunc(toggleTimerVisible)"
+              >
+                {{ isTimerVisible ? 'Hide' : 'Show' }} timer
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-    </nav>
-  </header>
+    </div>
+    <bc-timer v-if="isTimerVisible"/>
+  </nav>
 </template>
 
 <script setup lang="ts">
 import logo from '@/presentation/assets/app-logo3.png'
-import { Collapse } from 'bootstrap'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
-import { computed, watch } from 'vue'
+import { computed, onMounted, watch, ref } from 'vue'
+import { Offcanvas } from 'bootstrap'
+import BcTimer from '@/presentation/components/layout/header/BcTimer.vue'
+import { useTimerStore } from '@/presentation/stores/timerStore.ts'
+import { storeToRefs } from 'pinia'
+
+// timer
+const timerStore = useTimerStore()
+const { isTimerVisible } = storeToRefs(timerStore)
+const { toggleTimerVisible } = timerStore
+// /timer
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -78,32 +120,29 @@ const visibleRoutes = computed(() => {
   }
 })
 
-function toggleNavbar() {
-  const navbar = document.getElementById('navbarSupportedContent')
-  if (navbar) {
-    let bsCollapse = Collapse.getInstance(navbar)
-    if (!bsCollapse) {
-      bsCollapse = new Collapse(navbar, { toggle: false })
-    }
-    bsCollapse.toggle()
-  }
+// offCanvas
+const offcanvasEl = ref<HTMLElement | null>(null)
+let offcanvasInstance: Offcanvas | null = null
+
+function toggleOffcanvas() {
+  if (offcanvasInstance) offcanvasInstance.toggle()
 }
 
-function collapseNavbar() {
-  const navbar = document.getElementById('navbarSupportedContent')
-  if (navbar) {
-    let bsCollapse = Collapse.getInstance(navbar)
-    if (!bsCollapse) {
-      bsCollapse = new Collapse(navbar, { toggle: false })
-    }
-    setTimeout(() => {
-      bsCollapse.hide()
-    },250)
-  }
+function closeOffcanvas() {
+  if (offcanvasInstance) offcanvasInstance.hide()
+}
+
+onMounted(() => {
+  if (offcanvasEl.value) offcanvasInstance = new Offcanvas(offcanvasEl.value)
+})
+// end offCanvas
+
+const toggleTimerFunc = (callback: () => void) => {
+  callback()
+  closeOffcanvas()
 }
 
 watch(() => route.name, () => {
-  collapseNavbar()
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
@@ -143,7 +182,7 @@ watch(() => route.name, () => {
   &-nav {
     .nav-link {
       @include slabFont;
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 500;
       transition: font-size 0.3s;
     }

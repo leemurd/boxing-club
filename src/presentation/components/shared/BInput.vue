@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  'update:model-value': [value: any]
+  (e: 'update:model-value', value: any): void
 }>()
 
 const localValue = ref(props.modelValue)

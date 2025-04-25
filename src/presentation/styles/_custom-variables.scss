@@ -1,0 +1,9 @@
+@import "./_custom-bootstrap";
+
+// transition
+$transition-duration: 0.3ms;
+
+$timerCollapsedHeight: 55px;
+$timerBodyHeight: 555px;
+$timerExpandedHeight: $timerCollapsedHeight + $timerBodyHeight;
+

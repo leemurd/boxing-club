@@ -1,8 +1,6 @@
+@import "imports";
+@import "_custom-variables";
 @import "mixins";
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
-@import "./_custom-bootstrap";
-@import "bootstrap-icons/font/bootstrap-icons.css";
-@import "vue-toastification";
 @import "typography";
 
 html, body {
@@ -17,5 +15,4 @@ html, body {
 
 .btn {
   @include slabFont;
-
 }

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import CombinationBuilderView from '@/presentation/components/pages/CombinationBuilderView.vue'
 import EnemyCard from '@/presentation/components/pages/EnemyCard.vue'
 import Account from '@/presentation/components/pages/Account.vue'
@@ -9,20 +9,11 @@ import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/pages/PunchCounter.vue'
 import ExercisesPage from '@/presentation/components/pages/ExercisesPage.vue'
 import ProgressPage from '@/presentation/components/pages/ProgressPage.vue'
+import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Exercises',
-    component: ExercisesPage,
-    beforeEnter: requireAuth,
-    meta: {
-      name: 'Exercises',
-      tags: ['userRoute']
-    }
-  },
-  {
-    path: '/progress',
     name: 'Progress',
     component: ProgressPage,
     beforeEnter: requireAuth,
@@ -30,6 +21,37 @@ const routes = [
       name: 'Progress',
       tags: ['userRoute']
     }
+  },
+  {
+    path: '/exercises',
+    name: 'Exercises',
+    component: RouterViewWithSlots,
+    beforeEnter: requireAuth,
+    meta: {
+      name: 'Exercises',
+      tags: ['userRoute']
+    },
+    redirect: '/exercises/index',
+    children: [
+      {
+        path: '/exercises/index',
+        name: 'Exercises page',
+        component: ExercisesPage,
+        meta: {
+          name: 'Exercises'
+          // tags: ['userRoute']
+        }
+      },
+      {
+        path: '/rounds',
+        name: 'Exercises rounds',
+        component: ExercisesPage,
+        meta: {
+          name: 'Exercises rounds'
+          // tags: ['userRoute']
+        }
+      }
+    ]
   },
   {
     path: '/combinations',
