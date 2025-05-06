@@ -70,10 +70,10 @@
             </li>
           </ul>
 
-          <ul class="navbar-nav flex-grow-1 pe-3 mt-4">
+          <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
               <a
-                class="nav-link fs-4"
+                class="nav-link"
                 href="#"
                 @click.stop.prevent="toggleTimerFunc(toggleTimerVisible)"
               >

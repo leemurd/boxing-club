@@ -13,15 +13,15 @@
       >
         <i
           v-if="isTimerRunning"
-          class="bi bi-stop-fill display-5"
+          class="bi bi-stop-fill bc-timer-btns__item"
           @click="resetTimer"
         />
         <i
-          :class="[`bi bi-${isTimerRunning ? 'pause' : 'play'}-fill display-5`]"
+          :class="[`bi bi-${isTimerRunning ? 'pause' : 'play'}-fill bc-timer-btns__item`]"
           @click="toggleRunTimer"
         />
         <i
-          class="bi bi-x display-5"
+          class="bi bi-x bc-timer-btns__item"
           @click="closeTimer"
         />
       </div>
@@ -47,40 +47,24 @@
 
       <div
         v-if="timerMode === 'countdown'"
-        class="mt-2"
+        class="mt-3"
       >
-        <label for="secondsInput">Seconds:</label>
-
         <div class="input-group mb-3">
-          <div class="dropdown">
-            <b-button
-              ref="modeSwitcherRef"
-              outline
-              color="light"
-              class="dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >Dropdown</b-button>
-            <ul class="dropdown-menu">
-              <li><a
-                class="dropdown-item"
-                href="#"
-              >Minutes</a></li>
-              <li><a
-                class="dropdown-item"
-                href="#"
-              >Seconds</a></li>
-            </ul>
-          </div>
+          <select
+            v-model="selectedUnit"
+            class="form-select"
+            :disabled="isTimerRunning"
+          >
+            <option value="seconds">Seconds</option>
+            <option value="minutes">Minutes</option>
+          </select>
 
           <b-input
             id="secondsInput"
-            v-model.number="secondsInput"
+            v-model.number="inputValue"
             type="number"
             min="1"
             :disabled="isTimerRunning"
-            @change="setInitialSeconds(secondsInput)"
           />
         </div>
       </div>
@@ -94,23 +78,18 @@ import { useTimerStore } from '@/presentation/stores/timerStore'
 import { storeToRefs } from 'pinia'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import BInput from '@/presentation/components/shared/BInput.vue'
-import BButton from '@/presentation/components/shared/BButton.vue'
-import { Dropdown } from 'bootstrap'
 
 const timerEl = ref()
 const timerStore = useTimerStore()
+
 const {
   isTimerExpanded,
   isTimerRunning,
   formattedTime,
   timerMode,
-  initialSeconds
+  timerUnit,
+  initialInput
 } = storeToRefs(timerStore)
-
-const modelTimerMode = computed({
-  get: () => timerMode.value,
-  set: (val: 'countdown' | 'stopwatch') => setMode(val)
-})
 
 const {
   toggleExpandTimer,
@@ -118,37 +97,30 @@ const {
   closeTimer,
   resetTimer,
   setMode,
-  setInitialSeconds
+  setInitialInput,
+  setUnit
 } = timerStore
 
-const secondsInput = ref(initialSeconds?.value)
+const modelTimerMode = computed({
+  get: () => timerMode.value,
+  set: (val: 'countdown' | 'stopwatch') => setMode(val)
+})
 
-// timer dropdown
-// const dropdownToggle = document.querySelector('.dropdown-toggle')
-// const dropdownToggle = useTemplateRef('modeSwitcherRef')
-// let dropdown = null
-// const initModeDropdown = () => {
-//   // console.log(Dropdown)
-//   setTimeout(() => {
-//     dropdown = timerMode.value === 'countdown' ? new Dropdown(dropdownToggle) : null
-//   }, 200)
-//
-// }
+const selectedUnit = computed({
+  get: () => timerUnit.value,
+  set: (val: 'seconds' | 'minutes') => setUnit(val)
+})
 
-// watch(() => timerMode.value, () => {
-//   initModeDropdown()
-// }, {
-//   immediate: true
-// })
-//
-// onMounted(() => {
-//   initModeDropdown()
-// })
-// end timer dropdown
+const inputValue = computed({
+  get: () => initialInput.value,
+  set: (val: number) => setInitialInput(val)
+})
 </script>
 
 <style scoped lang="scss">
 @import "@/presentation/styles/mixins";
+
+
 
 .bc-timer {
   position: absolute;
@@ -165,7 +137,6 @@ const secondsInput = ref(initialSeconds?.value)
     .bc-timer-body {
       min-height: $timerBodyHeight;
       max-height: $timerBodyHeight;
-      //height: auto;
     }
   }
   &-header {
@@ -183,6 +154,9 @@ const secondsInput = ref(initialSeconds?.value)
     display: flex;
     align-items: center;
     gap: 12px;
+    &__item {
+      font-size: 25px;
+    }
   }
   &-body {
     min-height: 0;

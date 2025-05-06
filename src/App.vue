@@ -39,6 +39,9 @@ $headerHeight: 55px;
   margin-top: $headerHeight;
   &--timer-visible {
     margin-top: calc($timerCollapsedHeight + $headerHeight);
+    @media (min-width: 992px) {
+      margin-top: calc($timerCollapsedHeight + $headerHeight + 10px);
+    }
   }
   &--timer-expanded {
     margin-top: calc($timerExpandedHeight + $headerHeight)!important;

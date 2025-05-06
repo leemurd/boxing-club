@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, reactive, ref, type ComputedRef } from 'vue'
 
 type TimerMode = 'countdown' | 'stopwatch'
+type TimerUnit = 'seconds' | 'minutes'
 
 interface TimerState {
   timerState: ComputedRef
@@ -10,15 +11,17 @@ interface TimerState {
   isTimerExpanded: ComputedRef
   isTimerRunning: ComputedRef
   isTimerVisible: ComputedRef
+  timerMode: ComputedRef<TimerMode>
+  timerUnit: ComputedRef<TimerUnit>
+  initialInput: ComputedRef<number>
   toggleExpandTimer: () => void
   toggleRunTimer: () => void
   toggleTimerVisible: () => void
   closeTimer: () => void
   resetTimer: () => void
   setMode: (mode: TimerMode) => void
-  setInitialSeconds: (seconds: number) => void
-  timerMode: ComputedRef<TimerMode>
-  initialSeconds: ComputedRef<number>
+  setInitialInput: (value: number) => void
+  setUnit: (unit: TimerUnit) => void
 }
 
 export const useTimerStore = defineStore('timer', (): TimerState => {
@@ -27,16 +30,14 @@ export const useTimerStore = defineStore('timer', (): TimerState => {
     isExpanded: false,
     isRunning: false,
     mode: 'stopwatch' as TimerMode,
-    initialSeconds: 180
+    unit: 'seconds' as TimerUnit,
+    initialInput: 180
   })
 
-  const time = ref(timerState.mode === 'stopwatch' ? 0 : timerState.initialSeconds)
+  const time = ref(timerState.mode === 'stopwatch' ? 0 : timerState.initialInput)
   const intervalId = ref<number | null>(null)
 
   const formattedTime = computed(() => {
-    // if (timerState.mode === 'stopwatch') {
-    //   time.value = 0
-    // }
     const minutes = Math.floor(time.value / 60)
       .toString()
       .padStart(2, '0')
@@ -68,7 +69,9 @@ export const useTimerStore = defineStore('timer', (): TimerState => {
 
   const resetTimer = () => {
     stopTimer()
-    time.value = timerState.mode === 'countdown' ? timerState.initialSeconds : 0
+    time.value = timerState.mode === 'countdown'
+      ? timerState.unit === 'minutes' ? timerState.initialInput * 60 : timerState.initialInput
+      : 0
     timerState.isRunning = false
   }
 
@@ -78,7 +81,8 @@ export const useTimerStore = defineStore('timer', (): TimerState => {
 
   const toggleRunTimer = () => {
     timerState.isRunning = !timerState.isRunning
-    timerState.isRunning ? startTimer() : stopTimer()
+    if (timerState.isRunning) startTimer()
+    else stopTimer()
   }
 
   const toggleTimerVisible = () => {
@@ -98,13 +102,17 @@ export const useTimerStore = defineStore('timer', (): TimerState => {
   const setMode = (mode: TimerMode) => {
     timerState.mode = mode
     resetTimer()
-    console.log(111)
   }
 
-  const setInitialSeconds = (seconds: number) => {
-    timerState.initialSeconds = seconds
+  const setUnit = (unit: TimerUnit) => {
+    timerState.unit = unit
+    resetTimer()
+  }
+
+  const setInitialInput = (value: number) => {
+    timerState.initialInput = value
     if (timerState.mode === 'countdown') {
-      time.value = seconds
+      time.value = timerState.unit === 'minutes' ? value * 60 : value
     }
   }
 
@@ -116,13 +124,15 @@ export const useTimerStore = defineStore('timer', (): TimerState => {
     isTimerExpanded: computed(() => timerState.isExpanded),
     isTimerRunning: computed(() => timerState.isRunning),
     timerMode: computed(() => timerState.mode),
-    initialSeconds: computed(() => timerState.initialSeconds),
+    timerUnit: computed(() => timerState.unit),
+    initialInput: computed(() => timerState.initialInput),
     toggleExpandTimer,
     toggleRunTimer,
     toggleTimerVisible,
     closeTimer,
     resetTimer,
     setMode,
-    setInitialSeconds
+    setInitialInput,
+    setUnit
   }
 })
