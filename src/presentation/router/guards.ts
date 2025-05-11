@@ -1,11 +1,8 @@
+// src/presentation/router/guards.ts
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 
-export function requireAuth(
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-) {
+export function requireAuth(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
   const auth = getAuth()
   if (auth.currentUser) {
     next()

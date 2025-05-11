@@ -1,12 +1,8 @@
-import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
+import type { BoxingAction } from '@/domain/entities/BoxingAction'
 
-/**
- * Модель «Комбинация ударов» (связка)
- */
-export class Combination {
-  constructor(
-    public id: number,
-    public title: string,
-    public punches: BoxingAction[] = []
-  ) {}
+export interface Combination {
+  id: string
+  title: string
+  punches: BoxingAction[]
+  categoryIds: string[]
 }

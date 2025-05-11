@@ -10,11 +10,20 @@ import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
 import { AuthRepositoryFirebase } from '@/infrastructure/data/AuthRepositoryFirebase'
 import { UserRepositoryFirebase } from '@/infrastructure/data/UserRepositoryFirebase'
 
-import { LogExerciseUseCase } from '@/application/useCases/LogExerciseUseCase'
-import { GetUserStatsUseCase } from '@/application/useCases/GetUserStatsUseCase'
-import { GetExerciseHistoryUseCase } from '@/application/useCases/GetExerciseHistoryUseCase'
-import { ManageFavoriteExercisesUseCase } from '@/application/useCases/ManageFavoriteExercisesUseCase'
+import { LogExerciseUseCase } from '@/application/useCases/exercise/LogExerciseUseCase.ts'
+import { GetUserStatsUseCase } from '@/application/useCases/user/GetUserStatsUseCase.ts'
+import { GetExerciseHistoryUseCase } from '@/application/useCases/exercise/GetExerciseHistoryUseCase.ts'
+import { ManageFavoriteExercisesUseCase } from '@/application/useCases/exercise/ManageFavoriteExercisesUseCase.ts'
 import { ExerciseRepositoryImpl } from '@/infrastructure/data/ExerciseRepositoryImpl'
+// combos
+import type { ICombinationRepository } from '@/domain/repositories/ICombinationRepository'
+import { CombinationRepositoryImpl } from '@/infrastructure/data/CombinationRepositoryImpl'
+import { GetCombinationsUseCase } from '@/application/useCases/combination/GetCombinationsUseCase.ts'
+import { SaveCombinationUseCase } from '@/application/useCases/combination/SaveCombinationUseCase.ts'
+import { DeleteCombinationUseCase } from '@/application/useCases/combination/DeleteCombinationUseCase.ts'
+import { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase.ts'
+import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository.ts'
+import { CategoryRepositoryImpl } from '@/infrastructure/data/CategoryRepositoryImpl.ts'
 
 const container = new Container()
 
@@ -45,5 +54,14 @@ container
   .inSingletonScope()
 //
 container.bind(TYPES.FirebaseApp).toConstantValue(firebaseApp)
+
+// combos
+container.bind<ICombinationRepository>(TYPES.CombinationRepository).to(CombinationRepositoryImpl).inSingletonScope()
+container.bind<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase).to(GetCombinationsUseCase).inSingletonScope()
+container.bind<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).to(SaveCombinationUseCase).inSingletonScope()
+container.bind<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).to(DeleteCombinationUseCase).inSingletonScope()
+container.bind<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase).to(UpdateCombinationUseCase).inSingletonScope()
+
+container.bind<ICategoryRepository>(TYPES.ICategoryRepository).to(CategoryRepositoryImpl).inSingletonScope()
 
 export { container }

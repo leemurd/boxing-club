@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import CombinationBuilderView from '@/presentation/components/pages/CombinationBuilderView.vue'
 import EnemyCard from '@/presentation/components/pages/EnemyCard.vue'
 import Account from '@/presentation/components/pages/Account.vue'
 import Signup from '@/presentation/components/pages/auth/Signup.vue'
@@ -10,6 +9,10 @@ import PunchCounter from '@/presentation/components/pages/PunchCounter.vue'
 import ExercisesPage from '@/presentation/components/pages/ExercisesPage.vue'
 import ProgressPage from '@/presentation/components/pages/ProgressPage.vue'
 import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
+import ComboListPage from '@/presentation/components/pages/ComboListPage.vue'
+import ComboEditPage from '@/presentation/components/pages/ComboEditPage.vue'
+import Combos from '@/presentation/components/pages/Combos.vue'
+import CategoryListPage from '@/presentation/components/pages/CategoryListPage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -39,7 +42,6 @@ const routes: RouteRecordRaw[] = [
         component: ExercisesPage,
         meta: {
           name: 'Exercises'
-          // tags: ['userRoute']
         }
       },
       {
@@ -48,21 +50,57 @@ const routes: RouteRecordRaw[] = [
         component: ExercisesPage,
         meta: {
           name: 'Exercises rounds'
-          // tags: ['userRoute']
         }
       }
     ]
   },
   {
-    path: '/combinations',
-    name: 'CombinationBuilderView',
-    component: CombinationBuilderView,
+    path: '/combos',
+    name: 'Combos',
+    component: Combos,
     beforeEnter: requireAuth,
     meta: {
       name: 'Combos',
       tags: ['userRoute']
-    }
+    },
+    redirect: '/combos/index',
+    children: [
+      {
+        path: '/combos/index',
+        name: 'ComboList',
+        component: ComboListPage
+      },
+      {
+        path: '/combos/new',
+        name: 'ComboCreate',
+        component: ComboEditPage
+      },
+      {
+        path: '/combos/:id',
+        name: 'ComboEdit',
+        component: ComboEditPage,
+        props: true
+      },
+      {
+        path: '/combos/categories',
+        name: 'ComboCategories',
+        component: CategoryListPage,
+        // children: [
+        //   {
+        //     path: '/combos/categories/index',
+        //     name: 'ComboCategoriesIndex',
+        //     component: ComboCategoriesList
+        //   },
+        //   {
+        //     path: '/combos/categories/create',
+        //     name: 'ComboCategoriesCreate',
+        //     component: ComboCreateCategory
+        //   }
+        // ]
+      }
+    ]
   },
+
   {
     path: '/enemy-card',
     name: 'EnemyCard',
@@ -89,8 +127,8 @@ const routes: RouteRecordRaw[] = [
     component: PunchCounter,
     beforeEnter: requireAuth,
     meta: {
-      name: 'Punch counter'
-      // tags: ['userRoute']
+      name: 'Punch counter',
+      tags: ['userRoute']
     }
   },
   {

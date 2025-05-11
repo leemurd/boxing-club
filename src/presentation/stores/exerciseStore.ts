@@ -1,16 +1,17 @@
+// src/presentation/stores/exerciseStore.ts
 import { defineStore } from 'pinia'
 import { container } from '@/infrastructure/di/container'
 import { TYPES } from '@/infrastructure/di/types'
-import { useAuthStore } from '@/presentation/stores/authStore'
-import type { LogExerciseUseCase } from '@/application/useCases/LogExerciseUseCase.ts'
-import type { GetUserStatsUseCase } from '@/application/useCases/GetUserStatsUseCase.ts'
-import type { GetExerciseHistoryUseCase } from '@/application/useCases/GetExerciseHistoryUseCase.ts'
+import type { LogExerciseUseCase } from '@/application/useCases/exercise/LogExerciseUseCase.ts'
+import type { GetUserStatsUseCase } from '@/application/useCases/user/GetUserStatsUseCase.ts'
+import type { GetExerciseHistoryUseCase } from '@/application/useCases/exercise/GetExerciseHistoryUseCase.ts'
 import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
-import type { ManageFavoriteExercisesUseCase } from '@/application/useCases/ManageFavoriteExercisesUseCase.ts'
+import type { ManageFavoriteExercisesUseCase } from '@/application/useCases/exercise/ManageFavoriteExercisesUseCase.ts'
 import { ref } from 'vue'
 import type { Exercise } from '@/domain/entities/Exercise.ts'
 import { TimeRange } from '@/presentation/components/shared/types.ts'
 import { useToast } from 'vue-toastification'
+import { getUserId } from '@/presentation/utils/getUserId.ts'
 
 const toast = useToast()
 
@@ -19,10 +20,9 @@ export const useExerciseStore = defineStore('exercise', () => {
   const history = ref<TrainingRecord[]>([])
   const favorites = ref<string[]>([])
   const exercises = ref<Exercise[]>([])
-  const authStore = useAuthStore()
 
   async function logExercise(exerciseId: string, amount: number, unit: 'minutes' | 'repetitions') {
-    const userId = authStore.currentUser?.id
+    const userId = await getUserId()
     if (!userId) return
     try {
       await container.get<LogExerciseUseCase>(TYPES.LogExerciseUseCase).execute(userId, exerciseId, amount, unit)
@@ -32,7 +32,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
   async function loadStats() {
-    const userId = authStore.currentUser?.id
+    const userId = await getUserId()
     if (!userId) return
     try {
       stats.value = await container.get<GetUserStatsUseCase>(TYPES.GetUserStatsUseCase).execute(userId)
@@ -41,7 +41,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
   async function loadHistory(days: number) {
-    const userId = authStore.currentUser?.id
+    const userId = await getUserId()
     if (!userId) return
     try {
       history.value = await container.get<GetExerciseHistoryUseCase>(TYPES.GetExerciseHistoryUseCase).execute(userId, days)
@@ -50,7 +50,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
   async function loadFavorites() {
-    const userId = authStore.currentUser?.id
+    const userId = await getUserId()
     if (!userId) return
     try {
       favorites.value = await container
@@ -61,7 +61,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
   async function updateFavorites(favs: string[]) {
-    const userId = authStore.currentUser?.id
+    const userId = await getUserId()
     if (!userId) return
     try {
       await container.get<ManageFavoriteExercisesUseCase>(TYPES.ManageFavoriteExercisesUseCase).updateFavorites(userId, favs)

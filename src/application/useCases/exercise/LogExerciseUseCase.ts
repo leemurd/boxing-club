@@ -1,4 +1,4 @@
-import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
+import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository.ts'
 
 export class LogExerciseUseCase {
   constructor(private exerciseRepo: IExerciseRepository) {}

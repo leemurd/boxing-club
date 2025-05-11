@@ -1,4 +1,6 @@
 export enum ModalKey {
   CONFIRMATION = 'confirmation',
-  BASE_MODAL = 'baseModal'
+  BASE_MODAL = 'baseModal',
+  CATEGORY_SELECTOR = 'categorySelector',
+  BASE_RENAME = 'baseRename'
 }

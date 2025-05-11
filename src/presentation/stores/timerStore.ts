@@ -26,7 +26,7 @@ interface TimerState {
 
 export const useTimerStore = defineStore('timer', (): TimerState => {
   const timerState = reactive({
-    isVisible: true,
+    isVisible: false,
     isExpanded: false,
     isRunning: false,
     mode: 'stopwatch' as TimerMode,

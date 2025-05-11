@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify'
-import type { IUserRepository } from '@/domain/repositories/IUserRepository'
-import type { User } from '@/domain/entities/User'
-import { TYPES } from '@/infrastructure/di/types'
+import type { IUserRepository } from '@/domain/repositories/IUserRepository.ts'
+import type { User } from '@/domain/entities/User.ts'
+import { TYPES } from '@/infrastructure/di/types.ts'
 
 @injectable()
 export class RegisterUserUseCase {

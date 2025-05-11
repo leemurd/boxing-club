@@ -3,6 +3,7 @@
     <div class="combination-builder-wrap">
       <h6>Action</h6>
       <b-button-group
+        v-if="isNew"
         v-model="selectedCategory"
         color="secondary"
         outline
@@ -32,79 +33,52 @@
         </div>
       </div>
 
-      <h6>Option</h6>
-      <b-button-group
-        v-if="selectedCategory && selectedActionId"
-        v-model="selectedActionId"
-        color="secondary"
-        outline
-        vertical
-        option-value="id"
-        class="w-100 mb-4"
-        :items="availableActions"
-      >
-        <template #default="{ item }">
-          {{ item?.name }}
-        </template>
-      </b-button-group>
-
-      <b-button
-        color="primary"
-        class="btn-block w-100 mb-3"
-        @click="addActionToCombo"
-      >
-        Add
-      </b-button>
-
-      <div class="input-group input-group-sm mb-3">
-        <span
-          id="inputGroup-sizing-sm"
-          class="input-group-text"
-        >Count:</span>
-        <b-input
-          v-model="randomIterationsNumber"
-          type="number"
-          class="text-center"
-        />
-
-        <b-button
-          id="button-addon2"
+      <template v-if="isNew">
+        <h6>Option</h6>
+        <b-button-group
+          v-if="selectedCategory && selectedActionId"
+          v-model="selectedActionId"
           color="secondary"
-          type="button"
-          @click="onGenerateRandomCombo"
+          outline
+          vertical
+          option-value="id"
+          class="w-100 mb-4"
+          :items="availableActions"
         >
-          Generate random combo
-        </b-button>
-      </div>
-
-      <div class="input-group input-group-sm my-3">
-        <b-input
-          v-model="comboTitle"
-          type="text"
-          placeholder="Combo title"
-        />
+          <template #default="{ item }">
+            {{ item?.name }}
+          </template>
+        </b-button-group>
 
         <b-button
-          id="button-addon2"
-          color="blue"
-          type="button"
-          @click="buildCombo"
+          color="primary"
+          class="btn-block w-100 mb-3"
+          @click="addActionToCombo"
         >
-          Save Combo
+          Add
         </b-button>
-      </div>
 
-      <div v-if="createdCombo">
-        <h4>Created combo: {{ createdCombo.title }}</h4>
-        <ul>
-          <li
-            v-for="punch in createdCombo.punches"
-            :key="punch.id"
+        <div class="input-group input-group-sm mb-3">
+          <span
+            id="inputGroup-sizing-sm"
+            class="input-group-text"
+          >Count:</span>
+          <b-input
+            v-model="randomIterationsNumber"
+            type="number"
+            class="text-center"
+          />
+
+          <b-button
+            id="button-addon2"
+            color="secondary"
+            type="button"
+            @click="onGenerateRandomCombo"
           >
-            {{ punch.name }}
-          </li>
-        </ul>
-      </div>
+            Generate random combo
+          </b-button>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -113,9 +87,6 @@
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import { container } from '@/infrastructure/di/container.ts'
 import { TYPES } from '@/infrastructure/di/types.ts'
-import { CombinationBuilder } from '@/domain/services/CombinationBuilder.ts'
-import { CreateCombinationUseCase } from '@/application/useCases/CreateCombinationUseCase.ts'
-import type { Combination } from '@/domain/entities/Combination.ts'
 import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
 import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
 import { getNextActions } from '@/application/useCases/getNextActions.ts'
@@ -136,20 +107,25 @@ export default defineComponent({
     BButtonGroup,
     BButton
   },
-  setup() {
+  props: {
+    modelValue: {
+      type: Array as () => BoxingAction[],
+      default: () => []
+    },
+    isNew: Boolean
+  },
+  emits: ['update:model-value'],
+  setup(props, { emit }) {
     const allActions = ref<BoxingAction[]>([])
-    const comboActions = ref<BoxingAction[]>([])
+    const comboActions = ref<BoxingAction[]>(props.modelValue)
     const comboTitle = ref('')
     const randomIterationsNumber = ref<number>(5)
-    const createdCombo = ref<Combination | null>(null)
 
     const categoryOptions = [BoxingActionCategory.PUNCH, BoxingActionCategory.MOVEMENT, BoxingActionCategory.DEFENSE]
     const selectedCategory = ref<BoxingActionCategory>(BoxingActionCategory.PUNCH)
     const selectedActionId = ref<number | null>(null)
 
     const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase)
-    const combinationBuilder = new CombinationBuilder()
-    const createCombinationUseCase = new CreateCombinationUseCase(combinationBuilder)
 
     onMounted(async () => {
       allActions.value = await getPunchesUseCase.execute()
@@ -182,28 +158,20 @@ export default defineComponent({
       const chosen = allActions.value.find((a) => a.id === selectedActionId.value)
       if (!chosen) return
       comboActions.value.push(chosen)
-      combinationBuilder.addAction(chosen)
-      onUpdateAvailableActions()
-    }
-
-    function buildCombo() {
-      if (!comboTitle.value.trim()) return
-      createdCombo.value = createCombinationUseCase.buildCombination(comboTitle.value.trim())
-      comboActions.value = []
-      combinationBuilder.reset()
-      comboTitle.value = ''
       onUpdateAvailableActions()
     }
 
     function onGenerateRandomCombo() {
       const randomCombo = generateRandomCombo(allActions.value, randomIterationsNumber.value)
       comboActions.value = randomCombo
-      combinationBuilder.reset()
-      randomCombo.forEach((a) => combinationBuilder.addAction(a))
     }
 
     watch(selectedCategory, () => {
       onUpdateAvailableActions()
+    })
+
+    watch(comboActions, (value) => {
+      emit('update:model-value', value)
     })
 
     return {
@@ -211,11 +179,9 @@ export default defineComponent({
       selectedCategory,
       selectedActionId,
       comboTitle,
-      createdCombo,
       availableActions,
       comboActions,
       addActionToCombo,
-      buildCombo,
       onGenerateRandomCombo,
       randomIterationsNumber
     }
