@@ -32,7 +32,8 @@ const BtnColorDarkMap: Record<ButtonColor, string> = {
   red: 'danger',
   light: 'dark', //
   info: 'info',
-  warning: 'warning'
+  warning: 'warning',
+  link: 'link',
 }
 
 const BtnColorMap: Record<ButtonColor, string> = {
@@ -44,7 +45,8 @@ const BtnColorMap: Record<ButtonColor, string> = {
   red: 'danger',
   light: 'light',
   info: 'info',
-  warning: 'warning'
+  warning: 'warning',
+  link: 'link',
 }
 
 const colorMap = computed(() => themeStore.isDarkTheme ? BtnColorDarkMap : BtnColorMap)
@@ -64,5 +66,19 @@ withDefaults(defineProps<{
 </script>
 
 <style scoped lang="scss">
+@import "bootstrap/scss/mixins";
+
+@include color-mode('dark') {
+  .btn-link {
+    color: $gray-500!important;
+    background-color: transparent!important;
+  }
+}
+
+.btn-link {
+  color: $dark !important;
+  text-decoration: none;
+  font-weight: 500;
+}
 
 </style>

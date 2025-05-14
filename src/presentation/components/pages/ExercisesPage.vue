@@ -5,8 +5,7 @@
 
       <b-button-group
         v-model="selectedType"
-        color="dark"
-        outline
+        color="light"
         class="w-100"
         :items="[ExerciseCategory.PHYSICS, ExerciseCategory.TECHNIQUE, ExerciseCategory.PRACTICE]"
       />
@@ -18,8 +17,7 @@
       <b-button-group
         v-if="selectedExerciseId"
         v-model="selectedExerciseId"
-        color="dark"
-        outline
+        color="light"
         vertical
         option-value="id"
         class="w-100"

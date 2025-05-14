@@ -73,18 +73,27 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/combos/new',
         name: 'ComboCreate',
-        component: ComboEditPage
+        component: ComboEditPage,
+        meta: {
+          name: 'Create combo',
+        },
       },
       {
         path: '/combos/:id',
         name: 'ComboEdit',
         component: ComboEditPage,
-        props: true
+        props: true,
+        meta: {
+          name: 'Edit combo',
+        },
       },
       {
         path: '/combos/categories',
         name: 'ComboCategories',
         component: CategoryListPage,
+        meta: {
+          name: 'Combo categories',
+        },
         // children: [
         //   {
         //     path: '/combos/categories/index',

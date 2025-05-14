@@ -10,7 +10,7 @@
           :src="logo"
           alt="My Boxing Logo"
         >
-        My Boxing {{ route.meta.name }}
+        My Boxing App
       </router-link>
 
       <button

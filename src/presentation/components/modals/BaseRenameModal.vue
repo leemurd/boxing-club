@@ -1,7 +1,9 @@
 <template>
   <base-modal @close="onCancel">
     <template #header>
-      <h2 class="h4 text-center w-100">Введите название</h2>
+<!--      <h2 class="h4 text-center w-100">-->
+        New
+<!--      </h2>-->
     </template>
     <template #body>
       <input

@@ -5,9 +5,8 @@
         <h6>Кто выше?</h6>
         <b-button-group
           v-model="heightRelation"
-          color="secondary"
+          color="light"
           vertical
-          outline
           size="small"
           class="w-100 mb-4"
           :items="sizeKeys"
@@ -22,9 +21,8 @@
         <h6>Кто тяжелее?</h6>
         <b-button-group
           v-model="weightRelation"
-          color="secondary"
+          color="light"
           vertical
-          outline
           size="small"
           class="w-100 mb-4"
           :items="sizeKeys"
@@ -44,8 +42,7 @@
         <h6>Я</h6>
         <b-button-group
           v-model="myHandedness"
-          color="secondary"
-          outline
+          color="light"
           vertical
           size="small"
           class="w-100 mb-4"
@@ -59,9 +56,8 @@
         <h6>Стиль</h6>
         <b-button-group
           v-model="myStyle"
-          color="secondary"
+          color="light"
           vertical
-          outline
           size="small"
           class="w-100 mb-4"
           :items="boxingStyleKeys"
@@ -74,9 +70,8 @@
         <h6>Руки</h6>
         <b-button-group
           v-model="myGuard"
-          color="secondary"
+          color="light"
           vertical
-          outline
           size="small"
           class="w-100 mb-4"
           :items="boxingGuardKeys"
@@ -94,8 +89,7 @@
 
         <b-button-group
           v-model="oppHandedness"
-          color="secondary"
-          outline
+          color="light"
           vertical
           size="small"
           class="w-100 mb-4"
@@ -109,9 +103,8 @@
         <h6>Стиль</h6>
         <b-button-group
           v-model="oppStyle"
-          color="secondary"
+          color="light"
           vertical
-          outline
           size="small"
           class="w-100 mb-4"
           :items="boxingStyleKeys"
@@ -124,9 +117,8 @@
         <h6>Руки</h6>
         <b-button-group
           v-model="oppGuard"
-          color="secondary"
+          color="light"
           vertical
-          outline
           size="small"
           class="w-100 mb-4"
           :items="boxingGuardKeys"

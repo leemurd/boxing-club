@@ -8,8 +8,7 @@
       >Time Range:</label>
       <b-button-group
         v-model="timeRange"
-        color="dark"
-        outline
+        color="light"
         class="w-100"
         size="small"
         :items="[TimeRange.TODAY, TimeRange.WEEK, TimeRange.MONTH, TimeRange.ALL]"

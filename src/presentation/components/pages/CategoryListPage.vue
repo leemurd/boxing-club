@@ -1,16 +1,29 @@
 <template>
   <div>
-    <h2>Категории</h2>
-    <div class="d-flex justify-content-between mb-3">
-      <button
-        class="btn btn-primary"
-        @click="$router.back()"
-      >Назад</button>
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+      <!--      <button-->
+      <!--        class="btn btn-primary"-->
+      <!--        @click="openAddCategoryModal"-->
+      <!--      >Add new</button>-->
 
-      <button
-        class="btn btn-primary"
+      <b-button
+        color="dark"
         @click="openAddCategoryModal"
-      >Добавить</button>
+      >
+        Add new category
+      </b-button>
+
+      <!--      <button-->
+      <!--        class="btn btn-primary"-->
+      <!--        @click="$router.back()"-->
+      <!--      >Back to combos</button>-->
+
+      <b-button
+        color="link"
+        @click="$router.push({name: 'ComboList'})"
+      >Back to combos</b-button>
+
+      <!--      <router-link :to="{name: 'ComboList'}">Back to combos</router-link>-->
     </div>
 
     <ul class="list-group">
@@ -47,6 +60,7 @@ import { useCategoryStore } from '@/presentation/stores/categoryStore'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import { Category } from '@/domain/entities/Category'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 const categoryStore = useCategoryStore()
 const modal = useModalService()

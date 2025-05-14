@@ -8,7 +8,7 @@
         'main-container--timer-visible': isTimerVisible
       }"
     >
-      <h1 class="text-center mb-2">{{ $route.meta.name }}</h1>
+      <h1 class="text-center mb-4">{{ $route.meta.name }}</h1>
       <router-view />
       <modal-container />
     </div>

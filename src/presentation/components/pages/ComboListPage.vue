@@ -2,14 +2,18 @@
 <template>
   <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <button
-        class="btn btn-primary"
+      <b-button
+        color="dark"
         @click="$router.push({ name: 'ComboCreate' })"
       >
-        New Combo
-      </button>
+        Add new combo
+      </b-button>
 
-      <router-link to="/combos/categories">Categories</router-link>
+<!--      <router-link to="/combos/categories">Categories</router-link>-->
+      <b-button
+        color="link"
+        @click="$router.push({name: 'ComboCategories'})"
+      >Categories</b-button>
     </div>
 
 
@@ -38,6 +42,7 @@
 
 <script lang="ts" setup>
 import { useComboStore } from '@/presentation/stores/comboStore'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 const comboStore = useComboStore()
 

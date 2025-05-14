@@ -1,7 +1,6 @@
 <!-- src/presentation/pages/ComboEditPage.vue -->
 <template>
   <div>
-    <h1>{{ isNew ? 'Create Combo' : 'Edit Combo' }}</h1>
     <div class="mb-3">
       <label class="form-label">Title</label>
       <input

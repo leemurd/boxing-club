@@ -5,8 +5,7 @@
       <b-button-group
         v-if="isNew"
         v-model="selectedCategory"
-        color="secondary"
-        outline
+        color="light"
         class="w-100 mb-4"
         :items="categoryOptions"
       />
@@ -38,8 +37,7 @@
         <b-button-group
           v-if="selectedCategory && selectedActionId"
           v-model="selectedActionId"
-          color="secondary"
-          outline
+          color="light"
           vertical
           option-value="id"
           class="w-100 mb-4"

@@ -1,8 +1,9 @@
 <template>
+<!--    class="btn-group"-->
   <div
     v-if="localValue"
     :class="[
-      `btn-group${vertical ? '-vertical' : ''}`,
+      `btn-group${vertical ? '-vertical' : ' btn-group-horizontal'}`,
       {
         [`btn-group-${BtnSizeMap[size]}`]: size !== 'medium',
       }
@@ -82,5 +83,70 @@ watch(() => props.modelValue, (value) => {
 </script>
 
 <style scoped lang="scss">
+.btn-group {
+  // light
+  .btn-light {
+    border: 1px solid $border-color;
+    &:hover {
+      border-color: $border-color;
+    }
+  }
+  .btn-check:checked + .btn.btn-light {
+    position: relative;
+    z-index: 2;
+    border-color: transparent;
+    background-color: rgb(227 229 230);
+  }
+  // dark
+  .btn-dark {
+    border: 1px solid $border-color-dark;
+    &:hover {
+      border-color: $border-color-dark;
+    }
+  }
+  .btn-check:checked + .btn-dark {
+    position: relative;
+    z-index: 2;
+    border-color: transparent;
+    //background-color: rgb(227 229 230);
+  }
+}
+//
+.btn-group-vertical {
+  // light
+  .btn-light {
+    border-left: 1px solid $border-color!important;
+    border-right: 1px solid $border-color!important;
+    &:first-of-type {
+      border-top: 1px solid $border-color;
+    }
+    &:last-of-type {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+  .btn-check:checked + .btn.btn-light {
+    position: relative;
+    z-index: 2;
+    border-color: transparent!important;
+    background-color: rgb(227 229 230);
+  }
+  // dark
+  .btn-dark {
+    border-left: 1px solid $border-color-dark!important;
+    border-right: 1px solid $border-color-dark!important;
+    &:first-of-type {
+      border-top: 1px solid $border-color-dark;
+    }
+    &:last-of-type {
+      border-bottom: 1px solid $border-color-dark;
+    }
+  }
+  .btn-check:checked + .btn.dark {
+    position: relative;
+    z-index: 2;
+    border-color: transparent!important;
+    background-color: rgb(227 229 230);
+  }
+}
 
 </style>

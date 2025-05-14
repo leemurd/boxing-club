@@ -1,9 +1,11 @@
 <template>
   <div class="modal-container">
     <header class="modal-header">
-      <slot name="header">
-        <h2>{{ title }}</h2>
-      </slot>
+      <h5 class="modal-title">
+        <slot name="header">
+          {{ title }}
+        </slot>
+      </h5>
       <button
         class="close-btn"
         @click="handleClose"
@@ -51,24 +53,42 @@ function handleApply() {
 </script>
 
 <style scoped lang="scss">
+//$modal-content-bg
+
+[data-bs-theme=dark] {
+  .modal-container {
+    border: 1px solid $border-color-dark!important;
+  }
+}
+
 .modal-container {
-  background: #fff;
-  padding: 1rem;
+  background: $modal-content-bg;
+  padding: 0.5rem 1rem 1rem;
   border-radius: 8px;
   max-width: 500px;
-  width: 100%;
+  width: 90%;
   color: #333;
+  border-color: $modal-content-border-color;
+  border-width: $modal-content-border-width;
 }
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  .modal-title {
+    color: var(--bs-body-color);
+  }
 }
 .close-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+}
+.modal-body {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .modal-footer {
   display: flex;
