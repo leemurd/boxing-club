@@ -83,15 +83,14 @@ watch(() => props.modelValue, (value) => {
 </script>
 
 <style scoped lang="scss">
-$border-color-light: $gray-300;
 .btn-group {
   // light
   .btn-light {
-    border: 1px solid $border-color-light;
-    background-color: rgb(227 229 230);
+    border-color: $border-color-light;
+    background-color: $light-color-disabled;
     &:hover {
-      border-color: $border-color;
-      background-color: rgb(227 229 230);
+      border-color: $border-color-light;
+      background-color: $light-color-disabled;
     }
   }
   .btn-check:checked + .btn.btn-light {
@@ -102,7 +101,7 @@ $border-color-light: $gray-300;
   }
   // dark
   .btn-dark {
-    border: 1px solid $border-color-dark;
+    border-color: $border-color-dark;
     &:hover {
       border-color: $border-color-dark;
     }
@@ -117,34 +116,40 @@ $border-color-light: $gray-300;
 .btn-group-vertical {
   // light
   .btn-light {
-    border-left: 1px solid $border-color-light!important;
-    border-right: 1px solid $border-color-light!important;
-    background-color: rgb(227 229 230);
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: $border-color-light!important;
+    border-right-color: $border-color-light!important;
+    background-color: $light-color-disabled;
     &:first-of-type {
-      border-top: 1px solid $border-color;
+      border-top-color: $border-color-light!important;
     }
     &:last-of-type {
-      border-bottom: 1px solid $border-color;
+      border-bottom-color: $border-color-light!important;
     }
     &:hover {
-      background-color: rgb(227 229 230);
+      background-color: $light-color-disabled;
+      border-color: transparent;
     }
   }
   .btn-check:checked + .btn.btn-light {
     position: relative;
     z-index: 2;
     background-color: $light;
-    border-color: $border-color-light;
+    border-color: transparent;
+    border-left-color: $border-color-light;
+    border-right-color: $border-color-light;
   }
+
   // dark
   .btn-dark {
-    border-left: 1px solid $border-color-dark!important;
-    border-right: 1px solid $border-color-dark!important;
+    border-left-color: $border-color-dark!important;
+    border-right-color: $border-color-dark!important;
     &:first-of-type {
-      border-top: 1px solid $border-color-dark;
+      border-top-color: $border-color-dark;
     }
     &:last-of-type {
-      border-bottom: 1px solid $border-color-dark;
+      border-bottom-color: $border-color-dark;
     }
   }
   .btn-check:checked + .btn-dark {
