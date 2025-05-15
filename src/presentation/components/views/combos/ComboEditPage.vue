@@ -10,24 +10,30 @@
       >
     </div>
 
-    <div class="mb-3">
-      <label class="form-label">Категории</label>
-      <div v-if="combo.categoryIds.length">
-        <span
-          v-for="id in combo.categoryIds"
-          :key="id"
-          class="badge bg-secondary me-1"
-        >
-          {{ getCategoryName(id) }}
-        </span>
+    <div class="mb-4 d-flex flex-column">
+      <div class="d-flex align-items-center mb-2">
+        <label class="form-label mb-0 me-2">Категории:</label>
+        <div v-if="combo.categoryIds.length">
+          <span
+            v-for="id in combo.categoryIds"
+            :key="id"
+            class="badge bg-secondary me-1"
+          >
+            {{ getCategoryName(id) }}
+          </span>
+        </div>
+        <template v-else>-</template>
       </div>
-      <button
-        type="button"
-        class="btn btn-outline-primary mt-2"
+
+      <b-button
+        color="primary"
+        outline
+        class="mt-2"
+        size="small"
         @click="openCategoryModal"
       >
-        Категории
-      </button>
+        Set/Edit categories
+      </b-button>
     </div>
 
     <combination-builder-view
@@ -52,13 +58,13 @@
 <script lang="ts" setup>
 import { ref, watch, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useComboStore } from '@/presentation/stores/comboStore'
-import { type Combination } from '@/domain/entities/Combination'
+import { useComboStore } from '@/presentation/stores/comboStore.ts'
+import { type Combination } from '@/domain/entities/Combination.ts'
 import CombinationBuilderView from '@/presentation/components/pages/CombinationBuilderView.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
-import { useCategoryStore } from '@/presentation/stores/categoryStore'
-import { useModalService } from '@/presentation/composition/useModalService'
-import { ModalKey } from '@/presentation/modals/modalKeys'
+import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
+import { useModalService } from '@/presentation/composition/useModalService.ts'
+import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 
 const route = useRoute()
 const router = useRouter()

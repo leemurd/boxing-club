@@ -76,8 +76,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useExerciseStore } from '@/presentation/stores/exerciseStore'
-import { type Exercise } from '@/domain/entities/Exercise'
+import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
+import { type Exercise } from '@/domain/entities/Exercise.ts'
 import { onUserLoaded } from '@/presentation/utils/onUserLoaded.ts'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import { TimeRange } from '@/presentation/components/shared/types.ts'

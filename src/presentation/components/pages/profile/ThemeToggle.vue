@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { useThemeStore } from '@/presentation/stores/themeStore'
+import { useThemeStore } from '@/presentation/stores/themeStore.ts'
 const themeStore = useThemeStore()
 const { isDarkTheme, toggleTheme } = themeStore
 </script>

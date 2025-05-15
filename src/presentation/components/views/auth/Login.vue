@@ -50,7 +50,7 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import BButton from '@/presentation/components/shared/BButton.vue'
-import { useAuthStore } from '@/presentation/stores/authStore'
+import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import { useToast } from 'vue-toastification'
 

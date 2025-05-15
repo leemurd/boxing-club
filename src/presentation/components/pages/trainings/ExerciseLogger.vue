@@ -42,8 +42,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useExerciseStore } from '@/presentation/stores/exerciseStore'
-import type { Exercise } from '@/domain/entities/Exercise'
+import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
+import type { Exercise } from '@/domain/entities/Exercise.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useToast } from "vue-toastification"

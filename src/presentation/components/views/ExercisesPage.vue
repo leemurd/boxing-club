@@ -42,9 +42,9 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useExerciseStore } from '@/presentation/stores/exerciseStore'
-import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise'
-import ExerciseLogger from '@/presentation/components/trainings/ExerciseLogger.vue'
+import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
+import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise.ts'
+import ExerciseLogger from '@/presentation/components/pages/trainings/ExerciseLogger.vue'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 
 const store = useExerciseStore()

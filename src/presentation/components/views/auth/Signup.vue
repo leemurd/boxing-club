@@ -103,7 +103,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import BAlert from '@/presentation/components/shared/BAlert.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
-import { useAuthStore } from '@/presentation/stores/authStore'
+import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 
 const email = ref('')
