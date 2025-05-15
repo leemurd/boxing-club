@@ -83,19 +83,22 @@ watch(() => props.modelValue, (value) => {
 </script>
 
 <style scoped lang="scss">
+$border-color-light: $gray-300;
 .btn-group {
   // light
   .btn-light {
-    border: 1px solid $border-color;
+    border: 1px solid $border-color-light;
+    background-color: rgb(227 229 230);
     &:hover {
       border-color: $border-color;
+      background-color: rgb(227 229 230);
     }
   }
   .btn-check:checked + .btn.btn-light {
     position: relative;
     z-index: 2;
-    border-color: transparent;
-    background-color: rgb(227 229 230);
+    border-color: $border-color-light;
+    background-color: $light;
   }
   // dark
   .btn-dark {
@@ -108,27 +111,30 @@ watch(() => props.modelValue, (value) => {
     position: relative;
     z-index: 2;
     border-color: transparent;
-    //background-color: rgb(227 229 230);
   }
 }
 //
 .btn-group-vertical {
   // light
   .btn-light {
-    border-left: 1px solid $border-color!important;
-    border-right: 1px solid $border-color!important;
+    border-left: 1px solid $border-color-light!important;
+    border-right: 1px solid $border-color-light!important;
+    background-color: rgb(227 229 230);
     &:first-of-type {
       border-top: 1px solid $border-color;
     }
     &:last-of-type {
       border-bottom: 1px solid $border-color;
     }
+    &:hover {
+      background-color: rgb(227 229 230);
+    }
   }
   .btn-check:checked + .btn.btn-light {
     position: relative;
     z-index: 2;
-    border-color: transparent!important;
-    background-color: rgb(227 229 230);
+    background-color: $light;
+    border-color: $border-color-light;
   }
   // dark
   .btn-dark {
@@ -141,11 +147,10 @@ watch(() => props.modelValue, (value) => {
       border-bottom: 1px solid $border-color-dark;
     }
   }
-  .btn-check:checked + .btn.dark {
+  .btn-check:checked + .btn-dark {
     position: relative;
     z-index: 2;
     border-color: transparent!important;
-    background-color: rgb(227 229 230);
   }
 }
 
