@@ -24,7 +24,7 @@ import {
 const themeStore = useThemeStore()
 
 const BtnColorDarkMap: Record<ButtonColor, string> = {
-  primary: 'light', //
+  primary: 'primary', //
   secondary: 'secondary',
   blue: 'primary',
   green: 'success',

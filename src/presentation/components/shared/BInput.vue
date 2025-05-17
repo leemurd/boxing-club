@@ -1,28 +1,36 @@
 <template>
   <input
+    ref="inputRef"
     v-model="localValue"
     :type="type"
     class="form-control"
+    :class="{
+      [size ? `form-control-${size}` : '']: size,
+    }"
     :placeholder="placeholder"
   >
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, useTemplateRef, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
   modelValue: any,
-  type: 'text' | 'password' | 'email' | 'number',
+  type?: 'text' | 'password' | 'email' | 'number',
   placeholder?: string,
   required?: boolean,
+  autofocus?: boolean,
+  size?: 'sm' | '' | 'lg',
 }>(), {
-  type: 'text'
+  type: 'text',
+  size: ''
 })
 
 const emit = defineEmits<{
   (e: 'update:model-value', value: any): void
 }>()
 
+const inputRef = useTemplateRef('inputRef')
 const localValue = ref(props.modelValue)
 
 watch(() => props.modelValue, (value) => {
@@ -31,9 +39,14 @@ watch(() => props.modelValue, (value) => {
 }, { immediate: true })
 
 watch(() => localValue.value, (value) => {
-  // if (!value) return
   emit('update:model-value', value)
 }, { immediate: true })
+
+onMounted(() => {
+  if (props.autofocus) {
+    inputRef.value?.focus()
+  }
+})
 </script>
 
 <style scoped lang="scss">

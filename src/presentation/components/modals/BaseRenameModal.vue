@@ -2,15 +2,21 @@
   <base-modal @close="onCancel">
     <template #header>
 <!--      <h2 class="h4 text-center w-100">-->
-        New
+        Enter new title
 <!--      </h2>-->
     </template>
     <template #body>
-      <input
-        v-model="localValue"
-        class="form-input w-100 text-center"
-        type="text"
-      >
+<!--      <input-->
+<!--        ref="input"-->
+<!--        v-model="localValue"-->
+<!--        class="form-input w-100 text-center"-->
+<!--        type="text"-->
+<!--      >-->
+      <b-input
+        :model-value="localValue"
+        autofocus
+        class="w-100 text-center"
+      />
     </template>
     <template #footer>
       <button
@@ -30,6 +36,7 @@
 import { ref } from 'vue'
 import { closeModal } from '@/presentation/composition/useModalService'
 import BaseModal from '@/presentation/components/modals/BaseModal.vue'
+import BInput from '@/presentation/components/shared/BInput.vue'
 
 const props = withDefaults(defineProps<{
   title: string,

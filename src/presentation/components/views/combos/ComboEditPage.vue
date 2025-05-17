@@ -1,57 +1,40 @@
 <!-- src/presentation/pages/ComboEditPage.vue -->
 <template>
   <div>
-    <div class="mb-3">
-      <label class="form-label">Title</label>
-      <input
-        v-model="combo.title"
-        class="form-control"
-        placeholder="Combo name"
-      >
-    </div>
-
-    <div class="mb-4 d-flex flex-column">
-      <div class="d-flex align-items-center mb-2">
-        <label class="form-label mb-0 me-2">Категории:</label>
-        <div v-if="combo.categoryIds.length">
-          <span
-            v-for="id in combo.categoryIds"
-            :key="id"
-            class="badge bg-secondary me-1"
-          >
-            {{ getCategoryName(id) }}
-          </span>
-        </div>
-        <template v-else>-</template>
-      </div>
-
-      <b-button
-        color="primary"
-        outline
-        class="mt-2"
-        size="small"
-        @click="openCategoryModal"
-      >
-        Set/Edit categories
-      </b-button>
-    </div>
-
     <combination-builder-view
       v-model="combo.punches"
       :is-new="isNew"
     />
 
-    <b-button
-      color="green"
-      class="mt-3"
-      :disabled="combo.title?.trim().length === 0"
-      @click="saveCombo"
-    >{{ isNew ? 'Create' : 'Save' }}</b-button>
+    <hr>
 
-    <button
-      class="btn btn-secondary mt-3 ms-2"
-      @click="$router.back()"
-    >Cancel</button>
+    <div class="mb-3 text-center">
+      <label class="form-label">Title (required)</label>
+      <b-input
+        v-model="combo.title"
+        :autofocus="isNew"
+        placeholder="Combo name"
+      />
+    </div>
+
+    <combo-categories-card
+      :category-ids="combo.categoryIds"
+      @on-edit="openCategoryModal"
+    />
+
+    <div class="d-flex flex-column mt-3 gap-2">
+      <b-button
+        color="primary"
+        :disabled="combo.title?.trim().length === 0 || combo.punches.length === 0"
+        @click="saveCombo"
+      >{{ isNew ? 'Create' : 'Save' }}</b-button>
+
+      <b-button
+        color="red"
+        outline
+        @click="$router.back()"
+      >Cancel</b-button>
+    </div>
   </div>
 </template>
 
@@ -60,11 +43,14 @@ import { ref, watch, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useComboStore } from '@/presentation/stores/comboStore.ts'
 import { type Combination } from '@/domain/entities/Combination.ts'
-import CombinationBuilderView from '@/presentation/components/pages/CombinationBuilderView.vue'
+import CombinationBuilderView from '@/presentation/components/pages/combos/CombinationBuilderView.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
+import BInput from '@/presentation/components/shared/BInput.vue'
+import ComboCategoriesCard from '@/presentation/components/pages/combos/ComboCategoriesCard.vue'
+import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -79,11 +65,6 @@ const combo = ref<Combination>({
   punches: [],
   categoryIds: []
 })
-
-function getCategoryName(id: string) {
-  const cat = categoryStore.list.find((c) => c.id === id)
-  return cat ? cat.name : ''
-}
 
 function openCategoryModal() {
   modal.openModalByKey(ModalKey.CATEGORY_SELECTOR, {
@@ -122,4 +103,16 @@ watch(() => comboStore.combos, async (arr) => {
     await loadCombo()
   }
 }, { immediate: true })
+
+watch(() => combo.value.punches, async (arr) => {
+  // if (isNew.value && combo.value.title.trim().length === 0) {
+  if (isNew.value) {
+    if (arr.length !== 0) {
+      combo.value.title = arr.map((punch) => {
+        if (punch.category === BoxingActionCategory.PUNCH) return punch.id
+        else return `(${punch.name})`
+      }).join('-')
+    }
+  }
+})
 </script>

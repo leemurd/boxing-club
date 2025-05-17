@@ -1,9 +1,4 @@
-import {
-  type BoxingAction,
-  BoxingActionCategory,
-  BoxingActionSide,
-  BoxingActionType
-} from '@/domain/entities/BoxingAction'
+import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingActionType } from '@/domain/entities/BoxingAction'
 
 export const MOCK_ACTIONS: BoxingAction[] = [
   // punches
@@ -107,7 +102,13 @@ export const MOCK_ACTIONS: BoxingAction[] = [
     side: BoxingActionSide.REAR,
     type: BoxingActionType.Shift
   },
-  // { id: 20, name: 'Duck', category: BoxingActionCategory.MOVEMENT, side: BoxingActionSide.ANY, type: BoxingActionType.Duck },
+  {
+    id: 20,
+    name: 'Duck',
+    category: BoxingActionCategory.MOVEMENT,
+    side: BoxingActionSide.ANY,
+    type: BoxingActionType.Duck
+  },
   {
     id: 25,
     name: 'Step back',

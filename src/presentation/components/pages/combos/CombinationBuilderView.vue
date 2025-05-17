@@ -1,82 +1,47 @@
 <template>
   <div class="combination-builder">
     <div class="combination-builder-wrap">
+      <combo-preview
+        :combo-actions="modelValue"
+        class="mb-3"
+        @clear="clearActions"
+      />
+
       <h6>Action</h6>
       <b-button-group
-        v-if="isNew"
         v-model="selectedCategory"
         color="light"
         class="w-100 mb-4"
         :items="categoryOptions"
       />
 
-      <div
-        v-if="comboActions.length"
-        class=""
+      <h6>Option</h6>
+      <b-button-group
+        v-if="selectedCategory && selectedActionId"
+        v-model="selectedActionId"
+        color="light"
+        vertical
+        option-value="id"
+        class="w-100 mb-3"
+        :items="availableActions"
       >
-        <p class="mb-1">
-          Preview:
-        </p>
-        <div class="d-flex justify-content-center flex-wrap">
-          <div
-            v-for="(item, index) in comboActions"
-            :key="index"
-            class=""
-          >
-            <span class="badge text-bg-primary my-1">{{ item.name }}</span>
-            <span
-              v-if="index !== comboActions.length - 1"
-              class="mx-1"
-            >-</span>
-          </div>
-        </div>
-      </div>
+        <template #default="{ item }">
+          {{ item?.name }}
+        </template>
+      </b-button-group>
 
-      <template v-if="isNew">
-        <h6>Option</h6>
-        <b-button-group
-          v-if="selectedCategory && selectedActionId"
-          v-model="selectedActionId"
-          color="light"
-          vertical
-          option-value="id"
-          class="w-100 mb-4"
-          :items="availableActions"
-        >
-          <template #default="{ item }">
-            {{ item?.name }}
-          </template>
-        </b-button-group>
+      <b-button
+        color="dark"
+        class="btn-block w-100"
+        @click="addActionToCombo"
+      >Add</b-button>
 
-        <b-button
-          color="primary"
-          class="btn-block w-100 mb-3"
-          @click="addActionToCombo"
-        >
-          Add
-        </b-button>
+      <div class="my-3 small text-muted">or generate random combo</div>
 
-        <div class="input-group input-group-sm mb-3">
-          <span
-            id="inputGroup-sizing-sm"
-            class="input-group-text"
-          >Count:</span>
-          <b-input
-            v-model="randomIterationsNumber"
-            type="number"
-            class="text-center"
-          />
-
-          <b-button
-            id="button-addon2"
-            color="secondary"
-            type="button"
-            @click="onGenerateRandomCombo"
-          >
-            Generate random combo
-          </b-button>
-        </div>
-      </template>
+      <random-combo-card
+        v-model:iterations="randomIterationsNumber"
+        @on-generate="onGenerateRandomCombo"
+      />
     </div>
   </div>
 </template>
@@ -96,12 +61,14 @@ import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts'
 import { generateRandomCombo } from '@/application/useCases/generateRandomCombo.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
-import BInput from '@/presentation/components/shared/BInput.vue'
+import ComboPreview from '@/presentation/components/pages/combos/ComboPreview.vue'
+import RandomComboCard from '@/presentation/components/pages/combos/RandomComboCard.vue'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
   components: {
-    BInput,
+    RandomComboCard,
+    ComboPreview,
     BButtonGroup,
     BButton
   },
@@ -115,7 +82,6 @@ export default defineComponent({
   emits: ['update:model-value'],
   setup(props, { emit }) {
     const allActions = ref<BoxingAction[]>([])
-    const comboActions = ref<BoxingAction[]>(props.modelValue)
     const comboTitle = ref('')
     const randomIterationsNumber = ref<number>(5)
 
@@ -131,8 +97,8 @@ export default defineComponent({
     })
 
     const lastAction = computed(() => {
-      if (comboActions.value.length === 0) return null
-      return comboActions.value[comboActions.value.length - 1]
+      if (props.modelValue.length === 0) return null
+      return props.modelValue[props.modelValue.length - 1]
     })
 
     const availableActions = computed<BoxingAction[]>(() => {
@@ -155,21 +121,21 @@ export default defineComponent({
       if (selectedActionId.value == null) return
       const chosen = allActions.value.find((a) => a.id === selectedActionId.value)
       if (!chosen) return
-      comboActions.value.push(chosen)
+      emit('update:model-value', [...props.modelValue, chosen])
       onUpdateAvailableActions()
     }
 
     function onGenerateRandomCombo() {
       const randomCombo = generateRandomCombo(allActions.value, randomIterationsNumber.value)
-      comboActions.value = randomCombo
+      emit('update:model-value', randomCombo)
+    }
+
+    const clearActions = () => {
+      emit('update:model-value', [])
     }
 
     watch(selectedCategory, () => {
       onUpdateAvailableActions()
-    })
-
-    watch(comboActions, (value) => {
-      emit('update:model-value', value)
     })
 
     return {
@@ -178,26 +144,30 @@ export default defineComponent({
       selectedActionId,
       comboTitle,
       availableActions,
-      comboActions,
       addActionToCombo,
       onGenerateRandomCombo,
-      randomIterationsNumber
+      randomIterationsNumber,
+      clearActions
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
+@import "bootstrap/scss/mixins/breakpoints";
+
 .min-width-220px-lg-max {
   min-width: 220px;
 }
 .combination-builder {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: center;
   &-wrap {
     max-width: 430px;
+    @include media-breakpoint-down(sm) {
+      max-width: 100%;
+    }
   }
 }
 </style>
