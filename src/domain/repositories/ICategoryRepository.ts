@@ -5,4 +5,5 @@ export interface ICategoryRepository {
   create(userId: string, name: string): Promise<Category>
   update(userId: string, category: Category): Promise<void>
   delete(userId: string, id: string): Promise<void>
+  getById(userId: string, id: string): Promise<Category | null>
 }

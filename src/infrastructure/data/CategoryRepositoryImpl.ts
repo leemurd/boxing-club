@@ -1,16 +1,23 @@
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, DocumentReference } from 'firebase/firestore'
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  DocumentReference,
+  getDoc
+} from 'firebase/firestore'
 import { injectable } from 'inversify'
 import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository'
 import { Category } from '@/domain/entities/Category'
-import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
+import { db } from '@/infrastructure/firebase/firebaseConfig'
 
 @injectable()
 export class CategoryRepositoryImpl implements ICategoryRepository {
-  private db = getFirestore(firebaseApp)
-
   // путь: users/{userId}/categories
   private col(userId: string) {
-    return collection(this.db, 'users', userId, 'categories')
+    return collection(db, 'users', userId, 'categories')
   }
 
   async getAll(userId: string): Promise<Category[]> {
@@ -25,12 +32,22 @@ export class CategoryRepositoryImpl implements ICategoryRepository {
   }
 
   async update(userId: string, category: Category): Promise<void> {
-    const ref = doc(this.db, 'users', userId, 'categories', category.id)
+    const ref = doc(db, 'users', userId, 'categories', category.id)
     await updateDoc(ref, { name: category.name })
   }
 
   async delete(userId: string, id: string): Promise<void> {
-    const ref = doc(this.db, 'users', userId, 'categories', id)
+    const ref = doc(db, 'users', userId, 'categories', id)
     await deleteDoc(ref)
+  }
+
+  async getById(userId: string, id: string): Promise<Category | null> {
+    const ref = doc(db, 'users', userId, 'categories', id)
+    const snap = await getDoc(ref)
+    if (!snap.exists()) {
+      return null
+    }
+    const data = snap.data()
+    return new Category(snap.id, data.name)
   }
 }

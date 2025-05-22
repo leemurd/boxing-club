@@ -1,11 +1,16 @@
-import { container } from '@/infrastructure/di/container.ts'
-import { type ICategoryRepository } from '@/domain/repositories/ICategoryRepository.ts'
-import { Category } from '@/domain/entities/Category.ts'
-import { TYPES } from '@/infrastructure/di/types.ts'
+import { injectable, inject } from 'inversify'
+import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository'
+import type { Category } from '@/domain/entities/Category'
+import { TYPES } from '@/infrastructure/di/types'
 
+@injectable()
 export class CreateCategoryUseCase {
-  static async execute(userId: string, name: string): Promise<Category> {
-    const repo = container.get<ICategoryRepository>(TYPES.ICategoryRepository)
-    return repo.create(userId, name)
+  constructor(
+    @inject(TYPES.ICategoryRepository)
+    private repo: ICategoryRepository
+  ) {}
+
+  execute(userId: string, name: string): Promise<Category> {
+    return this.repo.create(userId, name)
   }
 }

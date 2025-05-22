@@ -4,13 +4,13 @@ import type { Category } from '@/domain/entities/Category'
 import { TYPES } from '@/infrastructure/di/types'
 
 @injectable()
-export class UpdateCategoryUseCase {
+export class GetCategoryByIdUseCase {
   constructor(
     @inject(TYPES.ICategoryRepository)
     private repo: ICategoryRepository
   ) {}
 
-  execute(userId: string, category: Category): Promise<void> {
-    return this.repo.update(userId, category)
+  execute(userId: string, categoryId: string): Promise<Category | null> {
+    return this.repo.getById(userId, categoryId)
   }
 }

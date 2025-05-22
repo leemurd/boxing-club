@@ -13,6 +13,9 @@ import ComboListPage from '@/presentation/components/views/combos/ComboListPage.
 import ComboEditPage from '@/presentation/components/views/combos/ComboEditPage.vue'
 import Combos from '@/presentation/components/views/combos/Combos.vue'
 import CategoryListPage from '@/presentation/components/views/combos/CategoryListPage.vue'
+import CategoryEditPage from '@/presentation/components/views/combos/CategoryEditPage.vue'
+import TagListPage from '@/presentation/components/views/tags/TagListPage.vue'
+import TagEditPage from '@/presentation/components/views/tags/TagEditPage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -21,7 +24,7 @@ const routes: RouteRecordRaw[] = [
     component: ProgressPage,
     beforeEnter: requireAuth,
     meta: {
-      name: 'Progress',
+      name: 'My Progress',
       tags: ['userRoute']
     }
   },
@@ -72,11 +75,12 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/combos/new',
-        name: 'ComboCreate',
+        name: 'ComboNew',
         component: ComboEditPage,
+        props: true,
         meta: {
-          name: 'Create combo',
-        },
+          name: 'New combo'
+        }
       },
       {
         path: '/combos/:id',
@@ -84,28 +88,70 @@ const routes: RouteRecordRaw[] = [
         component: ComboEditPage,
         props: true,
         meta: {
-          name: 'Edit combo',
-        },
+          name: 'Edit combo'
+        }
       },
       {
         path: '/combos/categories',
         name: 'ComboCategories',
-        component: CategoryListPage,
-        meta: {
-          name: 'Combo categories',
-        },
-        // children: [
-        //   {
-        //     path: '/combos/categories/index',
-        //     name: 'ComboCategoriesIndex',
-        //     component: ComboCategoriesList
-        //   },
-        //   {
-        //     path: '/combos/categories/create',
-        //     name: 'ComboCategoriesCreate',
-        //     component: ComboCreateCategory
-        //   }
-        // ]
+        component: RouterViewWithSlots,
+        redirect: '/combos/categories/index',
+        children: [
+          {
+            path: '/combos/categories/index',
+            name: 'ComboCategoriesIndex',
+            component: CategoryListPage,
+            meta: {
+              name: 'Combo categories'
+            }
+          },
+          {
+            path: '/combos/categories/new',
+            name: 'ComboCategoriesNew',
+            component: CategoryEditPage,
+            meta: {
+              name: 'New combo category'
+            }
+          },
+          {
+            path: '/combos/categories/:id',
+            name: 'ComboCategoriesEdit',
+            component: CategoryEditPage,
+            meta: {
+              name: 'Edit combo category'
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    path: '/tags',
+    component: RouterViewWithSlots,
+    meta: {
+      requiresAuth: true,
+      tags: ['userRoute'],
+      name: 'Tags'
+    },
+    children: [
+      {
+        path: '',
+        name: 'TagIndex',
+        component: TagListPage,
+        meta: { title: 'Tags' }
+      },
+      {
+        path: 'new',
+        name: 'TagCreate',
+        component: TagEditPage,
+        meta: { title: 'Create Tag' }
+      },
+      {
+        path: ':id',
+        name: 'TagEdit',
+        component: TagEditPage,
+        meta: { title: 'Edit Tag' }
       }
     ]
   },

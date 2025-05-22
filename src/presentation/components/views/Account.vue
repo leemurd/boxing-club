@@ -34,7 +34,6 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAuth } from 'firebase/auth'
-import { container } from '@/infrastructure/di/container.ts'
 import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository.ts'
 import type { User } from '@/domain/entities/User.ts'
@@ -45,6 +44,7 @@ import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { useToast } from 'vue-toastification'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
+import { getUC } from '@/infrastructure/di/resolver.ts'
 
 const { openModalByKey } = useModalService()
 
@@ -63,7 +63,7 @@ const user = ref<User | null>(null)
 const loading = ref(true)
 const router = useRouter()
 
-const userRepo = container.get<IUserRepository>(TYPES.IUserRepository)
+const userRepo = getUC<IUserRepository>(TYPES.IUserRepository)
 const authStore = useAuthStore()
 
 async function loadUserProfile() {

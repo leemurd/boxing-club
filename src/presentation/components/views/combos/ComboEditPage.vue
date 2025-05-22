@@ -1,18 +1,15 @@
-<!-- src/presentation/pages/ComboEditPage.vue -->
 <template>
   <div>
     <combination-builder-view
       v-model="combo.punches"
       :is-new="isNew"
+      class="mb-4"
     />
 
-    <hr>
-
     <div class="mb-3 text-center">
-      <label class="form-label">Title (required)</label>
+      <label class="form-label mb-2">Title (required)</label>
       <b-input
         v-model="combo.title"
-        :autofocus="isNew"
         placeholder="Combo name"
       />
     </div>
@@ -30,10 +27,9 @@
       >{{ isNew ? 'Create' : 'Save' }}</b-button>
 
       <b-button
-        color="red"
-        outline
+        color="secondary"
         @click="$router.back()"
-      >Cancel</b-button>
+      >Back</b-button>
     </div>
   </div>
 </template>
@@ -63,7 +59,7 @@ const combo = ref<Combination>({
   id: (route.params.id as string) || '',
   title: '',
   punches: [],
-  categoryIds: []
+  categoryIds: (route.query?.categoryIds as string[]) || []
 })
 
 function openCategoryModal() {
@@ -76,6 +72,7 @@ function openCategoryModal() {
 }
 
 onBeforeMount(async () => {
+  await comboStore.load()
   await categoryStore.load()
 })
 
@@ -95,17 +92,18 @@ const loadCombo = async () => {
 
 async function saveCombo() {
   await comboStore.save(combo.value)
-  await router.push({ name: 'ComboList' })
+  // await router.push({ name: 'ComboList' })
+  await router.back()
 }
 
 watch(() => comboStore.combos, async (arr) => {
   if (arr.length !== 0) {
     await loadCombo()
+    console.log('Combo list loaded')
   }
 }, { immediate: true })
 
 watch(() => combo.value.punches, async (arr) => {
-  // if (isNew.value && combo.value.title.trim().length === 0) {
   if (isNew.value) {
     if (arr.length !== 0) {
       combo.value.title = arr.map((punch) => {

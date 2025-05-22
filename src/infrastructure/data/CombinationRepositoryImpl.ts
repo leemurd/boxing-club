@@ -1,16 +1,14 @@
 // src/infrastructure/data/CombinationRepositoryImpl.ts
 import { injectable } from 'inversify'
-import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
-import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, DocumentReference, updateDoc } from 'firebase/firestore'
+import { db } from '@/infrastructure/firebase/firebaseConfig'
+import { collection, doc, getDocs, setDoc, deleteDoc, DocumentReference, updateDoc } from 'firebase/firestore'
 import type { ICombinationRepository } from '@/domain/repositories/ICombinationRepository'
 import type { Combination } from '@/domain/entities/Combination'
 
 @injectable()
 export class CombinationRepositoryImpl implements ICombinationRepository {
-  private db = getFirestore(firebaseApp)
-
   private col(userId: string) {
-    return collection(this.db, 'users', userId, 'combinations')
+    return collection(db, 'users', userId, 'combinations')
   }
 
   async getAll(userId: string): Promise<Combination[]> {
@@ -44,7 +42,7 @@ export class CombinationRepositoryImpl implements ICombinationRepository {
   }
 
   async update(userId: string, combo: Combination): Promise<void> {
-    const ref = doc(this.db, 'users', userId, 'combinations', combo.id)
+    const ref = doc(db, 'users', userId, 'combinations', combo.id)
     await updateDoc(ref, {
       title: combo.title,
       punches: combo.punches,

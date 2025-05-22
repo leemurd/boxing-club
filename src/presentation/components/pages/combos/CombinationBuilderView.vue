@@ -1,28 +1,30 @@
 <template>
   <div class="combination-builder">
-    <div class="combination-builder-wrap">
-      <combo-preview
-        :combo-actions="modelValue"
-        class="mb-3"
-        @clear="clearActions"
-      />
+    <combo-preview
+      :combo-actions="modelValue"
+      @clear="clearActions"
+      @clear-last="clearLastAction"
+    />
 
-      <h6>Action</h6>
+    <div class="">
+      <label class="form-label mb-2">Action</label>
       <b-button-group
         v-model="selectedCategory"
         color="light"
-        class="w-100 mb-4"
+        class="w-100"
         :items="categoryOptions"
       />
+    </div>
 
-      <h6>Option</h6>
+    <div class="">
+      <label class="form-label mb-2">Option</label>
       <b-button-group
         v-if="selectedCategory && selectedActionId"
         v-model="selectedActionId"
         color="light"
         vertical
         option-value="id"
-        class="w-100 mb-3"
+        class="w-100"
         :items="availableActions"
       >
         <template #default="{ item }">
@@ -32,23 +34,21 @@
 
       <b-button
         color="dark"
-        class="btn-block w-100"
+        class="btn-block w-100 mt-3"
         @click="addActionToCombo"
       >Add</b-button>
-
-      <div class="my-3 small text-muted">or generate random combo</div>
-
-      <random-combo-card
-        v-model:iterations="randomIterationsNumber"
-        @on-generate="onGenerateRandomCombo"
-      />
     </div>
+
+    <random-combo-card
+      v-if="isNew"
+      v-model:iterations="randomIterationsNumber"
+      @on-generate="onGenerateRandomCombo"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, watch } from 'vue'
-import { container } from '@/infrastructure/di/container.ts'
 import { TYPES } from '@/infrastructure/di/types.ts'
 import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
 import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
@@ -63,6 +63,7 @@ import BButton from '@/presentation/components/shared/BButton.vue'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import ComboPreview from '@/presentation/components/pages/combos/ComboPreview.vue'
 import RandomComboCard from '@/presentation/components/pages/combos/RandomComboCard.vue'
+import { getUC } from '@/infrastructure/di/resolver.ts'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
@@ -89,7 +90,7 @@ export default defineComponent({
     const selectedCategory = ref<BoxingActionCategory>(BoxingActionCategory.PUNCH)
     const selectedActionId = ref<number | null>(null)
 
-    const getPunchesUseCase = container.get<GetPunchesUseCase>(TYPES.GetPunchesUseCase)
+    const getPunchesUseCase = getUC<GetPunchesUseCase>(TYPES.GetPunchesUseCase)
 
     onMounted(async () => {
       allActions.value = await getPunchesUseCase.execute()
@@ -134,6 +135,11 @@ export default defineComponent({
       emit('update:model-value', [])
     }
 
+    const clearLastAction = () => {
+      emit('update:model-value', [...props.modelValue.slice(0,-1) ])
+      console.log(props.modelValue.slice(0, -1))
+    }
+
     watch(selectedCategory, () => {
       onUpdateAvailableActions()
     })
@@ -147,7 +153,8 @@ export default defineComponent({
       addActionToCombo,
       onGenerateRandomCombo,
       randomIterationsNumber,
-      clearActions
+      clearActions,
+      clearLastAction
     }
   }
 })
@@ -156,18 +163,14 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "bootstrap/scss/mixins/breakpoints";
 
-.min-width-220px-lg-max {
-  min-width: 220px;
-}
 .combination-builder {
   display: flex;
   flex-direction: column;
   text-align: center;
-  &-wrap {
-    max-width: 430px;
-    @include media-breakpoint-down(sm) {
-      max-width: 100%;
-    }
+  gap: 24px;
+  max-width: 430px;
+  @include media-breakpoint-down(sm) {
+    max-width: 100%;
   }
 }
 </style>

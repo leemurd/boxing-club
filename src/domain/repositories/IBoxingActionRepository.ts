@@ -1,6 +1,6 @@
-import { type BoxingAction } from '../entities/BoxingAction';
+import { type BoxingAction } from '../entities/BoxingAction'
 
 export interface IBoxingActionRepository {
-  getAllActions(): Promise<BoxingAction[]>;
-  getActionById(id: number): Promise<BoxingAction | null>;
+  getAllActions(): Promise<BoxingAction[]>
+  getActionById(id: number): Promise<BoxingAction | null>
 }

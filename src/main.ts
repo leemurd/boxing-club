@@ -18,8 +18,7 @@ const app = createApp(App)
 const toastOptions: PluginOptions = {
   position: POSITION.TOP_CENTER,
   transition: 'fade',
-  timeout: 2048 * 1.5,
-  // timeout: false,
+  timeout: 2048,
   closeOnClick: true,
   pauseOnFocusLoss: true,
   pauseOnHover: true,
@@ -30,7 +29,7 @@ const toastOptions: PluginOptions = {
   closeButton: 'button',
   icon: false,
   rtl: false,
-  maxToasts: 3
+  maxToasts: 2
 }
 
 app.use(createPinia())

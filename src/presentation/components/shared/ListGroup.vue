@@ -1,24 +1,28 @@
 <template>
-  <ul class="list-group">
+  <ul class="list-group list-group-flush list-group-numbered">
     <li
       v-for="item in items"
       :key="item[itemId]"
-      class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+      class="list-group-item d-flex align-items-center"
+      :class="{'cursor-pointer list-group-item-action': itemLink}"
+      @click="primaryAction(item)"
     >
       {{ item[itemVal] }}
 
-      <div class="">
+      <div class="ms-auto">
         <b-button
+          v-if="primaryAction"
           size="small"
           color="blue"
           class="me-2"
-          @click="primaryCallback(item)"
+          @click="primaryAction(item)"
         >Edit</b-button>
 
         <b-button
+          v-if="secondaryCallback"
           color="red"
           size="small"
-          @click="secondaryCallback(item[itemId])"
+          @click.stop.prevent="secondaryCallback(item[itemId])"
         >
           <i class="bi bi-x-lg"/>
         </b-button>
@@ -34,14 +38,25 @@ const props = withDefaults(defineProps<{
   items: any[],
   itemId?: string,
   itemVal?: string,
-  primaryCallback: (val: any) => void,
-  secondaryCallback: (val: any) => void,
+  itemLink?: boolean,
+  primaryCallback?: (val?: any) => void,
+  secondaryCallback?: (val?: any) => void,
 }>(), {
   itemId: 'id',
   itemVal: 'name'
 })
+
+const primaryAction = (item: any) => {
+  if (props.itemLink && props.primaryCallback) {
+    return props.primaryCallback(item)
+  } else {
+    return false
+  }
+}
 </script>
 
 <style scoped lang="scss">
-
+.list-group-numbered .list-group-item:before {
+  margin-right: 8px;
+}
 </style>

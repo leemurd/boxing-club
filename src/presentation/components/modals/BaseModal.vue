@@ -59,6 +59,10 @@ function handleApply() {
   .modal-container {
     border: 1px solid $border-color-dark!important;
   }
+  //.modal-body {
+  //  //color: $gray-300;
+  //  color: var(--bs-body-color);
+  //}
 }
 
 .modal-container {
@@ -89,6 +93,7 @@ function handleApply() {
 .modal-body {
   padding-top: 1rem;
   padding-bottom: 1rem;
+  color: var(--bs-body-color);
 }
 .modal-footer {
   display: flex;

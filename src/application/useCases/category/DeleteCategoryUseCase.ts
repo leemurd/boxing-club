@@ -1,10 +1,15 @@
-import { container } from '@/infrastructure/di/container.ts'
-import { type ICategoryRepository } from '@/domain/repositories/ICategoryRepository.ts'
-import { TYPES } from '@/infrastructure/di/types.ts'
+import { injectable, inject } from 'inversify'
+import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository'
+import { TYPES } from '@/infrastructure/di/types'
 
+@injectable()
 export class DeleteCategoryUseCase {
-  static async execute(userId: string, id: string): Promise<void> {
-    const repo = container.get<ICategoryRepository>(TYPES.ICategoryRepository)
-    await repo.delete(userId, id)
+  constructor(
+    @inject(TYPES.ICategoryRepository)
+    private repo: ICategoryRepository
+  ) {}
+
+  execute(userId: string, categoryId: string): Promise<void> {
+    return this.repo.delete(userId, categoryId)
   }
 }

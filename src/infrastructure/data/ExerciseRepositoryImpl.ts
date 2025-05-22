@@ -1,5 +1,5 @@
 import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
-import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
+import type { Record } from '@/domain/entities/Record'
 import { db } from '@/infrastructure/firebase/firebaseConfig'
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 import { ExerciseCategory, type MeasurementUnit } from '@/domain/entities/Exercise.ts'
@@ -16,7 +16,7 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
 
   async logExercise(userId: string, exerciseId: string, amount: number, unit: MeasurementUnit): Promise<void> {
     const timestamp = new Date().toISOString()
-    const newRecord: Omit<TrainingRecord, 'id'> = {
+    const newRecord: Omit<Record, 'id'> = {
       userId,
       exerciseId,
       category: EXERCISES.find((item) => item.id === exerciseId)?.category || ExerciseCategory.PHYSICS,
@@ -33,7 +33,7 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
     const todayStr = new Date().toDateString()
 
     logsSnapshot.forEach((docSnap) => {
-      const data = docSnap.data() as TrainingRecord
+      const data = docSnap.data() as Record
       const exId = data.exerciseId
       if (!stats[exId]) {
         stats[exId] = {
@@ -49,13 +49,13 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
     return stats
   }
 
-  async getExerciseHistory(userId: string, days: number): Promise<TrainingRecord[]> {
+  async getExerciseHistory(userId: string, days: number): Promise<Record[]> {
     const logsSnapshot = await getDocs(this.logsCollection(userId))
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - days)
-    const history: TrainingRecord[] = []
+    const history: Record[] = []
     logsSnapshot.forEach((docSnap) => {
-      const data = docSnap.data() as TrainingRecord
+      const data = docSnap.data() as Record
       if (new Date(data.timestamp) >= startDate) {
         history.push({
           id: docSnap.id,

@@ -1,17 +1,126 @@
 <template>
-  <div class="progress-page py-4">
-    <!-- Селект для выбора временного интервала -->
-    <div class="mb-3">
+  <div class="progress-page pb-4">
+    <b-card
+      class="progress-page-main"
+      no-border
+      no-padding
+    >
+      <template #header>
+        <h6 class="card-title mb-0">Wolf</h6>
+      </template>
+      <div class="row mt-3">
+        <div class="col">
+          <img
+            :src="avatarImg"
+            class="progress-page-main__avatar"
+          >
+        </div>
+        <div class="col">
+          <div class="card-title mb-2 text-body-secondary">
+            {{ userStore.currentUser?.firstName }} {{ userStore.currentUser?.lastName }}
+          </div>
+          <div class="card-text text-muted">
+            <span class="small">Physics: 21 (+2)</span>
+            <div
+              class="progress-stacked"
+              style="height: 10px"
+            >
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label="Segment one"
+                aria-valuenow="25"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 25%; height: 10px"
+              >
+                <div class="progress-bar bg-light"/>
+              </div>
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label="Segment two"
+                aria-valuenow="10"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 10%; height: 10px"
+              >
+                <div class="progress-bar bg-success"/>
+              </div>
+            </div>
+            <span class="small">Technic: 19 (+1)</span>
+            <div
+              class="progress-stacked"
+              style="height: 10px"
+            >
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label="Segment one"
+                aria-valuenow="25"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 25%; height: 10px"
+              >
+                <div class="progress-bar bg-light"/>
+              </div>
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label="Segment two"
+                aria-valuenow="5"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 5%; height: 10px"
+              >
+                <div class="progress-bar bg-success"/>
+              </div>
+            </div>
+            <span class="small">Practice: 14 (-1)</span>
+            <div
+              class="progress-stacked"
+              style="height: 10px"
+            >
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label="Segment one"
+                aria-valuenow="25"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 25%; height: 10px"
+              >
+                <div class="progress-bar bg-light"/>
+              </div>
+              <div
+                class="progress"
+                role="progressbar"
+                aria-label="Segment two"
+                aria-valuenow="5"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="width: 5%; height: 10px"
+              >
+                <div class="progress-bar bg-danger"/>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </b-card>
+
+
+    <div class="mb-3 mt-3">
       <label
         for="timeRange"
         class="form-label"
       >Time Range:</label>
-      <b-button-group
+      <b-dropdown
         v-model="timeRange"
-        color="light"
-        class="w-100"
+        outline
         size="small"
-        :items="[TimeRange.TODAY, TimeRange.WEEK, TimeRange.MONTH, TimeRange.ALL]"
+        :items="dateRangeItems"
       />
     </div>
 
@@ -79,11 +188,19 @@ import { ref, computed } from 'vue'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
 import { type Exercise } from '@/domain/entities/Exercise.ts'
 import { onUserLoaded } from '@/presentation/utils/onUserLoaded.ts'
-import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import { TimeRange } from '@/presentation/components/shared/types.ts'
+import BDropdown from '@/presentation/components/shared/BDropdown.vue'
+import { dateRangeItems } from '@/presentation/constants/progress/data.ts'
+import BCard from '@/presentation/components/shared/BCard.vue'
+import { useAuthStore } from '@/presentation/stores/authStore.ts'
+// import avatarImg from '@/presentation/assets/avatar.webp'
+// import avatarImg from '@/presentation/assets/avatar.svg'
+// import avatarImg from '@/presentation/assets/avatar-fill.svg'
+import avatarImg from '@/presentation/assets/avatar-colored.svg'
 
 const store = useExerciseStore()
-const timeRange = ref<TimeRange>(TimeRange.TODAY)
+const userStore = useAuthStore()
+const timeRange = ref<TimeRange>(dateRangeItems[0].value)
 
 onUserLoaded(async () => {
   await store.loadStats()
@@ -108,7 +225,15 @@ const favoriteExercises = computed<Exercise[]>(() => {
 const getExerciseById = (id: string): Exercise | undefined => store.exercises.find((ex) => ex.id === id)
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .progress-page {
+  &-main {
+    &__avatar {
+      //height: 150px;
+      //width: 40%;
+      width: 100%;
+      height: auto;
+    }
+  }
 }
 </style>

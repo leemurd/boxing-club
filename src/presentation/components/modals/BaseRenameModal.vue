@@ -1,19 +1,11 @@
 <template>
   <base-modal @close="onCancel">
     <template #header>
-<!--      <h2 class="h4 text-center w-100">-->
-        Enter new title
-<!--      </h2>-->
+      Enter new title
     </template>
     <template #body>
-<!--      <input-->
-<!--        ref="input"-->
-<!--        v-model="localValue"-->
-<!--        class="form-input w-100 text-center"-->
-<!--        type="text"-->
-<!--      >-->
       <b-input
-        :model-value="localValue"
+        v-model="localValue"
         autofocus
         class="w-100 text-center"
       />

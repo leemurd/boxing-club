@@ -1,24 +1,21 @@
-// src/stores/themeStore.ts
+// src/presentation/stores/themeStore.ts
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import { getAuth } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { db } from '@/infrastructure/firebase/firebaseConfig'
+import { getUserId } from '@/presentation/utils/getUserId'
 
 export const useThemeStore = defineStore('theme', () => {
   const isDarkTheme = ref(false)
-  // Загрузка из localStorage при инициализации
-  const storedTheme = localStorage.getItem('darkTheme')
-  if (storedTheme !== null) {
-    isDarkTheme.value = storedTheme === 'true'
-  }
 
-  // Следим за изменениями и обновляем атрибут, localStorage и Firebase
+  const stored = localStorage.getItem('darkTheme')
+  if (stored !== null) isDarkTheme.value = stored === 'true'
+
   watch(
     isDarkTheme,
     (newVal) => {
       document.documentElement.setAttribute('data-bs-theme', newVal ? 'dark' : 'light')
-      localStorage.setItem('darkTheme', newVal.toString())
+      localStorage.setItem('darkTheme', String(newVal))
       saveThemeToFirebase(newVal)
     },
     { immediate: true }
@@ -28,28 +25,23 @@ export const useThemeStore = defineStore('theme', () => {
     isDarkTheme.value = !isDarkTheme.value
   }
 
+  /** Загружает из users/{userId}.preferences.darkTheme */
   async function loadThemeFromFirebase() {
-    const auth = getAuth()
-    const user = auth.currentUser
-    if (user) {
-      const prefDoc = doc(db, 'preferences', user.uid)
-      const snap = await getDoc(prefDoc)
-      if (snap.exists()) {
-        const data = snap.data()
-        if (typeof data.darkTheme === 'boolean') {
-          isDarkTheme.value = data.darkTheme
-        }
-      }
+    const userId = await getUserId()
+    const userDoc = doc(db, 'users', userId)
+    const snap = await getDoc(userDoc)
+    if (!snap.exists()) return
+    const prefs = snap.data().preferences
+    if (prefs?.darkTheme != null) {
+      isDarkTheme.value = prefs.darkTheme
     }
   }
 
+  /** Сохраняет в users/{userId}.preferences.darkTheme */
   async function saveThemeToFirebase(theme: boolean) {
-    const auth = getAuth()
-    const user = auth.currentUser
-    if (user) {
-      const prefDoc = doc(db, 'preferences', user.uid)
-      await setDoc(prefDoc, { darkTheme: theme }, { merge: true })
-    }
+    const userId = await getUserId()
+    const userDoc = doc(db, 'users', userId)
+    await setDoc(userDoc, { preferences: { darkTheme: theme } }, { merge: true })
   }
 
   return {

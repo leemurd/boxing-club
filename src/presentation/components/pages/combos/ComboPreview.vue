@@ -11,13 +11,22 @@
           class="text-muted small ms-auto"
         >Empty</span>
 
-        <b-button
-          v-else
-          color="red"
-          outline
-          size="small"
-          @click="$emit('clear')"
-        >Clear</b-button>
+        <div v-else>
+          <b-button
+            color="red"
+            outline
+            size="small"
+            @click="$emit('clear')"
+          >Clear</b-button>
+
+          <b-button
+            color="red"
+            outline
+            size="small"
+            class="ms-2"
+            @click="$emit('clear-last')"
+          >Delete last one</b-button>
+        </div>
       </div>
     </template>
     <template
@@ -47,7 +56,8 @@ defineProps<{
 }>()
 
 defineEmits<{
-  (e: 'clear'): void
+  (e: 'clear'): void,
+  (e: 'clear-last'): void
 }>()
 </script>
 

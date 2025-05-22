@@ -1,32 +1,41 @@
 <template>
-  <div class="d-flex flex-column gap-2">
-    <div class="input-group input-group-sm">
-      <span
-        id="inputGroup-sizing-sm"
-        class="input-group-text col justify-content-center"
-      >Number of actions:</span>
+  <div class="d-flex flex-column">
+    <div class="small text-muted mb-1">or generate random combo (beta-version)</div>
 
-      <b-input
-        :model-value="iterations"
-        type="number"
-        class="text-center col"
-        @update:model-value="$emit('update:iterations', $event)"
-      />
-    </div>
+    <b-card>
+      <div class="d-flex flex-column w-100 gap-1">
+        <b-button
+          size="medium"
+          color="secondary"
+          @click="$emit('on-generate')"
+        >
+          <span class="small">Generate combo</span>
+        </b-button>
 
-    <b-button
-      color="blue"
-      class="w-100"
-      outline
-      size="small"
-      @click="$emit('on-generate')"
-    >Generate random combo</b-button>
+        <span class="small">with</span>
+
+        <b-dropdown
+          :model-value="iterations"
+          :items="comboRandomItems"
+          size="medium"
+          color="secondary"
+          class="w-100"
+          @update:model-value="$emit('update:iterations', $event)"
+        >
+          <template #btn-text="{ modelValueLabel }">
+            <span class="small">{{ modelValueLabel }}</span>
+          </template>
+        </b-dropdown>
+      </div>
+    </b-card>
   </div>
 </template>
 
 <script setup lang="ts">
 import BButton from '@/presentation/components/shared/BButton.vue'
-import BInput from '@/presentation/components/shared/BInput.vue'
+import BCard from '@/presentation/components/shared/BCard.vue'
+import { comboRandomItems } from '@/presentation/constants/combo/data.ts'
+import BDropdown from '@/presentation/components/shared/BDropdown.vue'
 
 withDefaults(defineProps<{
   iterations?: number,
@@ -38,8 +47,5 @@ defineEmits<{
   (e: 'on-generate'): void,
   (e: 'update:iterations', value: number): void
 }>()
+
 </script>
-
-<style scoped lang="scss">
-
-</style>

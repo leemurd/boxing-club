@@ -1,7 +1,6 @@
 // src/presentation/stores/comboStore.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { container } from '@/infrastructure/di/container'
 import { TYPES } from '@/infrastructure/di/types'
 import type { Combination } from '@/domain/entities/Combination'
 import { useAuthStore } from './authStore'
@@ -11,6 +10,7 @@ import { DeleteCombinationUseCase } from '@/application/useCases/combination/Del
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import type { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase.ts'
 import { getUserId } from '@/presentation/utils/getUserId.ts'
+import { getUC } from '@/infrastructure/di/resolver.ts'
 
 export const useComboStore = defineStore('combo', () => {
   const combos = ref<Combination[]>([])
@@ -25,7 +25,7 @@ export const useComboStore = defineStore('combo', () => {
       const filtered = comboItem.categoryIds.filter((id) => categoryStore.list.some((cat) => cat.id === id))
       if (filtered.length !== comboItem.categoryIds.length) {
         comboItem.categoryIds = filtered
-        const updateUC = container.get<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase)
+        const updateUC = getUC<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase)
         await updateUC.execute(userId, comboItem)
       }
     }
@@ -35,18 +35,18 @@ export const useComboStore = defineStore('combo', () => {
 
   async function load() {
     const userId = await getUserId()
-    combos.value = await container.get<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase).execute(userId)
+    combos.value = await getUC<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase).execute(userId)
   }
 
   async function save(combo: Combination) {
     const userId = authStore.currentUser!.id
-    await container.get<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).execute(userId, combo)
+    await getUC<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).execute(userId, combo)
     await load()
   }
 
   async function remove(comboId: string) {
     const userId = authStore.currentUser!.id
-    await container.get<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).execute(userId, comboId)
+    await getUC<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).execute(userId, comboId)
     await load()
   }
 

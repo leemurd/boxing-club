@@ -1,49 +1,87 @@
+// src/presentation/stores/categoryStore.ts
+
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { Category } from '@/domain/entities/Category'
-import { GetCategoriesUseCase } from '@/application/useCases/category/GetCategoriesUseCase.ts'
-import { CreateCategoryUseCase } from '@/application/useCases/category/CreateCategoryUseCase.ts'
-import { UpdateCategoryUseCase } from '@/application/useCases/category/UpdateCategoryUseCase.ts'
-import { DeleteCategoryUseCase } from '@/application/useCases/category/DeleteCategoryUseCase.ts'
-import { useComboStore } from '@/presentation/stores/comboStore.ts'
-import { useAuthStore } from '@/presentation/stores/authStore.ts'
+import { TYPES } from '@/infrastructure/di/types'
+import type { Category } from '@/domain/entities/Category'
+import { useComboStore } from '@/presentation/stores/comboStore'
 import { getUserId } from '@/presentation/utils/getUserId'
 
+import type { GetCategoriesUseCase } from '@/application/useCases/category/GetCategoriesUseCase'
+import type { CreateCategoryUseCase } from '@/application/useCases/category/CreateCategoryUseCase'
+import type { UpdateCategoryUseCase } from '@/application/useCases/category/UpdateCategoryUseCase'
+import type { DeleteCategoryUseCase } from '@/application/useCases/category/DeleteCategoryUseCase'
+import type { GetCategoryByIdUseCase } from '@/application/useCases/category/GetCategoryByIdUseCase.ts'
+import { useToast } from 'vue-toastification'
+import { getUC } from '@/infrastructure/di/resolver.ts'
+import type { Combination } from '@/domain/entities/Combination.ts'
+
+const toast = useToast()
+
 export const useCategoryStore = defineStore('category', () => {
-  const authStore = useAuthStore()
   const list = ref<Category[]>([])
   const comboStore = useComboStore()
 
+  // Получаем экземпляры use-case’ов из DI-контейнера
+  const getCategoriesUC = getUC<GetCategoriesUseCase>(TYPES.GetCategoriesUseCase)
+  const createCategoryUC = getUC<CreateCategoryUseCase>(TYPES.CreateCategoryUseCase)
+  const updateCategoryUC = getUC<UpdateCategoryUseCase>(TYPES.UpdateCategoryUseCase)
+  const deleteCategoryUC = getUC<DeleteCategoryUseCase>(TYPES.DeleteCategoryUseCase)
+  const getCategoryByIdUC = getUC<GetCategoryByIdUseCase>(TYPES.GetCategoryByIdUseCase)
+
+  /** Загружает все категории текущего пользователя */
   async function load() {
     const userId = await getUserId()
-    list.value = await GetCategoriesUseCase.execute(userId)
+    list.value = await getCategoriesUC.execute(userId)
   }
 
+  /** Создаёт новую категорию и добавляет её в список */
   async function add(name: string) {
-    const userId = authStore.currentUser!.id
-    const cat = await CreateCategoryUseCase.execute(userId, name)
+    const userId = await getUserId()
+    const cat = await createCategoryUC.execute(userId, name)
     list.value.push(cat)
+    toast.info('Category has been created')
   }
 
-  async function rename(category: Category) {
-    const userId = authStore.currentUser!.id
-    await UpdateCategoryUseCase.execute(userId, category)
+  /** Переименовывает категорию */
+  async function update(category: Category) {
+    const userId = await getUserId()
+    await updateCategoryUC.execute(userId, category)
     const idx = list.value.findIndex((c) => c.id === category.id)
     if (idx >= 0) list.value[idx] = category
+    else return
+    toast.info('Category updated')
   }
 
+  /** Удаляет категорию, очищает её у комбо и из списка */
   async function remove(id: string) {
-    const userId = authStore.currentUser!.id
-    await DeleteCategoryUseCase.execute(userId, id)
+    const userId = await getUserId()
+    await deleteCategoryUC.execute(userId, id)
     list.value = list.value.filter((c) => c.id !== id)
-    await comboStore.removeDeletedCategories()
+    // Обновляем комбо, убирая удалённый id из их categoryIds
+    if (comboStore.removeDeletedCategories) {
+      await comboStore.removeDeletedCategories()
+    }
+    toast.info('Category has been removed')
+  }
+
+  async function getById(categoryId: string) {
+    const userId = await getUserId()
+    const res = await getCategoryByIdUC.execute(userId, categoryId)
+    return res
+  }
+
+  const getCombosByCategoryId = (categoryId: string): Combination[] => {
+    return comboStore.combos.filter((c) => c.categoryIds.includes(categoryId))
   }
 
   return {
     list,
     load,
     add,
-    rename,
-    remove
+    update,
+    remove,
+    getById,
+    getCombosByCategoryId
   }
 })

@@ -17,8 +17,9 @@
     <list-group
       :items="categoryStore.list"
       item-val="name"
-      :primary-callback="openEditCategoryModal"
+      :primary-callback="openCategory"
       :secondary-callback="removeCategory"
+      item-link
     />
   </div>
 </template>
@@ -31,20 +32,26 @@ import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import { Category } from '@/domain/entities/Category.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
+import { useRouter } from 'vue-router'
 
 const categoryStore = useCategoryStore()
 const modal = useModalService()
+const router = useRouter()
 
 onMounted(() => {
   categoryStore.load()
 })
+
+const openCategory = (cat: Category) => {
+  router.push(`/combos/categories/${cat.id}`)
+}
 
 
 const openEditCategoryModal = (category: Category) => {
   modal.openModalByKey(ModalKey.BASE_RENAME, {
     title: category.name,
     onSave: (name: string) => {
-      categoryStore.rename({
+      categoryStore.update({
         ...category,
         name: name
       })
@@ -62,6 +69,11 @@ const openAddCategoryModal = () => {
 }
 
 const removeCategory = (id: string) => {
-  categoryStore.remove(id)
+  modal.openModalByKey(ModalKey.CONFIRMATION, {
+    title: 'Confirm delete',
+    message: 'Are you sure?',
+    onApply: () => categoryStore.remove(id)
+  })
+
 }
 </script>

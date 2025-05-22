@@ -1,6 +1,6 @@
 import { ExerciseCategory } from '@/domain/entities/Exercise.ts'
 
-export interface TrainingRecord {
+export interface Record {
   id?: string // Firestore генерирует ID
   userId: string
   exerciseId: string

@@ -32,11 +32,11 @@
       <button
         class="btn btn-secondary"
         @click="onCancel"
-      >Отмена</button>
+      >Cancel</button>
       <button
         class="btn btn-primary"
         @click="save"
-      >Сохранить</button>
+      >Select</button>
     </template>
   </base-modal>
 </template>
