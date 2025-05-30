@@ -1,7 +1,7 @@
 <!-- src/presentation/components/modals/TagSelectorModal.vue -->
 <template>
   <base-modal title="Select Tags">
-    <div class="mb-3">
+    <template #body>
       <div
         v-for="tag in tagStore.list"
         :key="tag.id"
@@ -15,13 +15,13 @@
           :value="tag.id"
         >
         <label
-          class="form-check-label"
+          class="form-check-label form-label"
           :for="tag.id"
         >
           {{ tag.name }}
         </label>
       </div>
-    </div>
+    </template>
     <template #footer>
       <button
         class="btn btn-secondary"

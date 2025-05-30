@@ -2,7 +2,6 @@
   <div
     ref="root"
     class="dropdown dropdown-center"
-    @click.stop.prevent
   >
     <b-button
       ref="toggleEl"
@@ -65,6 +64,7 @@ import {
 import Dropdown from 'bootstrap/js/dist/dropdown'
 import type { ButtonColor, ButtonSize } from '@/presentation/components/shared/types.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import { onClickOutside } from '@vueuse/core'
 
 export interface DropdownItem {
   label: string
@@ -90,9 +90,6 @@ defineOptions({
   inheritAttrs: false
 })
 
-// const root = ref<HTMLElement>()
-// const toggleEl = ref<Component>()
-
 const root = useTemplateRef<HTMLElement>('root')
 const toggleEl = useTemplateRef<Component>('toggleEl')
 const attrs = useAttrs()
@@ -107,6 +104,11 @@ const modelValueLabel = computed(() => {
 onMounted(() => {
   if (toggleEl.value) {
     bsDropdown = new Dropdown(toggleEl.value.$el)
+    console.log(bsDropdown)
+
+    onClickOutside(toggleEl.value?.$el, () => {
+      bsDropdown?.hide()
+    })
   } else {
     console.warn('Dropdown не смонтирован')
   }

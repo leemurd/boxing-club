@@ -20,6 +20,7 @@
             item-val="title"
             item-id="id"
             item-link
+            no-border
             :primary-callback="openCombo"
           >
             <template #actions="{ item }">

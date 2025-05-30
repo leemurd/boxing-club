@@ -140,7 +140,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ExerciseCategory, type Exercise } from '@/domain/entities/Exercise'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore'
@@ -154,26 +154,27 @@ const exStore = useExerciseStore()
 const tagStore = useTagStore()
 const modal = useModalService()
 
-const id = route.params.id as string | undefined
-const isNew = !id
+const id = ref(route.params.id as string | undefined)
+const isNew = ref(!id.value)
 
 const categories = Object.values(ExerciseCategory)
 
 const form = reactive<Exercise>({
-  id:              id || '',
+  id:              id.value || '',
   name:            '',
   category:        ExerciseCategory.PHYSICS,
   measurement:     'repetitions',
   canBeWeighted:   false,
   canBeAccelerated:false,
   tagIds:          [],
-  isFavorite:      false
+  isFavorite:      false,
+  canHaveCombo: false
 })
 
 onMounted(async () => {
   await tagStore.load()
-  if (!isNew) {
-    await exStore.loadById(id!)
+  if (!isNew.value) {
+    await exStore.loadById(id.value!)
     const {current} = exStore
     if (current) Object.assign(form, current)
   }
@@ -190,12 +191,12 @@ function openTagModal() {
 }
 
 async function onSave() {
-  if (isNew) {
+  if (isNew.value) {
     await exStore.createExercise(form)
   } else {
     await exStore.updateExercise(form)
   }
-  router.push({ name: 'Exercises' })
+  await router.push({ name: 'Exercises' })
 }
 
 function onCancel() {

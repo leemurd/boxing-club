@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { TYPES } from '@/infrastructure/di/types'
 import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
@@ -19,6 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userRepo = getUC<IUserRepository>(TYPES.IUserRepository)
   const auth = getAuth()
   const recordStore = useRecordStore()
+  const isDarkMode = computed(() => useThemeStore().isDarkTheme)
 
   function init() {
     onAuthStateChanged(auth, async (user) => {
@@ -84,6 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
     init,
     login,
     register,
-    logout
+    logout,
+    isDarkMode
   }
 })

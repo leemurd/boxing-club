@@ -11,7 +11,8 @@
       :key="item[itemId]"
       class="list-group-item d-flex align-items-center"
       :class="{
-        'cursor-pointer list-group-item-action': itemLink
+        // 'cursor-pointer list-group-item-action': itemLink
+        'cursor-pointer': itemLink
       }"
       @click="primaryAction(item)"
     >
@@ -24,8 +25,9 @@
         <b-dropdown
           is-action-btn
           outline
-          color="secondary"
-          size="medium"
+          color="link"
+          size="small"
+          @click.prevent.stop
         >
           <template #btn-text>
             <i class="bi bi-three-dots-vertical"/>
@@ -85,7 +87,6 @@
 </template>
 
 <script setup lang="ts">
-import BButton from '@/presentation/components/shared/BButton.vue'
 import BDropdown from '@/presentation/components/shared/BDropdown.vue'
 
 const props = withDefaults(defineProps<{
