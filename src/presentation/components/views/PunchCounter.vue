@@ -11,7 +11,7 @@
           size="large"
           @click="startManualRecording"
         >
-          Record
+          TrainingRecord
         </b-button>
       </div>
 
@@ -24,7 +24,7 @@
       <div
         class="timer-controls"
       >
-        <label for="intervalSelect">Record with timer:</label>
+        <label for="intervalSelect">TrainingRecord with timer:</label>
         <select
           id="intervalSelect"
           v-model.number="selectedInterval"

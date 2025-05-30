@@ -1,103 +1,106 @@
 // src/presentation/stores/exerciseStore.ts
 import { defineStore } from 'pinia'
-import { TYPES } from '@/infrastructure/di/types'
-import type { LogExerciseUseCase } from '@/application/useCases/exercise/LogExerciseUseCase.ts'
-import type { GetUserStatsUseCase } from '@/application/useCases/user/GetUserStatsUseCase.ts'
-import type { GetExerciseHistoryUseCase } from '@/application/useCases/exercise/GetExerciseHistoryUseCase.ts'
-import type { Record } from '@/domain/entities/Record.ts'
-import type { ManageFavoriteExercisesUseCase } from '@/application/useCases/exercise/ManageFavoriteExercisesUseCase.ts'
 import { ref } from 'vue'
-import type { Exercise } from '@/domain/entities/Exercise.ts'
-import { TimeRange } from '@/presentation/components/shared/types.ts'
-import { useToast } from 'vue-toastification'
-import { getUserId } from '@/presentation/utils/getUserId.ts'
-import { getUC } from '@/infrastructure/di/resolver.ts'
-
-const toast = useToast()
+import { container } from '@/infrastructure/di/container'
+import { TYPES } from '@/infrastructure/di/types'
+import type { Exercise } from '@/domain/entities/Exercise'
+import { getUserId } from '@/presentation/utils/getUserId'
+import { EXERCISES } from '@/domain/constants/exercises'
+import type { GetExercisesUseCase } from '@/application/useCases/exercise/GetExercisesUseCase'
+import type { GetExerciseByIdUseCase } from '@/application/useCases/exercise/GetExerciseByIdUseCase'
+import type { CreateExerciseUseCase } from '@/application/useCases/exercise/CreateExerciseUseCase'
+import type { UpdateExerciseUseCase } from '@/application/useCases/exercise/UpdateExerciseUseCase'
+import type { DeleteExerciseUseCase } from '@/application/useCases/exercise/DeleteExerciseUseCase'
 
 export const useExerciseStore = defineStore('exercise', () => {
-  const stats = ref()
-  const history = ref<Record[]>([])
-  const favorites = ref<string[]>([])
   const exercises = ref<Exercise[]>([])
+  const current = ref<Exercise | null>(null)
+  const loading = ref(false)
 
-  async function logExercise(exerciseId: string, amount: number, unit: 'minutes' | 'repetitions') {
+  /** Загрузка всех упражнений (дефолтных + пользовательских) */
+  async function loadAll() {
     const userId = await getUserId()
     if (!userId) return
+    loading.value = true
     try {
-      await getUC<LogExerciseUseCase>(TYPES.LogExerciseUseCase).execute(userId, exerciseId, amount, unit)
-      await loadStats()
-    } catch (err) {
-      toast.error(err)
+      const uc = container.get<GetExercisesUseCase>(TYPES.GetExercisesUseCase)
+      const res = await uc.execute(userId)
+      exercises.value = [...EXERCISES, ...res]
+    } finally {
+      loading.value = false
     }
-  }
-  async function loadStats() {
-    const userId = await getUserId()
-    if (!userId) return
-    try {
-      stats.value = await getUC<GetUserStatsUseCase>(TYPES.GetUserStatsUseCase).execute(userId)
-    } catch (err) {
-      toast.error(err)
-    }
-  }
-  async function loadHistory(days: number) {
-    const userId = await getUserId()
-    if (!userId) return
-    try {
-      history.value = await getUC<GetExerciseHistoryUseCase>(TYPES.GetExerciseHistoryUseCase).execute(userId, days)
-    } catch (err) {
-      toast.error(err)
-    }
-  }
-  async function loadFavorites() {
-    const userId = await getUserId()
-    if (!userId) return
-    try {
-      favorites.value = await getUC<ManageFavoriteExercisesUseCase>(TYPES.ManageFavoriteExercisesUseCase).getFavorites(userId)
-    } catch (err) {
-      toast.error(err)
-    }
-  }
-  async function updateFavorites(favs: string[]) {
-    const userId = await getUserId()
-    if (!userId) return
-    try {
-      await getUC<ManageFavoriteExercisesUseCase>(TYPES.ManageFavoriteExercisesUseCase).updateFavorites(userId, favs)
-      favorites.value = favs
-    } catch (err) {
-      toast.error(err)
-    }
-  }
-  function getStatsForPeriod(exerciseId: string, timeRange: TimeRange): number {
-    if (!stats.value) return 0
-    const stat = stats.value[exerciseId]
-    if (!stat) return 0
-    return timeRange === 'today' ? stat.today : stat.total
-  }
-  async function loadExercises() {
-    const { EXERCISES } = await import('@/domain/constants/exercises')
-    exercises.value = EXERCISES
   }
 
-  function clearStats() {
-    stats.value = undefined
-    history.value = []
-    favorites.value = []
-    exercises.value = []
+  /** Загрузка одного упражнения по ID */
+  async function loadById(id: string) {
+    const userId = await getUserId()
+    if (!userId) return
+    loading.value = true
+    try {
+      const uc = container.get<GetExerciseByIdUseCase>(TYPES.GetExerciseByIdUseCase)
+      current.value = await uc.execute(userId, id)
+    } finally {
+      loading.value = false
+    }
   }
+
+  /** Создание нового упражнения */
+  async function createExercise(ex: Exercise) {
+    const userId = await getUserId()
+    if (!userId) return
+    loading.value = true
+    try {
+      const uc = container.get<CreateExerciseUseCase>(TYPES.CreateExerciseUseCase)
+      const created = await uc.execute(userId, ex)
+      exercises.value.push(created)
+      return created
+    } finally {
+      loading.value = false
+    }
+  }
+
+  /** Обновление существующего упражнения */
+  async function updateExercise(ex: Exercise) {
+    const userId = await getUserId()
+    if (!userId) return
+    loading.value = true
+    try {
+      const uc = container.get<UpdateExerciseUseCase>(TYPES.UpdateExerciseUseCase)
+      await uc.execute(userId, ex)
+      const idx = exercises.value.findIndex((e) => e.id === ex.id)
+      if (idx !== -1) exercises.value.splice(idx, 1, ex)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  /** Удаление упражнения по ID */
+  async function removeExercise(id: string) {
+    const userId = await getUserId()
+    if (!userId) return
+    loading.value = true
+    try {
+      const uc = container.get<DeleteExerciseUseCase>(TYPES.DeleteExerciseUseCase)
+      await uc.execute(userId, id)
+      exercises.value = exercises.value.filter((e) => e.id !== id)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const getExerciseById = (id: string): Exercise | undefined => exercises.value.find(
+    (ex) => ex.id ===id
+  )
 
   return {
-    stats,
-    history,
-    favorites,
     exercises,
-    logExercise,
-    loadStats,
-    loadHistory,
-    loadFavorites,
-    updateFavorites,
-    getStatsForPeriod,
-    loadExercises,
-    clearStats
+    current,
+    loading,
+    loadAll,
+    loadById,
+    createExercise,
+    updateExercise,
+    removeExercise,
+    getExerciseById
   }
 })

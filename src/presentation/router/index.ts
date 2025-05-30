@@ -6,7 +6,7 @@ import Login from '@/presentation/components/views/auth/Login.vue'
 import NotFoundPage from '@/presentation/components/views/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/views/PunchCounter.vue'
-import ExercisesPage from '@/presentation/components/views/ExercisesPage.vue'
+import ExercisesPage from '@/presentation/components/views/exercises/ExercisesPage.vue'
 import ProgressPage from '@/presentation/components/views/ProgressPage.vue'
 import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
 import ComboListPage from '@/presentation/components/views/combos/ComboListPage.vue'
@@ -16,6 +16,7 @@ import CategoryListPage from '@/presentation/components/views/combos/CategoryLis
 import CategoryEditPage from '@/presentation/components/views/combos/CategoryEditPage.vue'
 import TagListPage from '@/presentation/components/views/tags/TagListPage.vue'
 import TagEditPage from '@/presentation/components/views/tags/TagEditPage.vue'
+import ExerciseEditPage from '@/presentation/components/views/exercises/ExerciseEditPage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -33,28 +34,42 @@ const routes: RouteRecordRaw[] = [
     name: 'Exercises',
     component: RouterViewWithSlots,
     beforeEnter: requireAuth,
+    // component: ExercisesPage,
     meta: {
       name: 'Exercises',
-      tags: ['userRoute']
+      tags: ['userRoute'],
+      requiresAuth: true
     },
     redirect: '/exercises/index',
     children: [
       {
         path: '/exercises/index',
-        name: 'Exercises page',
+        name: 'ExercisesIndex',
         component: ExercisesPage,
         meta: {
           name: 'Exercises'
         }
       },
       {
-        path: '/rounds',
-        name: 'Exercises rounds',
-        component: ExercisesPage,
-        meta: {
-          name: 'Exercises rounds'
-        }
-      }
+        path: '/exercises/new',
+        name: 'ExerciseCreate',
+        component: ExerciseEditPage,
+        // meta: { requiresAuth: true }
+      },
+      {
+        path: '/exercises/:id',
+        name: 'ExerciseEdit',
+        component: ExerciseEditPage,
+        // meta: { requiresAuth: true }
+      },
+      // {
+      //   path: '/exercises//rounds',
+      //   name: 'Exercises rounds',
+      //   component: ExerciseEditPage,
+      //   meta: {
+      //     name: 'Exercises rounds'
+      //   }
+      // }
     ]
   },
   {

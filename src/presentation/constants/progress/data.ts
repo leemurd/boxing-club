@@ -2,15 +2,15 @@ import { TimeRange } from '@/presentation/components/shared/types.ts'
 
 export const dateRangeItems = [
   {
-    label: 'Today',
+    label: 'Day',
     value: TimeRange.TODAY
   },
   {
-    label: 'Last 7 days',
+    label: '7 days',
     value: TimeRange.WEEK
   },
   {
-    label: 'last 30 days',
+    label: '30 days',
     value: TimeRange.MONTH
   },
   {

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+  <nav class="navbar navbar-expand-lg bg-secondary-subtle fixed-top">
     <div class="container-fluid">
       <router-link
         class="navbar-brand d-flex align-items-center"
@@ -70,17 +70,17 @@
             </li>
           </ul>
 
-          <ul class="navbar-nav flex-grow-1">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="#"
-                @click.stop.prevent="toggleTimerFunc(toggleTimerVisible)"
-              >
-                {{ isTimerVisible ? 'Hide' : 'Show' }} timer
-              </a>
-            </li>
-          </ul>
+          <!--          <ul class="navbar-nav flex-grow-1">-->
+          <!--            <li class="nav-item">-->
+          <!--              <a-->
+          <!--                class="nav-link"-->
+          <!--                href="#"-->
+          <!--                @click.stop.prevent="toggleTimerFunc(toggleTimerVisible)"-->
+          <!--              >-->
+          <!--                {{ isTimerVisible ? 'Hide' : 'Show' }} timer-->
+          <!--              </a>-->
+          <!--            </li>-->
+          <!--          </ul>-->
         </div>
       </div>
     </div>
@@ -185,6 +185,9 @@ watch(() => route.name, () => {
       font-size: 20px;
       font-weight: 500;
       transition: font-size 0.3s;
+      @include media-breakpoint-up(lg) {
+        font-size: 14px;
+      }
     }
   }
 }

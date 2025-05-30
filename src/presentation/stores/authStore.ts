@@ -6,7 +6,7 @@ import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { User } from '@/domain/entities/User'
 import { useThemeStore } from '@/presentation/stores/themeStore.ts'
-import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
+import { useRecordStore } from '@/presentation/stores/recordStore.ts'
 import { getUC } from '@/infrastructure/di/resolver.ts'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
   const authRepo = getUC<IAuthRepository>(TYPES.IAuthRepository)
   const userRepo = getUC<IUserRepository>(TYPES.IUserRepository)
   const auth = getAuth()
-  const exerciseStore = useExerciseStore()
+  const recordStore = useRecordStore()
 
   function init() {
     onAuthStateChanged(auth, async (user) => {
@@ -46,13 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function register(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    nickname: string
-  ) {
+  async function register(email: string, password: string, firstName: string, lastName: string, nickname: string) {
     try {
       const result = await authRepo.signUp(email, password)
       const { uid } = result.user
@@ -76,7 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
       await authRepo.signOut()
       error.value = ''
       isLoggedIn.value = false
-      exerciseStore.clearStats()
+      recordStore.clearStats()
     } catch (err: any) {
       error.value = err.message
     }

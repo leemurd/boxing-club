@@ -1,11 +1,11 @@
-import { ExerciseCategory } from '@/domain/entities/Exercise.ts'
+import { ExerciseCategory, type MeasurementUnit } from '@/domain/entities/Exercise.ts'
 
-export interface Record {
+export interface TrainingRecord {
   id?: string // Firestore генерирует ID
   userId: string
   exerciseId: string
   category: ExerciseCategory
-  measurement: 'minutes' | 'repetitions'
+  measurement: MeasurementUnit
   amount: number
   timestamp: string // ISO строка
 }

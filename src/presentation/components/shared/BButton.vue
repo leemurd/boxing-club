@@ -23,33 +23,18 @@ import {
 
 const themeStore = useThemeStore()
 
-const BtnColorDarkMap: Record<ButtonColor, string> = {
-  primary: 'primary', //
-  secondary: 'secondary',
-  blue: 'primary',
-  green: 'success',
-  dark: 'light', //
-  red: 'danger',
-  light: 'dark', //
-  info: 'info',
-  warning: 'warning',
-  link: 'link',
-}
-
-const BtnColorMap: Record<ButtonColor, string> = {
+const colorMap = computed<Record<ButtonColor, string>>(() => ({
   primary: 'primary',
   secondary: 'secondary',
   blue: 'primary',
   green: 'success',
-  dark: 'dark',
+  dark: themeStore.isDarkTheme? 'light' : 'dark',
   red: 'danger',
-  light: 'light',
+  light: themeStore.isDarkTheme? 'dark' : 'light',
   info: 'info',
   warning: 'warning',
-  link: 'link',
-}
-
-const colorMap = computed(() => themeStore.isDarkTheme ? BtnColorDarkMap : BtnColorMap)
+  link: 'link'
+}))
 
 withDefaults(defineProps<{
   tag?: string;
@@ -66,7 +51,11 @@ withDefaults(defineProps<{
 </script>
 
 <style scoped lang="scss">
-@import "bootstrap/scss/mixins";
+@import '@/presentation/styles/mixins';
+
+.btn {
+  @include slabFont;
+}
 
 @include color-mode('dark') {
   .btn-link {

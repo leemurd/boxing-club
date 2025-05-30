@@ -1,9 +1,8 @@
 @import "imports";
 @import "_custom-variables";
+@import "_custom-bootstrap";
 @import "mixins";
 @import "typography";
-
-//var(--bs-body-bg): #1b1e20;
 
 html, body {
   min-height: 100%;
@@ -19,12 +18,10 @@ html, body {
   @include slabFont;
 }
 
-// #1b1e20
-
 [data-bs-theme=dark] {
   body {
-    --bs-body-bg: #1b1e20;
-    background-color: var(--bs-body-bg);
+    background-color: $dark-bg-subtle-dark;
+    color: $body-color-dark;
   }
 }
 

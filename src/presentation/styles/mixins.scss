@@ -1,5 +1,7 @@
+@import "bootstrap/scss/mixins";
+
 @mixin slabFont {
-  font-family: "Roboto Slab", serif;
+  font-family: "Roboto Slab", serif!important;
   font-optical-sizing: auto;
   font-style: normal;
 }

@@ -1,13 +1,9 @@
-import type { Record } from '@/domain/entities/Record'
+import type { Exercise } from '@/domain/entities/Exercise'
 
 export interface IExerciseRepository {
-  logExercise(userId: string, exerciseId: string, amount: number, unit: 'minutes' | 'repetitions'): Promise<void>
-
-  getUserStats(userId: string): Promise<{ [exerciseId: string]: { today: number; total: number } }>
-
-  getExerciseHistory(userId: string, days: number): Promise<Record[]>
-
-  getFavoriteExercises(userId: string): Promise<string[]>
-
-  updateFavoriteExercises(userId: string, favorites: string[]): Promise<void>
+  getAll(userId: string): Promise<Exercise[]>
+  getById(userId: string, id: string): Promise<Exercise | null>
+  create(userId: string, exercise: Exercise): Promise<Exercise>
+  update(userId: string, exercise: Exercise): Promise<void>
+  delete(userId: string, id: string): Promise<void>
 }

@@ -4,12 +4,18 @@ export enum ExerciseCategory {
   PRACTICE = 'Practice'
 }
 
-export type MeasurementUnit = 'minutes' | 'repetitions'
+export type MeasurementUnit = 'seconds' | 'repetitions'
 
 export interface Exercise {
   id: string
   name: string
   category: ExerciseCategory
   measurement: MeasurementUnit
-  isCustom?: boolean // true, если упражнение создано пользователем
+  /** Может ли выполняться с дополнительным весом */
+  canBeWeighted: boolean
+  /** Может ли выполняться в ускорённом темпе */
+  canBeAccelerated: boolean
+  tagIds: string[]
+  isFavorite: boolean
+  canHaveCombo: boolean
 }

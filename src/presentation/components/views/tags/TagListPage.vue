@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div>
     <div class="d-flex mb-3">
       <input
         v-model="newName"
@@ -15,30 +15,19 @@
       </button>
     </div>
 
-    <!-- Список тегов -->
-    <ul class="list-group">
-      <li
-        v-for="tag in tagStore.list"
-        :key="tag.id"
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span>{{ tag.name }}</span>
-        <div>
-          <button
-            class="btn btn-sm btn-outline-secondary me-2"
-            @click="goEdit(tag.id)"
-          >
-            Ред.
-          </button>
-          <button
-            class="btn btn-sm btn-outline-danger"
-            @click="removeTag(tag.id)"
-          >
-            Удал.
-          </button>
-        </div>
-      </li>
-    </ul>
+    <list-group
+      :items="tagStore.list"
+      :primary-callback="goEdit"
+      :secondary-callback="removeTag"
+    >
+      <template #icon>
+        <i class="bi bi-bookmark"/>
+      </template>
+      <template #actions="{ item }">
+        <b-dropdown-item @click="goEdit(item)">Edit</b-dropdown-item>
+        <b-dropdown-item @click="removeTag(item.id)">Delete</b-dropdown-item>
+      </template>
+    </list-group>
   </div>
 </template>
 
@@ -46,6 +35,9 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTagStore } from '@/presentation/stores/tagStore'
+import ListGroup from '@/presentation/components/shared/ListGroup.vue'
+import type { Tag } from '@/domain/entities/Tag.ts'
+import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 
 const tagStore = useTagStore()
 const router = useRouter()
@@ -63,10 +55,12 @@ async function addTag() {
   newName.value = ''
 }
 
-function goEdit(id: string) {
+// function goEdit(id: string) {
+function goEdit(tag: Tag) {
+  console.log(tag)
   router.push({
     name: 'TagEdit',
-    params: { id }
+    params: { id: tag.id }
   })
 }
 

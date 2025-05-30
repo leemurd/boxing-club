@@ -1,156 +1,138 @@
+<!-- src/presentation/components/views/EnemyCard.vue -->
 <template>
   <div class="enemy-card">
-    <div class="row">
-      <div class="col">
-        <h6>Кто выше?</h6>
-        <b-button-group
-          v-model="heightRelation"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="sizeKeys"
-        >
-          <template #default="{ item }">
-            {{ sizeMap[item] }}
-          </template>
-        </b-button-group>
-      </div>
 
-      <div class="col">
-        <h6>Кто тяжелее?</h6>
-        <b-button-group
-          v-model="weightRelation"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="sizeKeys"
-        >
-          <template #default="{ item }">
-            {{ sizeMap[item] }}
-          </template>
-        </b-button-group>
-      </div>
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Кто выше?</div>
+      <b-button-group
+        v-model="heightRelation"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="sizeKeys"
+      >
+        <template #default="{ item }">{{ sizeMap[item] }}</template>
+      </b-button-group>
+    </div>
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Кто тяжелее?</div>
+      <b-button-group
+        v-model="weightRelation"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="sizeKeys"
+      >
+        <template #default="{ item }">{{ sizeMap[item] }}</template>
+      </b-button-group>
     </div>
 
-    <!--    <div class="d-flex">-->
-    <div class="row">
-      <div
-        class="col-6 d-flex flex-column"
+
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Stance (Я)</div>
+      <b-button-group
+        v-model="myHandedness"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="stanceKeys"
       >
-        <h6>Я</h6>
-        <b-button-group
-          v-model="myHandedness"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="stanceKeys"
-        >
-          <template #default="{ item }">
-            {{ stanceMap[item] }}
-          </template>
-        </b-button-group>
-
-        <h6>Стиль</h6>
-        <b-button-group
-          v-model="myStyle"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="boxingStyleKeys"
-        >
-          <template #default="{ item }">
-            {{ boxingStyleMap[item] }}
-          </template>
-        </b-button-group>
-
-        <h6>Руки</h6>
-        <b-button-group
-          v-model="myGuard"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="boxingGuardKeys"
-        >
-          <template #default="{ item }">
-            {{ boxingGuardMap[item] }}
-          </template>
-        </b-button-group>
-      </div>
-
-      <div
-        class="col-6 d-flex flex-column"
-      >
-        <h6>Противник</h6>
-
-        <b-button-group
-          v-model="oppHandedness"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="stanceKeys"
-        >
-          <template #default="{ item }">
-            {{ stanceMap[item] }}
-          </template>
-        </b-button-group>
-
-        <h6>Стиль</h6>
-        <b-button-group
-          v-model="oppStyle"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="boxingStyleKeys"
-        >
-          <template #default="{ item }">
-            {{ boxingStyleMap[item] }}
-          </template>
-        </b-button-group>
-
-        <h6>Руки</h6>
-        <b-button-group
-          v-model="oppGuard"
-          color="light"
-          vertical
-          size="small"
-          class="w-100 mb-4"
-          :items="boxingGuardKeys"
-        >
-          <template #default="{ item }">
-            {{ boxingGuardMap[item] }}
-          </template>
-        </b-button-group>
-      </div>
+        <template #default="{ item }">{{ stanceMap[item] }}</template>
+      </b-button-group>
     </div>
-    <!--    </div>-->
+
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Стиль (Я)</div>
+      <b-button-group
+        v-model="myStyle"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="boxingStyleKeys"
+      >
+        <template #default="{ item }">{{ boxingStyleMap[item] }}</template>
+      </b-button-group>
+    </div>
+
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Руки (Я)</div>
+      <b-button-group
+        v-model="myGuard"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="boxingGuardKeys"
+      >
+        <template #default="{ item }">{{ boxingGuardMap[item] }}</template>
+      </b-button-group>
+    </div>
+
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Stance (Противник)</div>
+      <b-button-group
+        v-model="oppHandedness"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="stanceKeys"
+      >
+        <template #default="{ item }">{{ stanceMap[item] }}</template>
+      </b-button-group>
+    </div>
+
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Стиль (Противник)</div>
+      <b-button-group
+        v-model="oppStyle"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="boxingStyleKeys"
+      >
+        <template #default="{ item }">{{ boxingStyleMap[item] }}</template>
+      </b-button-group>
+    </div>
+
+    <div class="enemy-card__item">
+      <div class="form-label text-center">Руки (Противник)</div>
+      <b-button-group
+        v-model="oppGuard"
+        color="light"
+        vertical
+        size="small"
+        class="w-100"
+        :items="boxingGuardKeys"
+      >
+        <template #default="{ item }">{{ boxingGuardMap[item] }}</template>
+      </b-button-group>
+    </div>
 
     <b-button
-      color="dark"
-      class="mb-3 w-100"
+      color="primary"
+      class="w-100"
       size="large"
       @click="calculateStrategy"
     >
       Get strategy
     </b-button>
 
-    <ul v-if="strategyResult?.length">
+    <ul v-if="strategyResult.length">
       <li
-        v-for="(item, key) in strategyResult"
-        :key="key"
+        v-for="(item, idx) in strategyResult"
+        :key="idx"
       >
         {{ item }}
       </li>
     </ul>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
@@ -222,5 +204,7 @@ function calculateStrategy() {
 .enemy-card {
   display: flex;
   flex-direction: column;
+  padding: 0 20px;
+  gap: 30px;
 }
 </style>

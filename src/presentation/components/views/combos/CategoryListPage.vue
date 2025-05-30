@@ -5,7 +5,7 @@
         color="dark"
         @click="openAddCategoryModal"
       >
-        Add new category
+        New category
       </b-button>
 
       <b-button
@@ -20,7 +20,15 @@
       :primary-callback="openCategory"
       :secondary-callback="removeCategory"
       item-link
-    />
+    >
+      <template #icon>
+        <i class="bi bi-folder2-open"/>
+      </template>
+      <template #actions="{ item }">
+        <b-dropdown-item @click="openCategory(item)">Edit</b-dropdown-item>
+        <b-dropdown-item @click="removeCategory(item.id)">Remove</b-dropdown-item>
+      </template>
+    </list-group>
   </div>
 </template>
 
@@ -33,6 +41,7 @@ import { Category } from '@/domain/entities/Category.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import { useRouter } from 'vue-router'
+import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 
 const categoryStore = useCategoryStore()
 const modal = useModalService()

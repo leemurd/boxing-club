@@ -6,13 +6,13 @@
         color="dark"
         @click="$router.push({ name: 'ComboNew' })"
       >
-        Add new combo
+        New combo
       </b-button>
 
       <b-button
         color="link"
         @click="$router.push({name: 'ComboCategories'})"
-      >Categories</b-button>
+      >Open categories</b-button>
     </div>
 
     <list-group
@@ -21,7 +21,12 @@
       :primary-callback="onEditCombo"
       :secondary-callback="remove"
       item-link
-    />
+    >
+      <template #actions="{ item }">
+        <b-dropdown-item @click="onEditCombo(item)">Edit</b-dropdown-item>
+        <b-dropdown-item @click="remove(item.id)">Remove</b-dropdown-item>
+      </template>
+    </list-group>
   </div>
 </template>
 
@@ -33,6 +38,7 @@ import { useRouter } from 'vue-router'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
+import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 
 const comboStore = useComboStore()
 const router = useRouter()

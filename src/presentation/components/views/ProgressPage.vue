@@ -6,160 +6,121 @@
       no-padding
     >
       <template #header>
-        <h6 class="card-title mb-0">Wolf</h6>
+        <div class="d-flex align-items-center">
+          <h6 class="card-title mb-0">
+            {{ userStore.currentUser?.firstName }} {{ userStore.currentUser?.lastName }}
+          </h6>
+
+          <div class="ms-auto">
+            <b-dropdown
+              v-model="timeRange"
+              outline
+              size="small"
+              :items="dateRangeItems"
+            />
+          </div>
+        </div>
       </template>
-      <div class="row mt-3">
-        <div class="col">
+      <div class="mt-3">
+        <div class="">
           <img
             :src="avatarImg"
             class="progress-page-main__avatar"
           >
         </div>
-        <div class="col">
-          <div class="card-title mb-2 text-body-secondary">
-            {{ userStore.currentUser?.firstName }} {{ userStore.currentUser?.lastName }}
+        <div class="col-12">
+          <div class="card-body px-4">
+            <b-card no-border>
+              <div class="h1 mb-3 text-center">Skills</div>
+              <div class="d-flex flex-column gap-2">
+                <div class="">
+                  <div class="progress-page__line-title">Physics: 21 (+2)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="10"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Practice: 14 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Cardio: 14 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Hands: 14 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Legs: 14 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Add. weight: 14 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Press: 10 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+                <div class="">
+                  <div class="progress-page__line-title">Back: 10 (-1)</div>
+                  <progress-line
+                    :old-value="25"
+                    :progress-value="-5"
+                    :height="5"
+                  />
+                </div>
+              </div>
+            </b-card>
           </div>
-          <div class="card-text text-muted">
-            <span class="small">Physics: 21 (+2)</span>
-            <div
-              class="progress-stacked"
-              style="height: 10px"
-            >
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment one"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 25%; height: 10px"
-              >
-                <div class="progress-bar bg-light"/>
-              </div>
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment two"
-                aria-valuenow="10"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 10%; height: 10px"
-              >
-                <div class="progress-bar bg-success"/>
-              </div>
-            </div>
-            <span class="small">Technic: 19 (+1)</span>
-            <div
-              class="progress-stacked"
-              style="height: 10px"
-            >
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment one"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 25%; height: 10px"
-              >
-                <div class="progress-bar bg-light"/>
-              </div>
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment two"
-                aria-valuenow="5"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 5%; height: 10px"
-              >
-                <div class="progress-bar bg-success"/>
-              </div>
-            </div>
-            <span class="small">Practice: 14 (-1)</span>
-            <div
-              class="progress-stacked"
-              style="height: 10px"
-            >
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment one"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 25%; height: 10px"
-              >
-                <div class="progress-bar bg-light"/>
-              </div>
-              <div
-                class="progress"
-                role="progressbar"
-                aria-label="Segment two"
-                aria-valuenow="5"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 5%; height: 10px"
-              >
-                <div class="progress-bar bg-danger"/>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </b-card>
 
-
-    <div class="mb-3 mt-3">
-      <label
-        for="timeRange"
-        class="form-label"
-      >Time Range:</label>
-      <b-dropdown
-        v-model="timeRange"
-        outline
-        size="small"
-        :items="dateRangeItems"
-      />
-    </div>
-
-    <!-- Блок "Избранные упражнения" -->
-    <div
-      v-if="favoriteExercises?.length"
-      class="mb-4"
-    >
-      <h4>Favorite Exercises</h4>
-      <ul class="list-group">
-        <li
-          v-for="exercise in favoriteExercises"
-          :key="exercise.id"
-          class="list-group-item"
-        >
-          {{ exercise.name }}: {{ getStats(exercise.id, 'today') }}
-          <small class="text-muted">
-            ({{ exercise.measurement }})
-          </small>
-        </li>
-      </ul>
-    </div>
-
     <!-- Статистика по упражнениям -->
     <div class="mb-4">
-      <h4>Statistics</h4>
+      <h4>Exercises stats</h4>
       <ul class="list-group">
         <template
           v-for="exercise in exercises"
           :key="exercise.id"
         >
+          <!--            v-if="getStats(exercise.id, TimeRange.ALL)"-->
           <li
-            v-if="getStats(exercise.id, TimeRange.ALL)"
-            class="list-group-item small py-1 px-2"
+            class="list-group-item small py-1 px-2 d-flex"
           >
-            {{ exercise.name }}:
-            <small class="text-muted">
+            <div class="text-truncate me-2">
+              {{ exercise.name }}
+            </div>
+            <small class="text-muted ms-auto flex-shrink-0">
               {{ timeRange }}: {{ getStats(exercise.id, timeRange) }},
-              total: {{ getStats(exercise.id, TimeRange.ALL) }}
             </small>
           </li>
         </template>
@@ -185,7 +146,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
+import { useRecordStore } from '@/presentation/stores/recordStore.ts'
 import { type Exercise } from '@/domain/entities/Exercise.ts'
 import { onUserLoaded } from '@/presentation/utils/onUserLoaded.ts'
 import { TimeRange } from '@/presentation/components/shared/types.ts'
@@ -197,30 +158,31 @@ import { useAuthStore } from '@/presentation/stores/authStore.ts'
 // import avatarImg from '@/presentation/assets/avatar.svg'
 // import avatarImg from '@/presentation/assets/avatar-fill.svg'
 import avatarImg from '@/presentation/assets/avatar-colored.svg'
+import ProgressLine from '@/presentation/components/shared/ProgressLine.vue'
 
-const store = useExerciseStore()
+const store = useRecordStore()
 const userStore = useAuthStore()
 const timeRange = ref<TimeRange>(dateRangeItems[0].value)
+const recordStore = useRecordStore()
 
 onUserLoaded(async () => {
-  await store.loadStats()
-  await store.loadExercises()
-  await store.loadHistory(30)
-  await store.loadFavorites()
+  await recordStore.loadStats()
+  await recordStore.loadExercises()
+  await recordStore.loadHistory(30)
+  // await trainingStore.loadFavorites()
 })
 
 const exercises = computed<Exercise[]>(() => store.exercises)
 const history = computed(() => store.history)
 
-// Для простоты используем один метод, который возвращает статистику для упражнения
 function getStats(exerciseId: string, period: TimeRange): number {
-  if (exerciseId) return store.getStatsForPeriod(exerciseId, period || timeRange.value)
-  else return 0
+  if (exerciseId) {
+    return store.getStatsForPeriod(exerciseId, period || timeRange.value)
+  }
+  else {
+    return 0
+  }
 }
-
-const favoriteExercises = computed<Exercise[]>(() => {
-  return store.exercises.filter((ex) => store.favorites.includes(ex.id))
-})
 
 const getExerciseById = (id: string): Exercise | undefined => store.exercises.find((ex) => ex.id === id)
 </script>
@@ -229,11 +191,14 @@ const getExerciseById = (id: string): Exercise | undefined => store.exercises.fi
 .progress-page {
   &-main {
     &__avatar {
-      //height: 150px;
-      //width: 40%;
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 200px;
     }
+  }
+  &__line-title {
+    font-size: $font-size-root;
+    text-align: center;
+    margin-bottom: 4px;
   }
 }
 </style>

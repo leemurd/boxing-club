@@ -99,7 +99,6 @@ async function saveCombo() {
 watch(() => comboStore.combos, async (arr) => {
   if (arr.length !== 0) {
     await loadCombo()
-    console.log('Combo list loaded')
   }
 }, { immediate: true })
 

@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 
-const props = defineProps({
+defineProps({
   visible: {
     type: Boolean,
     default: false
@@ -59,10 +59,6 @@ function handleApply() {
   .modal-container {
     border: 1px solid $border-color-dark!important;
   }
-  //.modal-body {
-  //  //color: $gray-300;
-  //  color: var(--bs-body-color);
-  //}
 }
 
 .modal-container {

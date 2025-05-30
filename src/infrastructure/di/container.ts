@@ -22,12 +22,24 @@ import { CombinationRepositoryImpl } from '@/infrastructure/data/CombinationRepo
 
 import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository'
 import { CategoryRepositoryImpl } from '@/infrastructure/data/CategoryRepositoryImpl'
-// Use-cases — упражнений
+
+import type { ITrainingRepository } from '@/domain/repositories/ITrainingRepository'
+import { TrainingRepositoryImpl } from '@/infrastructure/data/TrainingRepositoryImpl'
+
+import type { ITagRepository } from '@/domain/repositories/ITagRepository.ts'
+import { TagRepositoryImpl } from '@/infrastructure/data/TagRepositoryImpl.ts'
+// Use-cases — прогресс
+import { ManageFavoriteExercisesUseCase } from '@/application/useCases/record/ManageFavoriteExercisesUseCase.ts'
+import { LogExerciseUseCase } from '@/application/useCases/record/LogExerciseUseCase.ts'
 import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase'
-import { LogExerciseUseCase } from '@/application/useCases/exercise/LogExerciseUseCase'
-import { GetUserStatsUseCase } from '@/application/useCases/user/GetUserStatsUseCase'
-import { GetExerciseHistoryUseCase } from '@/application/useCases/exercise/GetExerciseHistoryUseCase'
-import { ManageFavoriteExercisesUseCase } from '@/application/useCases/exercise/ManageFavoriteExercisesUseCase'
+import { GetExerciseHistoryUseCase } from '@/application/useCases/record/GetExerciseHistoryUseCase.ts'
+import { GetUserStatsUseCase } from '@/application/useCases/record/GetUserStatsUseCase.ts'
+// Use-cases — упражнений
+import { GetExercisesUseCase } from '@/application/useCases/exercise/GetExercisesUseCase'
+import { GetExerciseByIdUseCase } from '@/application/useCases/exercise/GetExerciseByIdUseCase'
+import { CreateExerciseUseCase } from '@/application/useCases/exercise/CreateExerciseUseCase'
+import { UpdateExerciseUseCase } from '@/application/useCases/exercise/UpdateExerciseUseCase'
+import { DeleteExerciseUseCase } from '@/application/useCases/exercise/DeleteExerciseUseCase'
 // Use-cases — комбо
 import { GetCombinationsUseCase } from '@/application/useCases/combination/GetCombinationsUseCase'
 import { SaveCombinationUseCase } from '@/application/useCases/combination/SaveCombinationUseCase'
@@ -44,8 +56,6 @@ import { CreateTagUseCase } from '@/application/useCases/tag/CreateTagUseCase.ts
 import { DeleteTagUseCase } from '@/application/useCases/tag/DeleteTagUseCase.ts'
 import { GetTagByIdUseCase } from '@/application/useCases/tag/GetTagByIdUseCase.ts'
 import { UpdateTagUseCase } from '@/application/useCases/tag/UpdateTagUseCase.ts'
-import type { ITagRepository } from '@/domain/repositories/ITagRepository.ts'
-import { TagRepositoryImpl } from '@/infrastructure/data/TagRepositoryImpl.ts'
 
 const container = new Container()
 
@@ -56,11 +66,13 @@ container.bind(TYPES.FirebaseApp).toConstantValue(firebaseApp)
 container.bind<IBoxingActionRepository>(TYPES.IPunchRepository).to(BoxingActionRepositoryMock).inSingletonScope()
 container.bind<IAuthRepository>(TYPES.IAuthRepository).to(AuthRepositoryFirebase).inSingletonScope()
 container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepositoryFirebase).inSingletonScope()
-container.bind<IExerciseRepository>(TYPES.ExerciseRepository).to(ExerciseRepositoryImpl).inSingletonScope()
+container.bind<IExerciseRepository>(TYPES.IExerciseRepository).to(ExerciseRepositoryImpl).inSingletonScope()
 container.bind<ICombinationRepository>(TYPES.CombinationRepository).to(CombinationRepositoryImpl).inSingletonScope()
 container.bind<ICategoryRepository>(TYPES.ICategoryRepository).to(CategoryRepositoryImpl).inSingletonScope()
 container.bind<ITagRepository>(TYPES.ITagRepository).to(TagRepositoryImpl).inSingletonScope()
-// --- Use Cases: упражнений ---
+container.bind<ITrainingRepository>(TYPES.ITrainingRepository).to(TrainingRepositoryImpl).inSingletonScope()
+
+// --- Use Cases: progress ---
 container.bind<GetPunchesUseCase>(TYPES.GetPunchesUseCase).to(GetPunchesUseCase).inSingletonScope()
 container.bind<LogExerciseUseCase>(TYPES.LogExerciseUseCase).to(LogExerciseUseCase).inSingletonScope()
 container.bind<GetUserStatsUseCase>(TYPES.GetUserStatsUseCase).to(GetUserStatsUseCase).inSingletonScope()
@@ -69,6 +81,12 @@ container
   .bind<ManageFavoriteExercisesUseCase>(TYPES.ManageFavoriteExercisesUseCase)
   .to(ManageFavoriteExercisesUseCase)
   .inSingletonScope()
+// --- Use Cases: упражнений ---
+container.bind<GetExercisesUseCase>(TYPES.GetExercisesUseCase).to(GetExercisesUseCase).inSingletonScope()
+container.bind<GetExerciseByIdUseCase>(TYPES.GetExerciseByIdUseCase).to(GetExerciseByIdUseCase).inSingletonScope()
+container.bind<CreateExerciseUseCase>(TYPES.CreateExerciseUseCase).to(CreateExerciseUseCase).inSingletonScope()
+container.bind<UpdateExerciseUseCase>(TYPES.UpdateExerciseUseCase).to(UpdateExerciseUseCase).inSingletonScope()
+container.bind<DeleteExerciseUseCase>(TYPES.DeleteExerciseUseCase).to(DeleteExerciseUseCase).inSingletonScope()
 // --- Use Cases: комбо ---
 container.bind<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase).to(GetCombinationsUseCase).inSingletonScope()
 container.bind<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).to(SaveCombinationUseCase).inSingletonScope()

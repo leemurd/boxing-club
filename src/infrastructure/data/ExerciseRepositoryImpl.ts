@@ -1,79 +1,71 @@
+// src/infrastructure/data/ExerciseRepositoryImpl.ts
+import { injectable } from 'inversify'
+import { getFirestore, collection, doc, getDocs, getDoc, addDoc, setDoc, deleteDoc, DocumentReference } from 'firebase/firestore'
 import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
-import type { Record } from '@/domain/entities/Record'
-import { db } from '@/infrastructure/firebase/firebaseConfig'
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
-import { ExerciseCategory, type MeasurementUnit } from '@/domain/entities/Exercise.ts'
-import { EXERCISES } from '@/domain/constants/exercises.ts'
+import type { Exercise } from '@/domain/entities/Exercise'
+import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
 
+@injectable()
 export class ExerciseRepositoryImpl implements IExerciseRepository {
-  private logsCollection(userId: string) {
-    return collection(db, `users/${userId}/exerciseLogs`)
+  private db = getFirestore(firebaseApp)
+  private col(userId: string) {
+    return collection(this.db, 'users', userId, 'exercises')
   }
 
-  private userDoc(userId: string) {
-    return doc(db, 'users', userId)
+  async getAll(userId: string): Promise<Exercise[]> {
+    const snap = await getDocs(this.col(userId))
+    return snap.docs.map((d) => ({
+      id: d.id,
+      ...(d.data() as Omit<Exercise, 'id'>)
+    }))
   }
 
-  async logExercise(userId: string, exerciseId: string, amount: number, unit: MeasurementUnit): Promise<void> {
-    const timestamp = new Date().toISOString()
-    const newRecord: Omit<Record, 'id'> = {
-      userId,
-      exerciseId,
-      category: EXERCISES.find((item) => item.id === exerciseId)?.category || ExerciseCategory.PHYSICS,
-      measurement: unit,
-      amount,
-      timestamp
+  async getById(userId: string, id: string): Promise<Exercise | null> {
+    const ref = doc(this.db, 'users', userId, 'exercises', id)
+    const snap = await getDoc(ref)
+    if (!snap.exists()) return null
+    return {
+      id: snap.id,
+      ...(snap.data() as Omit<Exercise, 'id'>)
     }
-    await setDoc(doc(this.logsCollection(userId)), newRecord)
   }
 
-  async getUserStats(userId: string): Promise<{ [exerciseId: string]: { today: number; total: number } }> {
-    const logsSnapshot = await getDocs(this.logsCollection(userId))
-    const stats: { [exerciseId: string]: { today: number; total: number } } = {}
-    const todayStr = new Date().toDateString()
-
-    logsSnapshot.forEach((docSnap) => {
-      const data = docSnap.data() as Record
-      const exId = data.exerciseId
-      if (!stats[exId]) {
-        stats[exId] = {
-          today: 0,
-          total: 0
-        }
-      }
-      stats[exId].total += data.amount
-      if (new Date(data.timestamp).toDateString() === todayStr) {
-        stats[exId].today += data.amount
-      }
+  async create(userId: string, exercise: Exercise): Promise<Exercise> {
+    const colRef = this.col(userId)
+    const ref: DocumentReference = await addDoc(colRef, {
+      name: exercise.name,
+      category: exercise.category,
+      measurement: exercise.measurement,
+      canBeWeighted: exercise.canBeWeighted,
+      canBeAccelerated: exercise.canBeAccelerated,
+      tagIds: exercise.tagIds,
+      isFavorite: exercise.isFavorite
     })
-    return stats
+    return {
+      ...exercise,
+      id: ref.id
+    }
   }
 
-  async getExerciseHistory(userId: string, days: number): Promise<Record[]> {
-    const logsSnapshot = await getDocs(this.logsCollection(userId))
-    const startDate = new Date()
-    startDate.setDate(startDate.getDate() - days)
-    const history: Record[] = []
-    logsSnapshot.forEach((docSnap) => {
-      const data = docSnap.data() as Record
-      if (new Date(data.timestamp) >= startDate) {
-        history.push({
-          id: docSnap.id,
-          ...data
-        })
-      }
-    })
-    // Сортируем по убыванию времени
-    history.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-    return history
+  async update(userId: string, exercise: Exercise): Promise<void> {
+    const ref = doc(this.db, 'users', userId, 'exercises', exercise.id)
+    await setDoc(
+      ref,
+      {
+        name: exercise.name,
+        category: exercise.category,
+        measurement: exercise.measurement,
+        canBeWeighted: exercise.canBeWeighted,
+        canBeAccelerated: exercise.canBeAccelerated,
+        tagIds: exercise.tagIds,
+        isFavorite: exercise.isFavorite
+      },
+      { merge: true }
+    )
   }
 
-  async getFavoriteExercises(userId: string): Promise<string[]> {
-    const userSnap = await getDoc(this.userDoc(userId))
-    return userSnap.exists() ? userSnap.data()?.favorites || [] : []
-  }
-
-  async updateFavoriteExercises(userId: string, favorites: string[]): Promise<void> {
-    await setDoc(this.userDoc(userId), { favorites }, { merge: true })
+  async delete(userId: string, id: string): Promise<void> {
+    const ref = doc(this.db, 'users', userId, 'exercises', id)
+    await deleteDoc(ref)
   }
 }

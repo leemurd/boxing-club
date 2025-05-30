@@ -21,7 +21,11 @@
             item-id="id"
             item-link
             :primary-callback="openCombo"
-          />
+          >
+            <template #actions="{ item }">
+              <b-dropdown-item @click="openCombo(item)">Edit</b-dropdown-item>
+            </template>
+          </list-group>
           <div
             v-else
             class="p-2 text-center"
@@ -34,7 +38,7 @@
               size="small"
               class="m-auto"
               @click="createCombo"
-            >Create new Combo</b-button>
+            >New Combo</b-button>
           </div>
         </template>
       </b-card>
@@ -66,6 +70,7 @@ import type { Category } from '@/domain/entities/Category.ts'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import BCard from '@/presentation/components/shared/BCard.vue'
+import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 
 const route = useRoute()
 const router = useRouter()

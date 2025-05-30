@@ -1,31 +1,84 @@
 <template>
-  <ul class="list-group list-group-flush list-group-numbered">
+  <ul
+    class="list-group"
+    :class="{
+      'list-group-numbered': numbered,
+      'list-group-flush': noBorder,
+    }"
+  >
     <li
       v-for="item in items"
       :key="item[itemId]"
       class="list-group-item d-flex align-items-center"
-      :class="{'cursor-pointer list-group-item-action': itemLink}"
+      :class="{
+        'cursor-pointer list-group-item-action': itemLink
+      }"
       @click="primaryAction(item)"
     >
-      {{ item[itemVal] }}
+      <slot name="icon"/>
+      <span
+        :class="{'ms-2': $slots['icon']}"
+      >{{ item[itemVal] }}</span>
 
       <div class="ms-auto">
-        <b-button
-          v-if="primaryAction"
-          size="small"
-          color="blue"
-          class="me-2"
-          @click="primaryAction(item)"
-        >Edit</b-button>
-
-        <b-button
-          v-if="secondaryCallback"
-          color="red"
-          size="small"
-          @click.stop.prevent="secondaryCallback(item[itemId])"
+        <b-dropdown
+          is-action-btn
+          outline
+          color="secondary"
+          size="medium"
         >
-          <i class="bi bi-x-lg"/>
-        </b-button>
+          <template #btn-text>
+            <i class="bi bi-three-dots-vertical"/>
+          </template>
+          <template #menu>
+            <slot
+              name="actions"
+              v-bind="{ item }"
+            >
+              <!--              <li><button-->
+              <!--                class="dropdown-item"-->
+              <!--                type="button"-->
+              <!--              >Action</button></li>-->
+              <!--              <li><button-->
+              <!--                class="dropdown-item"-->
+              <!--                type="button"-->
+              <!--              >Another action</button></li>-->
+              <!--                <b-button-->
+              <!--                  v-if="primaryAction"-->
+              <!--                  size="small"-->
+              <!--                  color="blue"-->
+              <!--                  class="me-2"-->
+              <!--                  @click="primaryAction(item)"-->
+              <!--                >Edit</b-button>-->
+
+              <!--                <b-button-->
+              <!--                  v-if="secondaryCallback"-->
+              <!--                  color="red"-->
+              <!--                  size="small"-->
+              <!--                  @click.stop.prevent="secondaryCallback(item[itemId])"-->
+              <!--                >-->
+              <!--                  <i class="bi bi-x-lg"/>-->
+              <!--                </b-button>-->
+            </slot>
+          </template>
+        </b-dropdown>
+
+        <!--        <b-button-->
+        <!--          v-if="primaryAction"-->
+        <!--          size="small"-->
+        <!--          color="blue"-->
+        <!--          class="me-2"-->
+        <!--          @click="primaryAction(item)"-->
+        <!--        >Edit</b-button>-->
+
+        <!--        <b-button-->
+        <!--          v-if="secondaryCallback"-->
+        <!--          color="red"-->
+        <!--          size="small"-->
+        <!--          @click.stop.prevent="secondaryCallback(item[itemId])"-->
+        <!--        >-->
+        <!--          <i class="bi bi-x-lg"/>-->
+        <!--        </b-button>-->
       </div>
     </li>
   </ul>
@@ -33,12 +86,15 @@
 
 <script setup lang="ts">
 import BButton from '@/presentation/components/shared/BButton.vue'
+import BDropdown from '@/presentation/components/shared/BDropdown.vue'
 
 const props = withDefaults(defineProps<{
   items: any[],
   itemId?: string,
   itemVal?: string,
   itemLink?: boolean,
+  numbered?: boolean,
+  noBorder?: boolean,
   primaryCallback?: (val?: any) => void,
   secondaryCallback?: (val?: any) => void,
 }>(), {

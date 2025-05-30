@@ -137,7 +137,6 @@ export default defineComponent({
 
     const clearLastAction = () => {
       emit('update:model-value', [...props.modelValue.slice(0,-1) ])
-      console.log(props.modelValue.slice(0, -1))
     }
 
     watch(selectedCategory, () => {

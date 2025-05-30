@@ -6,12 +6,19 @@ export const TYPES = {
   // user
   IAuthRepository: Symbol.for('IAuthRepository'),
   IUserRepository: Symbol.for('IUserRepository'),
-  // exercise
-  ExerciseRepository: Symbol.for('ExerciseRepository'),
+  // progress and records
+  ITrainingRepository: Symbol.for('ITrainingRepository'),
   LogExerciseUseCase: Symbol.for('LogExerciseUseCase'),
   GetUserStatsUseCase: Symbol.for('GetUserStatsUseCase'),
   GetExerciseHistoryUseCase: Symbol.for('GetExerciseHistoryUseCase'),
   ManageFavoriteExercisesUseCase: Symbol.for('ManageFavoriteExercisesUseCase'),
+  // exercise
+  IExerciseRepository: Symbol.for('IExerciseRepository'),
+  GetExercisesUseCase: Symbol.for('GetExercisesUseCase'),
+  GetExerciseByIdUseCase: Symbol.for('GetExerciseByIdUseCase'),
+  CreateExerciseUseCase: Symbol.for('CreateExerciseUseCase'),
+  UpdateExerciseUseCase: Symbol.for('UpdateExerciseUseCase'),
+  DeleteExerciseUseCase: Symbol.for('DeleteExerciseUseCase'),
 
   // combos
   CombinationRepository: Symbol.for('CombinationRepository'),

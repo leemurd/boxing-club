@@ -34,7 +34,7 @@ const inputRef = useTemplateRef('inputRef')
 const localValue = ref(props.modelValue)
 
 watch(() => props.modelValue, (value) => {
-  if (!value) return
+  // if (!value) return
   localValue.value = value
 }, { immediate: true })
 

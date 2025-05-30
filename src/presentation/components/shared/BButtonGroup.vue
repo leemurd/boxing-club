@@ -1,5 +1,4 @@
 <template>
-<!--    class="btn-group"-->
   <div
     v-if="localValue"
     :class="[
@@ -15,18 +14,20 @@
       :key="index"
     >
       <input
-        :id="`${exclusiveName}_${getOptionValue(item)}`"
+        :id="getExclusiveName(item)"
         v-model="localValue"
         type="radio"
         class="btn-check"
-        :name="exclusiveName"
+        :name="exclusiveName()"
         :value="getOptionValue(item)"
       >
       <b-button
         :color="color"
         :outline="outline"
         tag="label"
-        :for="`${exclusiveName}_${getOptionValue(item)}`"
+        class="btn-item"
+        :class="[item === modelValue ? 'active-item' : '']"
+        :for="getExclusiveName(item)"
         @click="selectItem(item)"
       >
         <slot v-bind="{ item }">
@@ -60,10 +61,18 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  'update:model-value': [val: boolean]
+  'update:model-value': [val: any]
 }>()
 
-const exclusiveName = (new Date().getMilliseconds() * Math.random()).toString().slice(0, 9)
+const exclusiveName = () => (new Date().getMilliseconds() * Math.random()).toString().slice(0, 9)
+
+const getExclusiveName = (item: any) => {
+  const num = exclusiveName()
+  const text = props.optionValue ? (item[props.optionValue] || item?.id) : item
+
+  return `${text}_${num}`
+}
+
 const localValue = ref()
 
 const getOptionValue = (item: any) => props.optionValue ? item[props.optionValue] : item
@@ -83,6 +92,8 @@ watch(() => props.modelValue, (value) => {
 </script>
 
 <style scoped lang="scss">
+@import '@/presentation/styles/mixins';
+
 .btn-group {
   // light
   .btn-light {
@@ -131,6 +142,13 @@ watch(() => props.modelValue, (value) => {
       background-color: $light-color-disabled;
       border-color: transparent;
     }
+
+    //&.active-item {
+    //  background-color: $primary!important;
+    //  color: $white;
+    //  border-left-color: $primary!important;
+    //  border-right-color: $primary!important;
+    //}
   }
   .btn-check:checked + .btn.btn-light {
     position: relative;
@@ -151,6 +169,13 @@ watch(() => props.modelValue, (value) => {
     &:last-of-type {
       border-bottom-color: $border-color-dark;
     }
+
+    //&.active-item {
+    //  background-color: $primary!important;
+    //  color: $white;
+    //  border-left-color: $primary!important;
+    //  border-right-color: $primary!important;
+    //}
   }
   .btn-check:checked + .btn-dark {
     position: relative;
