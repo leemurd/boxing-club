@@ -1,6 +1,6 @@
 export enum ExerciseCategory {
-  TECHNIQUE = 'Technique',
   PHYSICS = 'Physics',
+  TECHNIQUE = 'Technique',
   PRACTICE = 'Practice'
 }
 

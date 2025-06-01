@@ -13,6 +13,7 @@
           class="form-check-input"
           type="checkbox"
           :value="tag.id"
+          :disabled="tag.isAutomatic"
         >
         <label
           class="form-check-label form-label"

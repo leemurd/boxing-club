@@ -7,11 +7,11 @@
       >
         <img
           class="navbar-brand-logo"
-          :src="isDarkMode ? logoWhite : logo"
+          :src="logo"
           alt="My Boxing Logo"
         >
-        <!--        My Boxing App-->
-        Adidas Boxing
+        My Boxing App
+        <!--        Adidas Boxing-->
       </router-link>
 
       <button
@@ -90,9 +90,9 @@
 </template>
 
 <script setup lang="ts">
-// import logo from '@/presentation/assets/app-logo3.png'
-import logoWhite from '@/presentation/assets/adidas-logo-filled-white.svg'
-import logo from '@/presentation/assets/adidas-logo-filled.svg'
+import logo from '@/presentation/assets/app-logo3.png'
+// import logoWhite from '@/presentation/assets/adidas-logo-filled-white.svg'
+// import logo from '@/presentation/assets/adidas-logo-filled.svg'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { computed, onMounted, watch, ref } from 'vue'
@@ -104,7 +104,7 @@ import { storeToRefs } from 'pinia'
 // timer
 const timerStore = useTimerStore()
 const { isTimerVisible } = storeToRefs(timerStore)
-const { toggleTimerVisible } = timerStore
+// const { toggleTimerVisible } = timerStore
 // /timer
 
 const router = useRouter()
@@ -112,7 +112,7 @@ const authStore = useAuthStore()
 const routes = router.getRoutes()
 const route = useRoute()
 const isLoading = computed(() => authStore.loading)
-const isDarkMode = computed(() => authStore.isDarkMode)
+// const isDarkMode = computed(() => authStore.isDarkMode)
 
 const userRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('userRoute')))
 const authRoutes = computed(() => routes.filter((route) => route.meta?.tags?.includes('authRoute')))
@@ -141,10 +141,10 @@ onMounted(() => {
 })
 // end offCanvas
 
-const toggleTimerFunc = (callback: () => void) => {
-  callback()
-  closeOffcanvas()
-}
+// const toggleTimerFunc = (callback: () => void) => {
+//   callback()
+//   closeOffcanvas()
+// }
 
 watch(() => route.name, () => {
   window.scrollTo({
@@ -160,12 +160,12 @@ watch(() => route.name, () => {
 .navbar {
   &-brand {
     @include slabFont;
-    //font-weight: 500;
-    //font-size: 15px;
+    font-weight: 500;
+    font-size: 15px;
 
-    font-size: 19px;
-    font-weight: 900;
-    letter-spacing: 1.39px;
+    //font-size: 19px;
+    //font-weight: 900;
+    //letter-spacing: 1.39px;
     &-logo {
       height: 25px;
       width: auto;

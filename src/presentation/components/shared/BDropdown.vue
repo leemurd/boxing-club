@@ -104,7 +104,6 @@ const modelValueLabel = computed(() => {
 onMounted(() => {
   if (toggleEl.value) {
     bsDropdown = new Dropdown(toggleEl.value.$el)
-    console.log(bsDropdown)
 
     onClickOutside(toggleEl.value?.$el, () => {
       bsDropdown?.hide()

@@ -5,8 +5,7 @@
     <b-button-group
       v-model="selectedCategory"
       :items="categories"
-      color="secondary"
-      outline
+      color="light"
       class="mb-4 w-100"
     />
 
@@ -25,16 +24,16 @@
       </template>
     </b-button-group>
 
-    <!--    <div class="list-group mb-4">-->
-    <!--      <button-->
-    <!--        v-for="ex in filteredExercises"-->
-    <!--        :key="ex.id"-->
-    <!--        :class="['list-group-item', { active: ex.id === selectedExercise?.id }]"-->
-    <!--        @click="selectExercise(ex)"-->
-    <!--      >-->
-    <!--        {{ ex.name }}-->
-    <!--      </button>-->
-    <!--    </div>-->
+<!--        <div class="list-group mb-4">-->
+<!--          <button-->
+<!--            v-for="ex in filteredExercises"-->
+<!--            :key="ex.id"-->
+<!--            :class="['list-group-item', { active: ex.id === selectedExercise?.id }]"-->
+<!--            @click="selectExercise(ex)"-->
+<!--          >-->
+<!--            {{ ex.name }}-->
+<!--          </button>-->
+<!--        </div>-->
 
     <div v-if="selectedExercise">
       <h4 class="mb-3 text-center">
@@ -252,80 +251,4 @@ async function addRecord() {
   quantity.value = 0
 }
 function enqueue() {}
-</script>
-<!--<template>-->
-<!--  <div class="exercise-logger">-->
-<!--    <h6 class="text-center mb-3">{{ selectedExercise?.name }}</h6>-->
-<!--    <div class="small text-center text-muted">Add {{ selectedExercise?.measurement }}</div>-->
-
-<!--    <div class="d-flex gap-2 mb-2">-->
-<!--      <div class="col">-->
-<!--        <b-button-->
-<!--          color="secondary"-->
-<!--          outline-->
-<!--          class="px-3 w-100"-->
-<!--          @click="numOfRepetitions&#45;&#45;"-->
-<!--        >-</b-button>-->
-<!--      </div>-->
-<!--      <div class="col">-->
-<!--        <b-input-->
-<!--          v-model="numOfRepetitions"-->
-<!--          type="number"-->
-<!--          placeholder="Count"-->
-<!--          class="text-center"-->
-<!--        />-->
-<!--      </div>-->
-<!--      <div class="col">-->
-<!--        <b-button-->
-<!--          color="secondary"-->
-<!--          outline-->
-<!--          class="px-3 w-100"-->
-<!--          @click="numOfRepetitions++"-->
-<!--        >+</b-button>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <b-button-->
-<!--      color="primary"-->
-<!--      class="w-100"-->
-<!--      @click="logRepetitions(numOfRepetitions)"-->
-<!--    >-->
-<!--      Add progress-->
-<!--    </b-button>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script setup lang="ts">-->
-<!--import { ref } from 'vue'-->
-<!--import { useRecordStore } from '@/presentation/stores/exerciseStore.ts'-->
-<!--import type { Exercise } from '@/domain/entities/Exercise.ts'-->
-<!--import BInput from '@/presentation/components/shared/BInput.vue'-->
-<!--import BButton from '@/presentation/components/shared/BButton.vue'-->
-<!--import { useToast } from "vue-toastification"-->
-
-<!--const props = defineProps<{ selectedExercise: Exercise | null }>()-->
-<!--const store = useRecordStore()-->
-<!--const toast = useToast()-->
-<!--const numOfRepetitions = ref<number>(10)-->
-
-<!--// Повторения-->
-<!--const logRepetitions = async (amount: number) => {-->
-<!--  if (props.selectedExercise) {-->
-<!--    try {-->
-<!--      await store.logExercise(props.selectedExercise.id, amount, 'repetitions')-->
-<!--      toast.success(-->
-<!--        `${numOfRepetitions.value} ${props.selectedExercise?.measurement} of ${props.selectedExercise?.name} added successfully`-->
-<!--      )-->
-<!--    } catch (e) {-->
-<!--      toast.error(e)-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-
-<!--</script>-->
-
-<!--<style lang="scss" scoped>-->
-<!--.max-w50pr {-->
-<!--  max-width: 50%;-->
-<!--}-->
-<!--</style>-->
+</script>->

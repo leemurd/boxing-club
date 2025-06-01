@@ -1,5 +1,18 @@
 <template>
   <input
+    v-if="loading"
+    ref="inputRef"
+    :value="'Loading'"
+    :type="type"
+    class="form-control"
+    :class="{
+      [size ? `form-control-${size}` : '']: size,
+    }"
+    :placeholder="placeholder"
+    :disabled="disabled"
+  >
+  <input
+    v-else
     ref="inputRef"
     v-model="localValue"
     :type="type"
@@ -8,6 +21,7 @@
       [size ? `form-control-${size}` : '']: size,
     }"
     :placeholder="placeholder"
+    :disabled="disabled"
   >
 </template>
 
@@ -21,6 +35,8 @@ const props = withDefaults(defineProps<{
   required?: boolean,
   autofocus?: boolean,
   size?: 'sm' | '' | 'lg',
+  disabled?: boolean,
+  loading?: boolean,
 }>(), {
   type: 'text',
   size: ''

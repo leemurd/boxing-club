@@ -25,7 +25,8 @@ export class TagRepositoryImpl implements ITagRepository {
     const snap = await getDocs(this.col(userId))
     return snap.docs.map((d) => ({
       id: d.id,
-      name: d.data().name
+      name: d.data().name,
+      isAutomatic: !!d.data()?.isAutomatic || false
     }))
   }
 
@@ -46,7 +47,10 @@ export class TagRepositoryImpl implements ITagRepository {
     if (tag.id) {
       // Жёстко фиксированный ID: используем setDoc
       ref = doc(colRef, tag.id)
-      await setDoc(ref, { name: tag.name })
+      await setDoc(ref, {
+        name: tag.name,
+        isAutomatic: tag?.isAutomatic || false
+      })
       return tag
     } else {
       // Генерация нового ID

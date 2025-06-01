@@ -6,8 +6,8 @@ import Login from '@/presentation/components/views/auth/Login.vue'
 import NotFoundPage from '@/presentation/components/views/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/views/PunchCounter.vue'
-import ExercisesPage from '@/presentation/components/views/exercises/ExercisesPage.vue'
-import ProgressPage from '@/presentation/components/views/ProgressPage.vue'
+// import ExercisesPage from '@/presentation/components/views/exercises/ExercisesPage.vue'
+import ProgressPage from '@/presentation/components/views/progress/ProgressPage.vue'
 import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
 import ComboListPage from '@/presentation/components/views/combos/ComboListPage.vue'
 import ComboEditPage from '@/presentation/components/views/combos/ComboEditPage.vue'
@@ -17,17 +17,39 @@ import CategoryEditPage from '@/presentation/components/views/combos/CategoryEdi
 import TagListPage from '@/presentation/components/views/tags/TagListPage.vue'
 import TagEditPage from '@/presentation/components/views/tags/TagEditPage.vue'
 import ExerciseEditPage from '@/presentation/components/views/exercises/ExerciseEditPage.vue'
+import ExercisesIndex from '@/presentation/components/views/exercises/ExercisesIndex.vue'
+import NewRecord from '@/presentation/components/views/progress/NewRecord.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Progress',
-    component: ProgressPage,
+    // component: ProgressPage,
+    component: RouterViewWithSlots,
     beforeEnter: requireAuth,
     meta: {
       name: 'My Progress',
       tags: ['userRoute']
-    }
+    },
+    redirect: { name: 'ProgressPage' },
+    children: [
+      {
+        path: '/progress/record',
+        name: 'ProgressRecord',
+        component: NewRecord,
+        meta: {
+          name: 'Progress Record'
+        }
+      },
+      {
+        path: '/progress/index',
+        name: 'ProgressPage',
+        component: ProgressPage,
+        meta: {
+          name: 'My Progress'
+        }
+      }
+    ]
   },
   {
     path: '/exercises',
@@ -45,7 +67,8 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/exercises/index',
         name: 'ExercisesIndex',
-        component: ExercisesPage,
+        component: ExercisesIndex,
+        // component: ExercisesPage,
         meta: {
           name: 'Exercises'
         }
@@ -53,15 +76,15 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/exercises/new',
         name: 'ExerciseCreate',
-        component: ExerciseEditPage,
+        component: ExerciseEditPage
         // meta: { requiresAuth: true }
       },
       {
         path: '/exercises/:id',
         name: 'ExerciseEdit',
-        component: ExerciseEditPage,
+        component: ExerciseEditPage
         // meta: { requiresAuth: true }
-      },
+      }
       // {
       //   path: '/exercises//rounds',
       //   name: 'Exercises rounds',

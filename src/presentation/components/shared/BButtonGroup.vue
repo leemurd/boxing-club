@@ -46,6 +46,7 @@ import {
   type ButtonSize
 } from '@/presentation/components/shared/types.ts'
 import { onMounted, ref, watch } from 'vue'
+import { exclusiveName } from '@/presentation/utils/exclusiveName.ts'
 
 const props = withDefaults(defineProps<{
   modelValue: any,
@@ -63,8 +64,6 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
   'update:model-value': [val: any]
 }>()
-
-const exclusiveName = () => (new Date().getMilliseconds() * Math.random()).toString().slice(0, 9)
 
 const getExclusiveName = (item: any) => {
   const num = exclusiveName()

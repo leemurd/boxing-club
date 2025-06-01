@@ -18,7 +18,6 @@
       :items="categoryStore.list"
       item-val="name"
       :primary-callback="openCategory"
-      :secondary-callback="removeCategory"
       item-link
     >
       <template #icon>
@@ -53,19 +52,6 @@ onMounted(() => {
 
 const openCategory = (cat: Category) => {
   router.push(`/combos/categories/${cat.id}`)
-}
-
-
-const openEditCategoryModal = (category: Category) => {
-  modal.openModalByKey(ModalKey.BASE_RENAME, {
-    title: category.name,
-    onSave: (name: string) => {
-      categoryStore.update({
-        ...category,
-        name: name
-      })
-    }
-  })
 }
 
 const openAddCategoryModal = () => {

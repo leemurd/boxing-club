@@ -5,4 +5,5 @@ export interface Tag {
   id: string
   /** Название тега */
   name: string
+  isAutomatic?: boolean
 }

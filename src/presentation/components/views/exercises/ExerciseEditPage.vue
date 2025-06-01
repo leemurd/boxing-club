@@ -3,150 +3,151 @@
   <div class="">
     <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
 
-    <form @submit.prevent="onSave">
+    <div>
       <!-- Name -->
       <div class="mb-3">
         <label class="form-label">Name</label>
-        <input
+        <b-input
           v-model="form.name"
+          :loading="isLoading"
           type="text"
-          class="form-control"
           placeholder="Exercise name"
           required
-        >
+          :disabled="isDefault"
+        />
       </div>
 
       <!-- Category -->
       <div class="mb-3">
         <label class="form-label">Category</label>
-        <select
+        <b-select
           v-model="form.category"
-          class="form-select"
-        >
-          <option
-            v-for="cat in categories"
-            :key="cat"
-            :value="cat"
-          >
-            {{ cat }}
-          </option>
-        </select>
+          :items="categories"
+          :disabled="isDefault"
+        />
       </div>
 
       <!-- Measurement Unit -->
       <div class="mb-3">
         <label class="form-label">Measurement Unit</label>
-        <select
+        <b-select
           v-model="form.measurement"
+          :items="['repetitions', 'seconds']"
           class="form-select"
-        >
-          <option value="repetitions">Repetitions</option>
-          <option value="seconds">Seconds</option>
-        </select>
+          :disabled="isDefault"
+        />
       </div>
 
       <!-- Flags -->
-      <div class="form-check mb-3">
-        <input
-          id="weighted"
+      <div class="d-flex flex-column gap-2 mb-4">
+        <b-checkbox
           v-model="form.canBeWeighted"
-          class="form-check-input"
-          type="checkbox"
-        >
-        <label
-          class="form-check-label"
-          for="weighted"
+          :disabled="isDefault"
         >
           Can be weighted
-        </label>
-      </div>
-      <div class="form-check mb-3">
-        <input
-          id="accelerated"
+        </b-checkbox>
+        <b-checkbox
           v-model="form.canBeAccelerated"
-          class="form-check-input"
-          type="checkbox"
-        >
-        <label
-          class="form-check-label"
-          for="accelerated"
+          :disabled="isDefault"
         >
           Can be accelerated
-        </label>
-      </div>
-
-      <!-- Tags -->
-      <div class="mb-3">
-        <label class="form-label">Tags</label>
-        <button
-          type="button"
-          class="btn btn-outline-secondary ms-2"
-          @click="openTagModal"
+        </b-checkbox>
+        <b-checkbox
+          v-model="form.canHaveCombo"
+          :disabled="isDefault"
         >
-          Select Tags
-        </button>
-        <div class="mt-2">
-          <span
-            v-for="tagId in form.tagIds"
-            :key="tagId"
-            class="badge bg-secondary me-1"
-          >
-            {{ tagStore.list.find(t => t.id === tagId)?.name }}
-          </span>
-        </div>
-      </div>
-
-      <!-- Favorite -->
-      <div class="form-check mb-4">
-        <input
-          id="favorite"
+          Can be with combo
+        </b-checkbox>
+        <b-checkbox
           v-model="form.isFavorite"
-          class="form-check-input"
-          type="checkbox"
-        >
-        <label
-          class="form-check-label"
-          for="favorite"
         >
           Favorite
-        </label>
+        </b-checkbox>
       </div>
+
+
+      <!-- Tags -->
+      <b-card class="mb-4">
+        <template #header>
+          <div class="d-flex justify-content-between align-items-center">
+            <label class="form-label mb-0">Tags</label>
+            <b-button
+              v-if="!isDefault"
+              color="secondary"
+              size="small"
+              class="ms-auto"
+              @click="openTagModal"
+            >
+              Select Tags
+            </b-button>
+          </div>
+        </template>
+
+        <template
+          v-if="form.tagIds.length > 0"
+          #default
+        >
+          <b-badge
+            v-for="tagId in form.tagIds"
+            :key="tagId"
+            :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'secondary' : 'primary'"
+          >
+            {{ tagStore.list.find(t => t.id === tagId)?.name }}
+          </b-badge>
+
+        </template>
+      </b-card>
 
       <!-- Actions -->
-      <div class="d-flex">
-        <button
-          class="btn btn-primary me-2"
+      <div class="d-flex flex-column">
+        <b-button
+          color="primary"
+          class="mb-2 w-100"
           type="submit"
+          :disabled="form.name.trim().length === 0"
+          @click="onSave"
         >
           {{ isNew ? 'Create' : 'Save' }}
-        </button>
-        <button
-          class="btn btn-secondary"
+        </b-button>
+        <b-button
+          color="secondary"
           type="button"
+          class="mb-2 w-100"
           @click="onCancel"
         >
-          Cancel
-        </button>
+          Go back
+        </b-button>
+        <b-button
+          v-if="!isDefault && !isNew"
+          color="red"
+          class="w-100 mt-4"
+          type="button"
+          @click="onRemove"
+        >
+          Remove
+        </b-button>
       </div>
-    </form>
-
-    <!-- Tag Selector Modal -->
-    <component
-      :is="modalState.component"
-      v-if="modalState.isOpen && modalState.props.mode === 'tags'"
-      v-bind="modalState.props"
-    />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, onMounted, ref } from 'vue'
+import { ref, computed, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ExerciseCategory, type Exercise } from '@/domain/entities/Exercise'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import { useModalService } from '@/presentation/composition/useModalService'
 import { ModalKey } from '@/presentation/modals/modalKeys'
+import BInput from '@/presentation/components/shared/BInput.vue'
+import { onUserLoaded } from '@/presentation/utils/onUserLoaded.ts'
+import { defaultExercise, EXERCISES } from '@/domain/constants/exercises.ts'
+import BCard from '@/presentation/components/shared/BCard.vue'
+import BButton from '@/presentation/components/shared/BButton.vue'
+import BSelect from '@/presentation/components/shared/BSelect.vue'
+import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
+import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
+import BBadge from '@/presentation/components/shared/BBadge.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -154,15 +155,18 @@ const exStore = useExerciseStore()
 const tagStore = useTagStore()
 const modal = useModalService()
 
-const id = ref(route.params.id as string | undefined)
+const id = computed<string | undefined>(() => (route.params?.id as string | undefined))
 const isNew = ref(!id.value)
+const isLoading = computed(() => exStore.loading)
 
+const currentExercise = computed<Exercise | null>(() => exStore.current || null)
+const isDefault = computed(() => isNew.value ? false : !!(EXERCISES.find((item) => item.id === currentExercise.value?.id)))
 const categories = Object.values(ExerciseCategory)
 
-const form = reactive<Exercise>({
+const form = ref<Exercise>({
   id:              id.value || '',
   name:            '',
-  category:        ExerciseCategory.PHYSICS,
+  category:        null,
   measurement:     'repetitions',
   canBeWeighted:   false,
   canBeAccelerated:false,
@@ -171,30 +175,39 @@ const form = reactive<Exercise>({
   canHaveCombo: false
 })
 
-onMounted(async () => {
+onUserLoaded(async () => {
+  await exStore.loadAll()
   await tagStore.load()
   if (!isNew.value) {
     await exStore.loadById(id.value!)
     const {current} = exStore
-    if (current) Object.assign(form, current)
+    if (current) {
+      Object.assign(form.value, current)
+    }
+  } else {
+    Object.assign(form.value, defaultExercise)
   }
+})
+
+onBeforeUnmount(() => {
+  Object.assign(form.value, defaultExercise)
+  exStore.current = null
 })
 
 function openTagModal() {
   modal.openModalByKey(ModalKey.TAG_SELECTOR, {
-    mode: 'tags',
-    selected: form.tagIds,
+    selected: form.value.tagIds,
     onSave(ids: string[]) {
-      form.tagIds = ids
+      form.value.tagIds = ids
     }
   })
 }
 
 async function onSave() {
   if (isNew.value) {
-    await exStore.createExercise(form)
+    await exStore.createExercise(form.value)
   } else {
-    await exStore.updateExercise(form)
+    await exStore.updateExercise(form.value)
   }
   await router.push({ name: 'Exercises' })
 }
@@ -203,5 +216,38 @@ function onCancel() {
   router.back()
 }
 
-const { modalState } = modal
+const onRemove = async () => {
+  await exStore.removeExercise(form.value.id)
+  router.back()
+}
+
+watch(() => form.value.canBeAccelerated, (val) => {
+  form.value.tagIds = [
+    ...form.value.tagIds.filter((item) => item !== DEFAULT_TAG_IDS.PACE)
+  ]
+  if (val) form.value.tagIds.push(DEFAULT_TAG_IDS.PACE)
+})
+watch(() => form.value.canBeWeighted, (val) => {
+  form.value.tagIds = [
+    ...form.value.tagIds.filter((item) => item !== DEFAULT_TAG_IDS.WEIGHT)
+  ]
+  if (val) form.value.tagIds.push(DEFAULT_TAG_IDS.WEIGHT)
+})
+
+watch(() => form.value.category, (val) => {
+  const catMap = {
+    [ExerciseCategory.PHYSICS]: DEFAULT_TAG_IDS.PHYSICS,
+    [ExerciseCategory.TECHNIQUE]: DEFAULT_TAG_IDS.TECHNIQUE,
+    [ExerciseCategory.PRACTICE]: DEFAULT_TAG_IDS.PRACTICE
+  }
+  form.value.tagIds = [
+    ...form.value.tagIds.filter(
+      (item) => ![DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.TECHNIQUE].includes(item)
+    ),
+    catMap[val]
+  ]
+}, {
+  immediate: true
+})
+
 </script>

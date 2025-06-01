@@ -2,6 +2,18 @@
 import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags'
 
+export const defaultExercise: Exercise = {
+  id: '',
+  name: '',
+  category: ExerciseCategory.PHYSICS,
+  measurement: 'repetitions',
+  canBeWeighted: false,
+  canBeAccelerated: false,
+  tagIds: [],
+  isFavorite: false,
+  canHaveCombo: false
+}
+
 export const EXERCISES: Exercise[] = [
   {
     id: '1',
@@ -10,7 +22,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'repetitions',
     canBeWeighted: true,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.HANDS],
+    tagIds: [DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.WEIGHT],
     isFavorite: false,
     canHaveCombo: false
   },

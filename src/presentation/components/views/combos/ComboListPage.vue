@@ -19,7 +19,6 @@
       :items="comboStore.combos"
       item-val="title"
       :primary-callback="onEditCombo"
-      :secondary-callback="remove"
       item-link
     >
       <template #actions="{ item }">

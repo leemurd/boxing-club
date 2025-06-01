@@ -7,6 +7,7 @@
       [`btn-${BtnSizeMap[size]}`]: size !== 'medium',
       [`btn-outline-${colorMap[color]}`]: outline,
     }"
+    :type="type"
   >
     <slot/>
   </component>
@@ -42,10 +43,12 @@ withDefaults(defineProps<{
   size?: ButtonSize
   submit?: boolean,
   outline?: boolean,
+  type?: string
 }>(), {
   tag: 'button',
   color: 'primary',
-  size: 'medium'
+  size: 'medium',
+  type: ''
 })
 
 </script>

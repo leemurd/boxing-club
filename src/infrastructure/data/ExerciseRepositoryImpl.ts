@@ -4,6 +4,7 @@ import { getFirestore, collection, doc, getDocs, getDoc, addDoc, setDoc, deleteD
 import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
 import type { Exercise } from '@/domain/entities/Exercise'
 import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
+import { EXERCISES } from '@/domain/constants/exercises.ts'
 
 @injectable()
 export class ExerciseRepositoryImpl implements IExerciseRepository {
@@ -14,20 +15,33 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
 
   async getAll(userId: string): Promise<Exercise[]> {
     const snap = await getDocs(this.col(userId))
-    return snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as Omit<Exercise, 'id'>)
-    }))
+    return [
+      ...EXERCISES,
+      ...snap.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<Exercise, 'id'>)
+      }))
+    ]
   }
 
   async getById(userId: string, id: string): Promise<Exercise | null> {
+    // 1) Сначала пытаемся найти в дефолтных константах
+    const defaultEx = EXERCISES.find((e) => e.id === id)
+    if (defaultEx) {
+      return { ...defaultEx }
+    }
+
+    // 2) Если не нашли среди дефолтов — ищем в Firestore (пользовательские)
     const ref = doc(this.db, 'users', userId, 'exercises', id)
     const snap = await getDoc(ref)
-    if (!snap.exists()) return null
-    return {
-      id: snap.id,
-      ...(snap.data() as Omit<Exercise, 'id'>)
+    if (snap.exists()) {
+      return {
+        id: snap.id,
+        ...(snap.data() as Omit<Exercise, 'id'>)
+      }
     }
+
+    return null
   }
 
   async create(userId: string, exercise: Exercise): Promise<Exercise> {

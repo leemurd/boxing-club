@@ -18,7 +18,6 @@
     <list-group
       :items="tagStore.list"
       :primary-callback="goEdit"
-      :secondary-callback="removeTag"
       item-link
     >
       <template #icon>

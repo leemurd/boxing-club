@@ -18,23 +18,28 @@ export const DEFAULT_TAG_IDS = {
 export const DEFAULT_TAGS = [
   {
     id: DEFAULT_TAG_IDS.WEIGHT,
-    name: 'With add. weight'
+    name: 'With add. weight',
+    isAutomatic: true
   },
   {
     id: DEFAULT_TAG_IDS.PACE,
-    name: 'Accelerated'
+    name: 'Accelerated',
+    isAutomatic: true
   },
   {
     id: DEFAULT_TAG_IDS.PHYSICS,
-    name: 'Physics'
+    name: 'Physics',
+    isAutomatic: true
   },
   {
     id: DEFAULT_TAG_IDS.PRACTICE,
-    name: 'Practice'
+    name: 'Practice',
+    isAutomatic: true
   },
   {
     id: DEFAULT_TAG_IDS.TECHNIQUE,
-    name: 'Technique'
+    name: 'Technique',
+    isAutomatic: true
   },
   {
     id: DEFAULT_TAG_IDS.CARDIO,

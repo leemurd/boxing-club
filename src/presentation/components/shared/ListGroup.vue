@@ -11,8 +11,8 @@
       :key="item[itemId]"
       class="list-group-item d-flex align-items-center"
       :class="{
-        // 'cursor-pointer list-group-item-action': itemLink
-        'cursor-pointer': itemLink
+        'cursor-pointer list-group-item-action': itemLink
+        // 'cursor-pointer': itemLink
       }"
       @click="primaryAction(item)"
     >
@@ -21,7 +21,10 @@
         :class="{'ms-2': $slots['icon']}"
       >{{ item[itemVal] }}</span>
 
-      <div class="ms-auto">
+      <div
+        v-if="$slots['actions']"
+        class="ms-auto"
+      >
         <b-dropdown
           is-action-btn
           outline
@@ -36,51 +39,9 @@
             <slot
               name="actions"
               v-bind="{ item }"
-            >
-              <!--              <li><button-->
-              <!--                class="dropdown-item"-->
-              <!--                type="button"-->
-              <!--              >Action</button></li>-->
-              <!--              <li><button-->
-              <!--                class="dropdown-item"-->
-              <!--                type="button"-->
-              <!--              >Another action</button></li>-->
-              <!--                <b-button-->
-              <!--                  v-if="primaryAction"-->
-              <!--                  size="small"-->
-              <!--                  color="blue"-->
-              <!--                  class="me-2"-->
-              <!--                  @click="primaryAction(item)"-->
-              <!--                >Edit</b-button>-->
-
-              <!--                <b-button-->
-              <!--                  v-if="secondaryCallback"-->
-              <!--                  color="red"-->
-              <!--                  size="small"-->
-              <!--                  @click.stop.prevent="secondaryCallback(item[itemId])"-->
-              <!--                >-->
-              <!--                  <i class="bi bi-x-lg"/>-->
-              <!--                </b-button>-->
-            </slot>
+            />
           </template>
         </b-dropdown>
-
-        <!--        <b-button-->
-        <!--          v-if="primaryAction"-->
-        <!--          size="small"-->
-        <!--          color="blue"-->
-        <!--          class="me-2"-->
-        <!--          @click="primaryAction(item)"-->
-        <!--        >Edit</b-button>-->
-
-        <!--        <b-button-->
-        <!--          v-if="secondaryCallback"-->
-        <!--          color="red"-->
-        <!--          size="small"-->
-        <!--          @click.stop.prevent="secondaryCallback(item[itemId])"-->
-        <!--        >-->
-        <!--          <i class="bi bi-x-lg"/>-->
-        <!--        </b-button>-->
       </div>
     </li>
   </ul>
@@ -97,7 +58,7 @@ const props = withDefaults(defineProps<{
   numbered?: boolean,
   noBorder?: boolean,
   primaryCallback?: (val?: any) => void,
-  secondaryCallback?: (val?: any) => void,
+  // secondaryCallback?: (val?: any) => void,
 }>(), {
   itemId: 'id',
   itemVal: 'name'

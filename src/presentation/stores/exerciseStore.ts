@@ -25,7 +25,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     try {
       const uc = container.get<GetExercisesUseCase>(TYPES.GetExercisesUseCase)
       const res = await uc.execute(userId)
-      exercises.value = [...EXERCISES, ...res]
+      exercises.value = [...res]
     } finally {
       loading.value = false
     }
@@ -92,7 +92,12 @@ export const useExerciseStore = defineStore('exercise', () => {
     (ex) => ex.id ===id
   )
 
+  const isDefault = (id: string): boolean => {
+    return !!EXERCISES.find((e) => e.id === id)
+  }
+
   return {
+    isDefault,
     exercises,
     current,
     loading,
