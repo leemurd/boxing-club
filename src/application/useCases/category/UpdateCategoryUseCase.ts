@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify'
 import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository'
-import type { Category } from '@/domain/entities/Category'
+import type { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 import { TYPES } from '@/infrastructure/di/types'
 
 @injectable()
@@ -10,7 +10,7 @@ export class UpdateCategoryUseCase {
     private repo: ICategoryRepository
   ) {}
 
-  execute(userId: string, category: Category): Promise<void> {
+  execute(userId: string, category: ComboCategory): Promise<void> {
     return this.repo.update(userId, category)
   }
 }

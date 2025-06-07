@@ -14,6 +14,8 @@ export const DEFAULT_TAG_IDS = {
   BACK: 'tag-default-back' // «Back»
 } as const
 
+export type DefaultTagId = (typeof DEFAULT_TAG_IDS)[keyof typeof DEFAULT_TAG_IDS]
+
 /** Список системных тегов с их ID и именами */
 export const DEFAULT_TAGS = [
   {

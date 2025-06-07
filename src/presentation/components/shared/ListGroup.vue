@@ -12,14 +12,15 @@
       class="list-group-item d-flex align-items-center"
       :class="{
         'cursor-pointer list-group-item-action': itemLink
-        // 'cursor-pointer': itemLink
       }"
       @click="primaryAction(item)"
     >
       <slot name="icon"/>
       <span
         :class="{'ms-2': $slots['icon']}"
-      >{{ item[itemVal] }}</span>
+      >
+        {{ item[itemVal] || item }}
+      </span>
 
       <div
         v-if="$slots['actions']"

@@ -36,7 +36,7 @@ import { onMounted } from 'vue'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
-import { Category } from '@/domain/entities/Category.ts'
+import { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import { useRouter } from 'vue-router'
@@ -50,7 +50,7 @@ onMounted(() => {
   categoryStore.load()
 })
 
-const openCategory = (cat: Category) => {
+const openCategory = (cat: ComboCategory) => {
   router.push(`/combos/categories/${cat.id}`)
 }
 

@@ -1,6 +1,6 @@
-import { type BoxingAction, BoxingActionType } from '@/domain/entities/BoxingAction'
-import { getNextActions } from './getNextActions'
-import { BoxingActionCategory } from '@/domain/entities/BoxingAction'
+import { type BoxingAction, BoxingActionType } from '@/domain/entities/BoxingAction.ts'
+import { getNextActions } from './getNextActions.ts'
+import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
 
 export function generateRandomCombo(allActions: BoxingAction[], counter: number = 5): BoxingAction[] {
   const combo: BoxingAction[] = []

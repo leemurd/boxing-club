@@ -9,9 +9,11 @@ export const TYPES = {
   // progress and records
   ITrainingRepository: Symbol.for('ITrainingRepository'),
   LogExerciseUseCase: Symbol.for('LogExerciseUseCase'),
-  GetUserStatsUseCase: Symbol.for('GetUserStatsUseCase'),
-  GetExerciseHistoryUseCase: Symbol.for('GetExerciseHistoryUseCase'),
-  ManageFavoriteExercisesUseCase: Symbol.for('ManageFavoriteExercisesUseCase'),
+  GetRecordsUseCase: Symbol.for('GetRecordsUseCase'),
+  GetDailyTotalsUseCase: Symbol.for('GetDailyTotalsUseCase'),
+  GetTotalsByCategoryUseCase: Symbol.for('GetTotalsByCategoryUseCase'),
+  GetTotalsByTagUseCase: Symbol.for('GetTotalsByTagUseCase'),
+  DeleteRecordUseCase: Symbol.for('DeleteRecordUseCase'),
   // exercise
   IExerciseRepository: Symbol.for('IExerciseRepository'),
   GetExercisesUseCase: Symbol.for('GetExercisesUseCase'),

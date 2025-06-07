@@ -16,7 +16,7 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
   async getAll(userId: string): Promise<Exercise[]> {
     const snap = await getDocs(this.col(userId))
     return [
-      ...EXERCISES,
+      // ...EXERCISES,
       ...snap.docs.map((d) => ({
         id: d.id,
         ...(d.data() as Omit<Exercise, 'id'>)

@@ -22,7 +22,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'repetitions',
     canBeWeighted: true,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.WEIGHT],
+    tagIds: [DEFAULT_TAG_IDS.HANDS],
     isFavorite: false,
     canHaveCombo: false
   },
@@ -55,7 +55,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'repetitions',
     canBeWeighted: true,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.BACK, DEFAULT_TAG_IDS.LEGS, DEFAULT_TAG_IDS.PRESS, DEFAULT_TAG_IDS.CARDIO],
+    tagIds: [DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.BACK, DEFAULT_TAG_IDS.LEGS, DEFAULT_TAG_IDS.PRESS],
     isFavorite: false,
     canHaveCombo: false
   },
@@ -66,7 +66,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'repetitions',
     canBeWeighted: true,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.LEGS, DEFAULT_TAG_IDS.CARDIO],
+    tagIds: [DEFAULT_TAG_IDS.LEGS],
     isFavorite: false,
     canHaveCombo: false
   },
@@ -88,7 +88,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: false,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE],
+    tagIds: [],
     isFavorite: false,
     canHaveCombo: true
   },
@@ -99,7 +99,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: true,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE, DEFAULT_TAG_IDS.PRACTICE],
+    tagIds: [DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.CARDIO],
     isFavorite: false,
     canHaveCombo: true
   },
@@ -110,7 +110,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: true,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE, DEFAULT_TAG_IDS.LEGS],
+    tagIds: [DEFAULT_TAG_IDS.LEGS],
     isFavorite: false,
     canHaveCombo: true
   },
@@ -121,7 +121,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: false,
     canBeAccelerated: true,
-    tagIds: [DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.CARDIO, DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.TECHNIQUE],
+    tagIds: [DEFAULT_TAG_IDS.CARDIO, DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.TECHNIQUE],
     isFavorite: false,
     canHaveCombo: true
   },
@@ -132,7 +132,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: false,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE, DEFAULT_TAG_IDS.PRACTICE],
+    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE, DEFAULT_TAG_IDS.CARDIO],
     isFavorite: false,
     canHaveCombo: true
   },
@@ -143,7 +143,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: false,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE, DEFAULT_TAG_IDS.PRACTICE],
+    tagIds: [DEFAULT_TAG_IDS.TECHNIQUE, DEFAULT_TAG_IDS.CARDIO],
     isFavorite: false,
     canHaveCombo: true
   },
@@ -154,7 +154,7 @@ export const EXERCISES: Exercise[] = [
     measurement: 'seconds',
     canBeWeighted: false,
     canBeAccelerated: false,
-    tagIds: [DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.CARDIO, DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.LEGS],
+    tagIds: [DEFAULT_TAG_IDS.CARDIO, DEFAULT_TAG_IDS.HANDS, DEFAULT_TAG_IDS.LEGS],
     isFavorite: false,
     canHaveCombo: true
   }

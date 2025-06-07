@@ -6,7 +6,6 @@ import Login from '@/presentation/components/views/auth/Login.vue'
 import NotFoundPage from '@/presentation/components/views/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/views/PunchCounter.vue'
-// import ExercisesPage from '@/presentation/components/views/exercises/ExercisesPage.vue'
 import ProgressPage from '@/presentation/components/views/progress/ProgressPage.vue'
 import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
 import ComboListPage from '@/presentation/components/views/combos/ComboListPage.vue'
@@ -18,13 +17,13 @@ import TagListPage from '@/presentation/components/views/tags/TagListPage.vue'
 import TagEditPage from '@/presentation/components/views/tags/TagEditPage.vue'
 import ExerciseEditPage from '@/presentation/components/views/exercises/ExerciseEditPage.vue'
 import ExercisesIndex from '@/presentation/components/views/exercises/ExercisesIndex.vue'
-import NewRecord from '@/presentation/components/views/progress/NewRecord.vue'
+import RecordLogger from '@/presentation/components/pages/trainings/RecordLogger.vue'
+// import NewRecord from '@/presentation/components/views/progress/NewRecord.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Progress',
-    // component: ProgressPage,
     component: RouterViewWithSlots,
     beforeEnter: requireAuth,
     meta: {
@@ -34,19 +33,19 @@ const routes: RouteRecordRaw[] = [
     redirect: { name: 'ProgressPage' },
     children: [
       {
-        path: '/progress/record',
-        name: 'ProgressRecord',
-        component: NewRecord,
-        meta: {
-          name: 'Progress Record'
-        }
-      },
-      {
         path: '/progress/index',
         name: 'ProgressPage',
         component: ProgressPage,
         meta: {
           name: 'My Progress'
+        }
+      },
+      {
+        path: '/progress/record',
+        name: 'ProgressRecord',
+        component: RecordLogger,
+        meta: {
+          name: 'Progress Record'
         }
       }
     ]

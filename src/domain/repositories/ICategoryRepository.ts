@@ -1,9 +1,9 @@
-import type { Category } from '@/domain/entities/Category'
+import type { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 
 export interface ICategoryRepository {
-  getAll(userId: string): Promise<Category[]>
-  create(userId: string, name: string): Promise<Category>
-  update(userId: string, category: Category): Promise<void>
+  getAll(userId: string): Promise<ComboCategory[]>
+  create(userId: string, name: string): Promise<ComboCategory>
+  update(userId: string, category: ComboCategory): Promise<void>
   delete(userId: string, id: string): Promise<void>
-  getById(userId: string, id: string): Promise<Category | null>
+  getById(userId: string, id: string): Promise<ComboCategory | null>
 }

@@ -1,15 +1,28 @@
 // src/domain/repositories/ITrainingRepository.ts
-import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
-import type { MeasurementUnit } from '@/domain/entities/Exercise.ts'
+
+import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
+import type { MeasurementUnit, ExerciseCategory } from '@/domain/entities/Exercise'
+import type { ProgressEntity } from '@/presentation/constants/progress/types.ts'
+import type { DefaultTagId } from '@/domain/constants/defaultTags.ts'
 
 export interface ITrainingRepository {
-  logExercise(userId: string, exerciseId: string, amount: number, unit: MeasurementUnit): Promise<void>
+  logExercise(
+    userId: string,
+    exerciseId: string,
+    category: ExerciseCategory,
+    amount: number,
+    unit: MeasurementUnit,
+    tagIds: string[],
+    comboId: string | null
+  ): Promise<void>
 
-  getUserStats(userId: string): Promise<Record<string, { today: number; total: number }>>
+  getRecords(userId: string, from: Date, to: Date): Promise<TrainingRecord[]>
 
-  getExerciseHistory(userId: string, days: number): Promise<TrainingRecord[]>
+  getDailyTotals(userId: string, from: Date, to: Date): Promise<ProgressEntity<string>[]>
 
-  getFavoriteExercises(userId: string): Promise<string[]>
+  getTotalsByCategory(userId: string, from: Date, to: Date): Promise<Array<ProgressEntity<ExerciseCategory>>>
 
-  updateFavoriteExercises(userId: string, favorites: string[]): Promise<void>
+  getTotalsByTag(userId: string, from: Date, to: Date): Promise<Array<ProgressEntity<DefaultTagId>>>
+
+  deleteRecord(userId: string, recordId: string): Promise<void>
 }

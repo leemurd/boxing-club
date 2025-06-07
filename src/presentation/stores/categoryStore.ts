@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { TYPES } from '@/infrastructure/di/types'
-import type { Category } from '@/domain/entities/Category'
+import type { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 import { useComboStore } from '@/presentation/stores/comboStore'
 import { getUserId } from '@/presentation/utils/getUserId'
 
@@ -19,7 +19,7 @@ import type { Combination } from '@/domain/entities/Combination.ts'
 const toast = useToast()
 
 export const useCategoryStore = defineStore('category', () => {
-  const list = ref<Category[]>([])
+  const list = ref<ComboCategory[]>([])
   const comboStore = useComboStore()
 
   // Получаем экземпляры use-case’ов из DI-контейнера
@@ -44,7 +44,7 @@ export const useCategoryStore = defineStore('category', () => {
   }
 
   /** Переименовывает категорию */
-  async function update(category: Category) {
+  async function update(category: ComboCategory) {
     const userId = await getUserId()
     await updateCategoryUC.execute(userId, category)
     const idx = list.value.findIndex((c) => c.id === category.id)

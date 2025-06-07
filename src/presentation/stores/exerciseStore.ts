@@ -25,7 +25,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     try {
       const uc = container.get<GetExercisesUseCase>(TYPES.GetExercisesUseCase)
       const res = await uc.execute(userId)
-      exercises.value = [...res]
+      exercises.value = [...EXERCISES, ...res]
     } finally {
       loading.value = false
     }

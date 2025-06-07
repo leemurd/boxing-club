@@ -4,8 +4,7 @@
     <b-button-group
       v-model="selectedCategory"
       :items="categories"
-      color="dark"
-      outline
+      color="light"
       class="mb-4 w-100"
     />
 
@@ -24,15 +23,15 @@
       <template #icon>
         <i class="bi bi-lightning-charge"/>
       </template>
-<!--      <template #actions="{ item }">-->
-<!--        <b-dropdown-item-->
-<!--          @click="openExercise(item)"-->
-<!--        >Open</b-dropdown-item>-->
-<!--        <b-dropdown-item-->
-<!--          v-if="!exStore.isDefault(item.id)"-->
-<!--          @click="removeExercise(item)"-->
-<!--        >Remove</b-dropdown-item>-->
-<!--      </template>-->
+      <template #actions="{ item }">
+        <b-dropdown-item
+          @click="openExercise(item)"
+        >Open</b-dropdown-item>
+        <b-dropdown-item
+          v-if="!exStore.isDefault(item.id)"
+          @click="removeExercise(item)"
+        >Remove</b-dropdown-item>
+      </template>
     </list-group>
 
     <b-button

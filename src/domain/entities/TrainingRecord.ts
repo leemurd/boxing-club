@@ -7,5 +7,7 @@ export interface TrainingRecord {
   category: ExerciseCategory
   measurement: MeasurementUnit
   amount: number
+  tagIds: string[]
   timestamp: string // ISO строка
+  comboId: string | null
 }

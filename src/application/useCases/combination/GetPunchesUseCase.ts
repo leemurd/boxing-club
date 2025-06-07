@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { type IBoxingActionRepository } from '@/domain/repositories/IBoxingActionRepository.ts'
 import { TYPES } from '@/infrastructure/di/types.ts'
-import { type BoxingAction } from '@/domain/entities/BoxingAction'
+import { type BoxingAction } from '@/domain/entities/BoxingAction.ts'
 
 @injectable()
 export class GetPunchesUseCase {

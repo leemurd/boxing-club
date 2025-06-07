@@ -1,4 +1,4 @@
-import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingActionType } from '@/domain/entities/BoxingAction'
+import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingActionType } from '@/domain/entities/BoxingAction.ts'
 
 export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): BoxingAction[] {
   // Особый случай для джеба (как раньше)

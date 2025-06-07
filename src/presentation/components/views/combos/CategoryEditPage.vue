@@ -67,7 +67,7 @@ import { useRoute, useRouter } from 'vue-router'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
-import type { Category } from '@/domain/entities/Category.ts'
+import type { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import BCard from '@/presentation/components/shared/BCard.vue'
@@ -78,7 +78,7 @@ const router = useRouter()
 const categoryStore = useCategoryStore()
 
 const isNew = ref(!route.params.id)
-const category = ref<Category>({
+const category = ref<ComboCategory>({
   id: (route.params.id as string) || '',
   name: ''
 })

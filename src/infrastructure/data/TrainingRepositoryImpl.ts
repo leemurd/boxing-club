@@ -1,63 +1,133 @@
 // src/infrastructure/data/TrainingRepositoryImpl.ts
 
-import { collection, addDoc, getDocs, query, where, doc, getDoc, setDoc } from 'firebase/firestore'
 import { injectable } from 'inversify'
+import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import type { ITrainingRepository } from '@/domain/repositories/ITrainingRepository'
-import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
-import { db } from '@/infrastructure/firebase/firebaseConfig'
-import type { MeasurementUnit } from '@/domain/entities/Exercise.ts'
+import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
+import type { MeasurementUnit, ExerciseCategory } from '@/domain/entities/Exercise'
+import type { DefaultTagId } from '@/domain/constants/defaultTags'
+import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
+import type { ProgressEntity } from '@/presentation/constants/progress/types.ts'
 
 @injectable()
 export class TrainingRepositoryImpl implements ITrainingRepository {
-  private basePath(userId: string) {
-    return collection(db, 'users', userId, 'trainingRecords')
+  private db = getFirestore(firebaseApp)
+
+  private col(userId: string) {
+    return collection(this.db, 'users', userId, 'trainingRecords')
   }
 
-  async logExercise(userId: string, exerciseId: string, amount: number, unit: MeasurementUnit): Promise<void> {
-    await addDoc(this.basePath(userId), {
+  async logExercise(
+    userId: string,
+    exerciseId: string,
+    category: ExerciseCategory,
+    amount: number,
+    unit: MeasurementUnit,
+    tagIds: string[],
+    comboId: string | null
+  ): Promise<void> {
+    const data: Omit<TrainingRecord, 'id'> = {
+      userId,
       exerciseId,
+      category,
+      measurement: unit,
       amount,
-      unit,
-      timestamp: Date.now()
-    })
+      timestamp: new Date().toISOString(),
+      tagIds,
+      comboId: comboId ?? null
+    }
+    await addDoc(this.col(userId), data)
   }
 
-  async getUserStats(userId: string) {
-    const records = await getDocs(this.basePath(userId))
-    const stats: Record<string, { today: number; total: number }> = {}
-    const todayStart = new Date()
-    todayStart.setHours(0, 0, 0, 0)
-
-    records.docs.forEach((d) => {
-      const { exerciseId, amount, unit, timestamp } = d.data() as any
-      if (!stats[exerciseId])
-        stats[exerciseId] = {
-          today: 0,
-          total: 0
-        }
-      stats[exerciseId].total += amount
-      if (timestamp >= todayStart.getTime()) {
-        stats[exerciseId].today += amount
-      }
-    })
-    return stats
-  }
-
-  async getExerciseHistory(userId: string, days: number) {
-    const since = Date.now() - days * 24 * 60 * 60 * 1000
-    const q = query(this.basePath(userId), where('timestamp', '>=', since))
+  async getRecords(userId: string, from: Date, to: Date): Promise<TrainingRecord[]> {
+    const q = query(this.col(userId), where('timestamp', '>=', from.toISOString()), where('timestamp', '<=', to.toISOString()))
     const snap = await getDocs(q)
-    return snap.docs.map((d) => d.data() as TrainingRecord)
+    return snap.docs.map((d) => ({
+      id: d.id,
+      ...(d.data() as any)
+    }))
   }
 
-  async getFavoriteExercises(userId: string) {
-    const docRef = doc(db, 'users', userId, 'preferences', 'favorites')
-    const snap = await getDoc(docRef)
-    return snap.exists() ? (snap.data().list as string[]) : []
+  async getDailyTotals(userId: string, from: Date, to: Date): Promise<ProgressEntity<string>[]> {
+    const records = await this.getRecords(userId, from, to)
+    type Acc = { reps: number; seconds: number; sets: number }
+    const map: Record<string, Acc> = {}
+
+    for (const r of records) {
+      const day = r.timestamp.slice(0, 10)
+      if (!map[day])
+        map[day] = {
+          reps: 0,
+          seconds: 0,
+          sets: 0
+        }
+      if (r.measurement === 'repetitions') map[day].reps += r.amount
+      else map[day].seconds += r.amount
+      map[day].sets += 1
+    }
+
+    return Object.entries(map).map(([name, { reps, seconds, sets }]) => ({
+      name,
+      reps,
+      minutes: seconds / 60,
+      sets
+    }))
   }
 
-  async updateFavoriteExercises(userId: string, favorites: string[]) {
-    const docRef = doc(db, 'users', userId, 'preferences', 'favorites')
-    await setDoc(docRef, { list: favorites }, { merge: true })
+  async getTotalsByCategory(userId: string, from: Date, to: Date): Promise<ProgressEntity<ExerciseCategory>[]> {
+    const records = await this.getRecords(userId, from, to)
+    type Acc = { reps: number; seconds: number; sets: number }
+    const map: Record<ExerciseCategory, Acc> = {} as any
+
+    for (const r of records) {
+      if (!map[r.category])
+        map[r.category] = {
+          reps: 0,
+          seconds: 0,
+          sets: 0
+        }
+      if (r.measurement === 'repetitions') map[r.category].reps += r.amount
+      else map[r.category].seconds += r.amount
+      map[r.category].sets += 1
+    }
+
+    return Object.entries(map).map(([name, { reps, seconds, sets }]) => ({
+      name: name as ExerciseCategory,
+      reps,
+      minutes: seconds / 60,
+      sets
+    }))
+  }
+
+  async getTotalsByTag(userId: string, from: Date, to: Date): Promise<ProgressEntity<DefaultTagId>[]> {
+    const records = await this.getRecords(userId, from, to)
+    type Acc = { reps: number; seconds: number; sets: number }
+    const map: Record<DefaultTagId, Acc> = {} as any
+
+    for (const r of records) {
+      for (const t of r.tagIds as DefaultTagId[]) {
+        if (!map[t])
+          map[t] = {
+            reps: 0,
+            seconds: 0,
+            sets: 0
+          }
+        if (r.measurement === 'repetitions') map[t].reps += r.amount
+        else map[t].seconds += r.amount
+        map[t].sets += 1
+      }
+    }
+
+    return Object.entries(map).map(([name, { reps, seconds, sets }]) => ({
+      name: name as DefaultTagId,
+      reps,
+      minutes: seconds / 60,
+      sets
+    }))
+  }
+
+  async deleteRecord(userId: string, recordId: string): Promise<void> {
+    const ref = doc(this.col(userId), recordId)
+    await deleteDoc(ref)
   }
 }

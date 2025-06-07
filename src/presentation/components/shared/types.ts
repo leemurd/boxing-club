@@ -9,7 +9,7 @@ export const BtnSizeMap: Record<ButtonSize, string> = {
 
 // time, date
 export enum TimeRange {
-  TODAY = 'today',
+  DAY = 'day',
   WEEK = 'week',
   MONTH = 'month',
   ALL = 'all'

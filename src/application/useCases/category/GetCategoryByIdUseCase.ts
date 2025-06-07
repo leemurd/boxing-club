@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify'
 import type { ICategoryRepository } from '@/domain/repositories/ICategoryRepository'
-import type { Category } from '@/domain/entities/Category'
+import type { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 import { TYPES } from '@/infrastructure/di/types'
 
 @injectable()
@@ -10,7 +10,7 @@ export class GetCategoryByIdUseCase {
     private repo: ICategoryRepository
   ) {}
 
-  execute(userId: string, categoryId: string): Promise<Category | null> {
+  execute(userId: string, categoryId: string): Promise<ComboCategory | null> {
     return this.repo.getById(userId, categoryId)
   }
 }

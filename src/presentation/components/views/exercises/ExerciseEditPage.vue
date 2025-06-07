@@ -148,6 +148,7 @@ import BSelect from '@/presentation/components/shared/BSelect.vue'
 import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
 import BBadge from '@/presentation/components/shared/BBadge.vue'
+import { categoryTagMap } from '@/presentation/constants/progress/data.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -235,16 +236,11 @@ watch(() => form.value.canBeWeighted, (val) => {
 })
 
 watch(() => form.value.category, (val) => {
-  const catMap = {
-    [ExerciseCategory.PHYSICS]: DEFAULT_TAG_IDS.PHYSICS,
-    [ExerciseCategory.TECHNIQUE]: DEFAULT_TAG_IDS.TECHNIQUE,
-    [ExerciseCategory.PRACTICE]: DEFAULT_TAG_IDS.PRACTICE
-  }
   form.value.tagIds = [
     ...form.value.tagIds.filter(
       (item) => ![DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.TECHNIQUE].includes(item)
     ),
-    catMap[val]
+    categoryTagMap[val]
   ]
 }, {
   immediate: true

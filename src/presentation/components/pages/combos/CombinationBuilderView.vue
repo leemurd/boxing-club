@@ -52,13 +52,13 @@ import { defineComponent, ref, computed, onMounted, watch } from 'vue'
 import { TYPES } from '@/infrastructure/di/types.ts'
 import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
 import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
-import { getNextActions } from '@/application/useCases/getNextActions.ts'
+import { getNextActions } from '@/application/useCases/combination/getNextActions.ts'
 
 // Если вы по-прежнему используете GetPunchesUseCase, замените его на новый use-case
 // или импортируйте MOCK_ACTIONS напрямую.
 // Здесь для примера предполагаем, что GetPunchesUseCase возвращает все BoxingAction.
-import { GetPunchesUseCase } from '@/application/useCases/GetPunchesUseCase.ts'
-import { generateRandomCombo } from '@/application/useCases/generateRandomCombo.ts'
+import { GetPunchesUseCase } from '@/application/useCases/combination/GetPunchesUseCase.ts'
+import { generateRandomCombo } from '@/application/useCases/combination/generateRandomCombo.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import ComboPreview from '@/presentation/components/pages/combos/ComboPreview.vue'
