@@ -41,37 +41,47 @@ export class TrainingRepositoryImpl implements ITrainingRepository {
   }
 
   async getRecords(userId: string, from: Date, to: Date): Promise<TrainingRecord[]> {
-    const q = query(this.col(userId), where('timestamp', '>=', from.toISOString()), where('timestamp', '<=', to.toISOString()))
+    const q = query(this.col(userId), where('timestamp', '>=', from.toISOString()), where('timestamp', '<', to.toISOString()))
     const snap = await getDocs(q)
-    return snap.docs.map((d) => ({
-      id: d.id,
-      ...(d.data() as any)
-    }))
+    return snap.docs.map(
+      (d) =>
+        ({
+          id: d.id,
+          userId,
+          ...d.data()
+        }) as TrainingRecord
+    )
   }
 
   async getDailyTotals(userId: string, from: Date, to: Date): Promise<ProgressEntity<string>[]> {
     const records = await this.getRecords(userId, from, to)
-    type Acc = { reps: number; seconds: number; sets: number }
+    type Acc = { reps: number; minutes: number; sets: number }
     const map: Record<string, Acc> = {}
 
     for (const r of records) {
-      const day = getShortDate(new Date(r.timestamp.slice(0, 10)))
-      if (!map[day])
-        map[day] = {
+      // ← парсим полную метку, а не «YYYY-MM-DD»
+      const dayKey = getShortDate(new Date(r.timestamp))
+      if (!map[dayKey]) {
+        map[dayKey] = {
           reps: 0,
-          seconds: 0,
+          minutes: 0,
           sets: 0
         }
-      if (r.measurement === 'repetitions') map[day].reps += r.amount
-      else map[day].seconds += r.amount
-      map[day].sets += 1
+      }
+      if (r.measurement === 'repetitions') {
+        map[dayKey].reps += r.amount
+      } else {
+        // если у вас хранят секунды, переводим их в минуты
+        map[dayKey].minutes += r.amount / 60
+      }
+      map[dayKey].sets += 1
     }
 
-    return Object.entries(map).map(([name, { reps, seconds, sets }]) => ({
+    return Object.entries(map).map(([name, acc]) => ({
       name,
-      reps,
-      minutes: seconds / 60,
-      sets
+      reps: acc.reps,
+      minutes: acc.minutes,
+      sets: acc.sets
     }))
   }
 
