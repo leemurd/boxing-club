@@ -1,12 +1,11 @@
 <!-- src/presentation/components/shared/FilterBar.vue -->
 <template>
-  <b-card no-border>
-    <div class="row mb-4">
+  <div>
+    <div class="row mb-3">
       <div class="col-auto">
         <b-button
           color="secondary"
           outline
-          class="flex-grow-1 w-100"
           size="medium"
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(-1)"
@@ -23,7 +22,6 @@
         <b-button
           color="secondary"
           outline
-          class="flex-grow-1 w-100"
           size="medium"
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(1)"
@@ -48,7 +46,7 @@
         </template>
       </b-button-group>
     </div>
-  </b-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -59,7 +57,6 @@ import { dateRangeItems } from '@/presentation/constants/progress/data'
 import { storeToRefs } from 'pinia'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
-import BCard from '@/presentation/components/shared/BCard.vue'
 import { getShortDate } from '@/presentation/utils/dateTime.ts'
 
 const store = useProgressStore()

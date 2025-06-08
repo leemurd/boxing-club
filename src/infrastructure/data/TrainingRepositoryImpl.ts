@@ -8,6 +8,7 @@ import type { MeasurementUnit, ExerciseCategory } from '@/domain/entities/Exerci
 import type { DefaultTagId } from '@/domain/constants/defaultTags'
 import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
 import type { ProgressEntity } from '@/presentation/constants/progress/types.ts'
+import { getShortDate } from '@/presentation/utils/dateTime.ts'
 
 @injectable()
 export class TrainingRepositoryImpl implements ITrainingRepository {
@@ -54,7 +55,7 @@ export class TrainingRepositoryImpl implements ITrainingRepository {
     const map: Record<string, Acc> = {}
 
     for (const r of records) {
-      const day = r.timestamp.slice(0, 10)
+      const day = getShortDate(new Date(r.timestamp.slice(0, 10)))
       if (!map[day])
         map[day] = {
           reps: 0,

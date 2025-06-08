@@ -13,14 +13,13 @@
 
       <b-button
         color="dark"
-        class="w-100"
+        class="w-100 mb-4"
         @click="$router.push({name: 'ProgressRecord'})"
       >New Record</b-button>
+
+      <!-- Фильтр периода -->
+      <filter-bar class="mb-2" />
     </b-card>
-
-
-    <!-- Фильтр периода -->
-    <filter-bar class="mb-5" />
 
     <progress-stats-row
       v-if="dailyTotals.length"
