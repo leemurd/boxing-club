@@ -58,9 +58,7 @@ import { CreateTagUseCase } from '@/application/useCases/tag/CreateTagUseCase.ts
 import { DeleteTagUseCase } from '@/application/useCases/tag/DeleteTagUseCase.ts'
 import { GetTagByIdUseCase } from '@/application/useCases/tag/GetTagByIdUseCase.ts'
 import { UpdateTagUseCase } from '@/application/useCases/tag/UpdateTagUseCase.ts'
-import {
-  GetCombinationByIdUseCase
-} from '@/application/useCases/combination/GetCombinationByIdUseCase.ts'
+import { GetCombinationByIdUseCase } from '@/application/useCases/combination/GetCombinationByIdUseCase.ts'
 
 const container = new Container()
 
