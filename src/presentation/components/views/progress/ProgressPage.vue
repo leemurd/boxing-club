@@ -23,21 +23,37 @@
       v-if="dailyTotals.length"
       label="Daily Load"
       :items="dailyTotals"
-    >
-      <template #name="{ name }">
-        <div class="text-muted small">[{{ name }}]:</div>
-      </template>
-    </progress-stats-row>
+    />
 
     <progress-stats-row
       v-if="byCategory.length"
-      label="By Category"
+      label="Categories"
       :items="byCategory"
     />
 
     <progress-stats-row
+      v-if="byExercise.length"
+      label="Exercises"
+      :items="byExercise"
+    >
+      <template #name="{ name }">
+        {{ getExerciseName(name) }}:
+      </template>
+    </progress-stats-row>
+
+    <progress-stats-row
+      v-if="byCombo.length"
+      label="Combos"
+      :items="byCombo"
+    >
+      <template #name="{ name }">
+        {{ getComboTitle(name) }}:
+      </template>
+    </progress-stats-row>
+
+    <progress-stats-row
       v-if="topTags.length"
-      label="By Tag"
+      label="Tags"
       :items="topTags"
     >
       <template #name="{ name }">
@@ -74,7 +90,7 @@
                 color="red"
                 @click="progress.deleteRecord(rec?.id)"
               >
-                <i class="bi bi-x"></i>
+                <i class="bi bi-x"/>
               </b-button>
             </td>
           </tr>
@@ -111,17 +127,20 @@ import ProgressStatsRow from '@/presentation/components/pages/progress/ProgressS
 import EmptyState from '@/presentation/components/shared/EmptyState.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
+import { useComboStore } from '@/presentation/stores/comboStore.ts'
 
 const progress  = useProgressStore()
 const exStore   = useExerciseStore()
 const tagStore  = useTagStore()
 const authStore = useAuthStore()
+const comboStore = useComboStore()
 
 // Загрузка данных при монтировании
 onMounted(async () => {
   await tagStore.load()
   await exStore.loadAll()
   await progress.loadAll()
+  await comboStore.load()
 })
 
 const fullname = computed(() => authStore.currentUser?.firstName + ' ' + authStore.currentUser?.lastName)
@@ -146,6 +165,51 @@ const recentFive = computed(() =>
     .slice(0, 10)
 )
 
+// По упражнениям
+const byExercise = computed(() => {
+  const map: Record<string, { reps: number; seconds: number; sets: number }> = {}
+  for (const r of progress.records) {
+    const key = r.exerciseId
+    map[key] ??= {
+      reps: 0,
+      seconds: 0,
+      sets: 0
+    }
+    if (r.measurement === 'repetitions') map[key].reps += r.amount
+    else map[key].seconds += r.amount
+    map[key].sets += 1
+  }
+  return Object.entries(map).map(([name, acc]) => ({
+    name,
+    reps: acc.reps,
+    minutes: acc.seconds / 60,
+    sets: acc.sets
+  }))
+})
+
+// По комбо
+const byCombo = computed(() => {
+  const map: Record<string, { reps: number; seconds: number; sets: number }> = {}
+  for (const r of progress.records) {
+    if (!r.comboId) continue
+    const key = r.comboId
+    map[key] ??= {
+      reps: 0,
+      seconds: 0,
+      sets: 0
+    }
+    if (r.measurement === 'repetitions') map[key].reps += r.amount
+    else map[key].seconds += r.amount
+    map[key].sets += 1
+  }
+  return Object.entries(map).map(([name, acc]) => ({
+    name,
+    reps: acc.reps,
+    minutes: acc.seconds / 60,
+    sets: acc.sets
+  }))
+})
+
 // Хелперы
 function getExerciseName(id: string) {
   return exStore.exercises.find((e) => e.id === id)?.name ?? id
@@ -155,6 +219,9 @@ function getTagName(id: string) {
 }
 function formatDateTime(ts: string) {
   return new Date(ts).toLocaleString()
+}
+function getComboTitle(id: string) {
+  return comboStore.combos.find((c) => c.id === id)?.title ?? id
 }
 </script>
 

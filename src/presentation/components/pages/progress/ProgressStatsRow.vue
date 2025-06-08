@@ -24,7 +24,6 @@
               v-bind="{ name }"
             >
               {{ name }}:
-              <!--            <div class="text-muted small">[{{ name }}]:</div>-->
             </slot>
           </template>
         </progress-line>

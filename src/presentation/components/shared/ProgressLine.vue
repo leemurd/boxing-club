@@ -2,13 +2,15 @@
 <template>
   <div class="progress-line">
     <div class="progress-line__title">
-      <slot
-        name="name"
-        v-bind="{ name }"
-      >
-        <span>{{ name }}:</span>
-      </slot>
-      <div class="d-flex">
+      <span class="">
+        <slot
+          name="name"
+          v-bind="{ name }"
+        >
+          {{ name }}:
+        </slot>
+      </span>
+      <div class="d-flex flex-shrink-0 text-dark-emphasis">
         <span
           v-if="reps"
           class="me-2"
@@ -17,7 +19,9 @@
           v-if="min"
           class="me-2"
         >{{ min.toFixed(1) }} min,</span>
-        <span v-if="sets">{{ sets }} sets</span>
+        <span
+          v-if="sets"
+        >{{ sets }} sets</span>
       </div>
     </div>
     <div
@@ -124,7 +128,7 @@ const pctMin  = computed(() => Math.round((props.min  / sum.value) * 50))
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    font-size: 0.95rem;
+    font-size: 16px;
     font-weight: 500;
     margin-bottom: 0.25rem;
   }
