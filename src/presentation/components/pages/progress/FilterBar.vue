@@ -1,7 +1,39 @@
 <!-- src/presentation/components/shared/FilterBar.vue -->
 <template>
-  <div>
-    <div class="d-flex align-items-center mb-4 justify-content-between">
+  <b-card no-border>
+    <div class="row mb-4">
+      <div class="col-auto">
+        <b-button
+          color="secondary"
+          outline
+          class="flex-grow-1 w-100"
+          size="medium"
+          :disabled="periodType === TimeRange.ALL"
+          @click="shiftCursor(-1)"
+        >
+          Prev
+        </b-button>
+      </div>
+      <div class="col p-0 d-flex align-items-center">
+        <div class="text-center flex-grow-1 mb-0 fw-normal">
+          {{ displayRange }}
+        </div>
+      </div>
+      <div class="col-auto">
+        <b-button
+          color="secondary"
+          outline
+          class="flex-grow-1 w-100"
+          size="medium"
+          :disabled="periodType === TimeRange.ALL"
+          @click="shiftCursor(1)"
+        >
+          Next
+        </b-button>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between">
       <b-button-group
         v-model="periodType"
         size="medium"
@@ -16,40 +48,7 @@
         </template>
       </b-button-group>
     </div>
-
-    <div class="d-flex">
-      <b-button
-        color="secondary"
-        outline
-        class="me-2 flex-grow-1"
-        size="medium"
-        :disabled="periodType === TimeRange.ALL"
-        @click="shiftCursor(-1)"
-      >
-        Prev
-      </b-button>
-
-      <b-card
-        class="flex-grow-1"
-        no-padding
-      >
-        <div class="text-center py-2">
-          {{ displayRange }}
-        </div>
-      </b-card>
-
-      <b-button
-        color="secondary"
-        outline
-        class="ms-2 flex-grow-1"
-        size="medium"
-        :disabled="periodType === TimeRange.ALL"
-        @click="shiftCursor(1)"
-      >
-        Next
-      </b-button>
-    </div>
-  </div>
+  </b-card>
 </template>
 
 <script lang="ts" setup>
@@ -95,18 +94,20 @@ const displayRange = computed(() => {
   if (periodType.value === TimeRange.ALL) {
     return 'All time'
   }
-  const start = cursor.value
+
+  const end = new Date(cursor.value)   // курсор — это конец периода
+  const fmt = (d: Date) =>
+    d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+
   if (periodType.value === TimeRange.DAY) {
-    return fmt(start)
+    return fmt(end)
   }
+
   // для WEEK и MONTH
   const spanDays = periodType.value === TimeRange.WEEK ? 7 : 30
-  const end = new Date(start.getTime())
-  end.setDate(end.getDate() + spanDays - 1)
+  const start = new Date(end.getTime())
+  start.setDate(end.getDate() - spanDays + 1)
+
   return `${fmt(start)} – ${fmt(end)}`
 })
 </script>
-
-<style scoped>
-/* при необходимости добавьте отступы, выравнивание */
-</style>
