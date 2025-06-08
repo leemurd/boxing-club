@@ -28,9 +28,10 @@ export const TYPES = {
   SaveCombinationUseCase: Symbol.for('SaveCombinationUseCase'),
   UpdateCombinationUseCase: Symbol.for('UpdateCombinationUseCase'),
   DeleteCombinationUseCase: Symbol.for('DeleteCombinationUseCase'),
-  ICategoryRepository: Symbol.for('ICategoryRepository'),
+  GetCombinationByIdUseCase: Symbol.for('GetCombinationByIdUseCase'),
   // categories
-  CategoryRepository: Symbol.for('CategoryRepository'),
+  ICategoryRepository: Symbol.for('ICategoryRepository'),
+  // CategoryRepository: Symbol.for('CategoryRepository'),
   GetCategoriesUseCase: Symbol.for('GetCategoriesUseCase'),
   CreateCategoryUseCase: Symbol.for('CreateCategoryUseCase'),
   UpdateCategoryUseCase: Symbol.for('UpdateCategoryUseCase'),

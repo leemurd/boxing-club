@@ -6,4 +6,5 @@ export interface ICombinationRepository {
   save(userId: string, combo: Combination): Promise<void>
   update(userId: string, combo: Combination): Promise<void>
   delete(userId: string, comboId: string): Promise<void>
+  getById(userId: string, comboId: string): Promise<Combination | null>
 }

@@ -11,6 +11,7 @@ import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import type { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase.ts'
 import { getUserId } from '@/presentation/utils/getUserId.ts'
 import { getUC } from '@/infrastructure/di/resolver.ts'
+import { GetCombinationByIdUseCase } from '@/application/useCases/combination/GetCombinationByIdUseCase.ts'
 
 export const useComboStore = defineStore('combo', () => {
   const combos = ref<Combination[]>([])
@@ -39,15 +40,21 @@ export const useComboStore = defineStore('combo', () => {
   }
 
   async function save(combo: Combination) {
-    const userId = authStore.currentUser!.id
+    const userId = await getUserId()
     await getUC<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).execute(userId, combo)
     await load()
   }
 
   async function remove(comboId: string) {
-    const userId = authStore.currentUser!.id
+    const userId = await getUserId()
     await getUC<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).execute(userId, comboId)
     await load()
+  }
+
+  const getCombinationById = async (comboId: string): Promise<Combination | null> => {
+    const userId = await getUserId()
+    return await getUC<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase).execute(userId, comboId)
+    // return combos.value.find((item) => item.id == comboId)
   }
 
   return {
@@ -55,6 +62,7 @@ export const useComboStore = defineStore('combo', () => {
     load,
     save,
     remove,
-    removeDeletedCategories
+    removeDeletedCategories,
+    getCombinationById
   }
 })

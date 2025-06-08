@@ -58,6 +58,9 @@ import { CreateTagUseCase } from '@/application/useCases/tag/CreateTagUseCase.ts
 import { DeleteTagUseCase } from '@/application/useCases/tag/DeleteTagUseCase.ts'
 import { GetTagByIdUseCase } from '@/application/useCases/tag/GetTagByIdUseCase.ts'
 import { UpdateTagUseCase } from '@/application/useCases/tag/UpdateTagUseCase.ts'
+import {
+  GetCombinationByIdUseCase
+} from '@/application/useCases/combination/GetCombinationByIdUseCase.ts'
 
 const container = new Container()
 
@@ -93,6 +96,7 @@ container.bind<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).to(SaveComb
 container.bind<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).to(DeleteCombinationUseCase).inSingletonScope()
 container.bind<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase).to(UpdateCombinationUseCase).inSingletonScope()
 container.bind<GetPunchesUseCase>(TYPES.GetPunchesUseCase).to(GetPunchesUseCase).inSingletonScope()
+container.bind<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase).to(GetCombinationByIdUseCase).inSingletonScope()
 // --- Use Cases: категории ---
 container.bind<GetCategoriesUseCase>(TYPES.GetCategoriesUseCase).to(GetCategoriesUseCase).inSingletonScope()
 container.bind<CreateCategoryUseCase>(TYPES.CreateCategoryUseCase).to(CreateCategoryUseCase).inSingletonScope()

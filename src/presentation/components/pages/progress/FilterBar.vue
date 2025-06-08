@@ -60,6 +60,7 @@ import { storeToRefs } from 'pinia'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
+import { getShortDate } from '@/presentation/utils/dateTime.ts'
 
 const store = useProgressStore()
 const { periodType, cursor } = storeToRefs(store)
@@ -83,11 +84,7 @@ function shiftCursor(delta: number) {
 }
 
 // форматтер дат вида "1 Feb"
-const fmt = (d: Date) =>
-  d.toLocaleDateString(undefined, {
-    day: 'numeric',
-    month: 'short'
-  })
+
 
 // вычисляем строку диапазона
 const displayRange = computed(() => {
@@ -96,11 +93,11 @@ const displayRange = computed(() => {
   }
 
   const end = new Date(cursor.value)   // курсор — это конец периода
-  const fmt = (d: Date) =>
-    d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+  // const fmt = (d: Date) =>
+  //   d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
 
   if (periodType.value === TimeRange.DAY) {
-    return fmt(end)
+    return getShortDate(end)
   }
 
   // для WEEK и MONTH
@@ -108,6 +105,6 @@ const displayRange = computed(() => {
   const start = new Date(end.getTime())
   start.setDate(end.getDate() - spanDays + 1)
 
-  return `${fmt(start)} – ${fmt(end)}`
+  return `${getShortDate(start)} – ${getShortDate(end)}`
 })
 </script>

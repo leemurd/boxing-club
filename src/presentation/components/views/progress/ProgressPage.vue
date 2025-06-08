@@ -64,42 +64,47 @@
       </template>
     </progress-stats-row>
 
-    <section v-if="recentFive.length">
-      <h2 class="h5 mb-3 text-center">Recent Records</h2>
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Exercise</th>
-            <th>Amount</th>
-            <th/>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="rec in recentFive"
-            :key="rec.id"
-          >
-            <td>{{ formatDateTime(rec.timestamp) }}</td>
-            <td>{{ getExerciseName(rec.exerciseId) }}</td>
-            <td>
-              {{ rec.amount }}
-              {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}
-            </td>
-            <td>
-              <b-button
-                v-if="rec.id"
-                size="small"
-                color="red"
-                @click="progress.deleteRecord(rec?.id)"
-              >
-                <i class="bi bi-x"/>
-              </b-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <recent-records
+      v-if="recentFive.length"
+      :items="recentFive"
+    />
+
+    <!--    <section v-if="recentFive.length">-->
+    <!--      <h2 class="h5 mb-3 text-center">Recent Records</h2>-->
+    <!--      <table class="table table-sm">-->
+    <!--        <thead>-->
+    <!--          <tr>-->
+    <!--            <th>Date</th>-->
+    <!--            <th>Exercise</th>-->
+    <!--            <th>Amount</th>-->
+    <!--            <th/>-->
+    <!--          </tr>-->
+    <!--        </thead>-->
+    <!--        <tbody>-->
+    <!--          <tr-->
+    <!--            v-for="rec in recentFive"-->
+    <!--            :key="rec.id"-->
+    <!--          >-->
+    <!--            <td>{{ formatDateTime(rec.timestamp) }}</td>-->
+    <!--            <td>{{ getExerciseName(rec.exerciseId) }}</td>-->
+    <!--            <td>-->
+    <!--              {{ rec.amount }}-->
+    <!--              {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}-->
+    <!--            </td>-->
+    <!--            <td>-->
+    <!--              <b-button-->
+    <!--                v-if="rec.id"-->
+    <!--                size="small"-->
+    <!--                color="red"-->
+    <!--                @click="progress.deleteRecord(rec?.id)"-->
+    <!--              >-->
+    <!--                <i class="bi bi-x"/>-->
+    <!--              </b-button>-->
+    <!--            </td>-->
+    <!--          </tr>-->
+    <!--        </tbody>-->
+    <!--      </table>-->
+    <!--    </section>-->
 
     <empty-state
       v-if="!(recentFive.length || dailyTotals.length || byCategory.length || topTags.length)"
@@ -131,6 +136,7 @@ import EmptyState from '@/presentation/components/shared/EmptyState.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { useComboStore } from '@/presentation/stores/comboStore.ts'
+import RecentRecords from '@/presentation/components/pages/progress/RecentRecords.vue'
 
 const progress  = useProgressStore()
 const exStore   = useExerciseStore()
@@ -151,8 +157,6 @@ const fullname = computed(() => authStore.currentUser?.firstName + ' ' + authSto
 const dailyTotals = computed(() => progress.dailyTotals)
 // Статистика по категориям
 const byCategory = computed(() => progress.byCategory)
-// const isLoading = computed(() => progress.isLoading ?? true)
-
 // Top-5 тегов по reps
 const topTags = computed(() =>
   [...progress.byTag]
@@ -191,7 +195,7 @@ const byExercise = computed(() => {
 })
 
 // По комбо
-const byCombo = computed(() => {
+const byCombo = computed( () => {
   const map: Record<string, { reps: number; seconds: number; sets: number }> = {}
   for (const r of progress.records) {
     if (!r.comboId) continue
@@ -219,9 +223,6 @@ function getExerciseName(id: string) {
 }
 function getTagName(id: string) {
   return tagStore.list.find((t) => t.id === id)?.name ?? id
-}
-function formatDateTime(ts: string) {
-  return new Date(ts).toLocaleString()
 }
 function getComboTitle(id: string) {
   return comboStore.combos.find((c) => c.id === id)?.title ?? id

@@ -15,7 +15,7 @@ html, body {
 }
 
 .btn {
-  @include slabFont;
+  //@include slabFont;
 }
 
 [data-bs-theme=dark] {
