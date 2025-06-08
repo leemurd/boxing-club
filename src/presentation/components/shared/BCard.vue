@@ -2,8 +2,9 @@
   <div
     class="card"
     :class="{
-      'border-0': noBorder && isDarkMode,
-      [isDarkMode ? 'text-bg-dark' : 'bg-light']: true,
+      // 'border-0': noBorder && isDarkMode,
+      'border-0': noBorder,
+      [isDarkMode ? 'bg-dark' : 'bg-light']: true,
       // [`bg-${isDarkMode ? 'dark' : ''}`]: isDarkMode,
     }"
   >

@@ -1,7 +1,10 @@
 <!-- src/presentation/components/views/progress/ProgressPage.vue -->
 <template>
   <div class="progress-page">
-    <b-card class="mb-4">
+    <b-card
+      class="mb-4"
+      no-border
+    >
       <h5 class="card-title mb-4 text-center">{{ fullname }}</h5>
       <img
         :src="avatarImg"
@@ -62,7 +65,7 @@
     </progress-stats-row>
 
     <section v-if="recentFive.length">
-      <h2 class="h5 mb-3">Recent Records</h2>
+      <h2 class="h5 mb-3 text-center">Recent Records</h2>
       <table class="table table-sm">
         <thead>
           <tr>
