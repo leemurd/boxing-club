@@ -47,10 +47,22 @@
           Can be weighted
         </b-checkbox>
         <b-checkbox
+          v-model="form.alwaysWeighted"
+          :disabled="isDefault"
+        >
+          Is always weighted
+        </b-checkbox>
+        <b-checkbox
           v-model="form.canBeAccelerated"
           :disabled="isDefault"
         >
           Can be accelerated
+        </b-checkbox>
+        <b-checkbox
+          v-model="form.alwaysAccelerated"
+          :disabled="isDefault"
+        >
+          Is always accelerated
         </b-checkbox>
         <b-checkbox
           v-model="form.canHaveCombo"
@@ -87,14 +99,15 @@
           v-if="form.tagIds.length > 0"
           #default
         >
-          <b-badge
-            v-for="tagId in form.tagIds"
-            :key="tagId"
-            :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'secondary' : 'primary'"
-          >
-            {{ tagStore.list.find(t => t.id === tagId)?.name }}
-          </b-badge>
-
+          <div class="card-text">
+            <b-badge
+              v-for="tagId in form.tagIds"
+              :key="tagId"
+              :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'secondary' : 'primary'"
+            >
+              {{ tagStore.list.find(t => t.id === tagId)?.name }}
+            </b-badge>
+          </div>
         </template>
       </b-card>
 
@@ -170,6 +183,8 @@ const form = ref<Exercise>({
   measurement:     'repetitions',
   canBeWeighted:   false,
   canBeAccelerated:false,
+  alwaysWeighted: false,
+  alwaysAccelerated: false,
   tagIds:          [],
   isFavorite:      false,
   canHaveCombo: false
@@ -180,7 +195,7 @@ onUserLoaded(async () => {
   await tagStore.load()
   if (!isNew.value) {
     await exStore.loadById(id.value!)
-    const {current} = exStore
+    const current = exStore.current
     if (current) {
       Object.assign(form.value, current)
     }
@@ -221,20 +236,31 @@ const onRemove = async () => {
   router.back()
 }
 
+watch(() => [form.value.alwaysAccelerated, form.value.alwaysWeighted], ([newAlwaysAccelerated, newAlwaysWeighted]) => {
+  if (newAlwaysAccelerated) {
+    form.value.canBeAccelerated = true
+  }
+  if (newAlwaysWeighted) {
+    form.value.canBeWeighted = true
+  }
+})
+
 watch(() => form.value.canBeAccelerated, (val) => {
   form.value.tagIds = [
     ...form.value.tagIds.filter((item) => item !== DEFAULT_TAG_IDS.PACE)
   ]
   if (val) form.value.tagIds.push(DEFAULT_TAG_IDS.PACE)
+  else form.value.alwaysAccelerated = false
 })
 watch(() => form.value.canBeWeighted, (val) => {
   form.value.tagIds = [
     ...form.value.tagIds.filter((item) => item !== DEFAULT_TAG_IDS.WEIGHT)
   ]
   if (val) form.value.tagIds.push(DEFAULT_TAG_IDS.WEIGHT)
+  else form.value.alwaysWeighted = false
 })
 
-watch(() => form.value.category, (val) => {
+watch(() => form.value.category, () => {
   form.value.tagIds = [
     ...form.value.tagIds.filter(
       (item) => ![DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.TECHNIQUE].includes(item)

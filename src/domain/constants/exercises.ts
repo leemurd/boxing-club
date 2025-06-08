@@ -9,6 +9,8 @@ export const defaultExercise: Exercise = {
   measurement: 'repetitions',
   canBeWeighted: false,
   canBeAccelerated: false,
+  alwaysWeighted: false,
+  alwaysAccelerated: false,
   tagIds: [],
   isFavorite: false,
   canHaveCombo: false

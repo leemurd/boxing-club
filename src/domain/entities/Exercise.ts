@@ -15,6 +15,8 @@ export interface Exercise {
   canBeWeighted: boolean
   /** Может ли выполняться в ускорённом темпе */
   canBeAccelerated: boolean
+  alwaysWeighted?: boolean
+  alwaysAccelerated?: boolean
   tagIds: string[]
   isFavorite: boolean
   canHaveCombo: boolean

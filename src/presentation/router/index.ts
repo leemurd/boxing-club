@@ -17,7 +17,7 @@ import TagListPage from '@/presentation/components/views/tags/TagListPage.vue'
 import TagEditPage from '@/presentation/components/views/tags/TagEditPage.vue'
 import ExerciseEditPage from '@/presentation/components/views/exercises/ExerciseEditPage.vue'
 import ExercisesIndex from '@/presentation/components/views/exercises/ExercisesIndex.vue'
-import RecordLogger from '@/presentation/components/pages/trainings/RecordLogger.vue'
+import RecordLogger from '@/presentation/components/views/progress/RecordLogger.vue'
 // import NewRecord from '@/presentation/components/views/progress/NewRecord.vue'
 
 const routes: RouteRecordRaw[] = [

@@ -1,4 +1,4 @@
-<!-- src/presentation/components/pages/trainings/RecordLogger.vue -->
+<!-- src/presentation/components/views/progress/RecordLogger.vue -->
 <template>
   <div class="exercise-logger">
     <div class="form-label text-center">Select category</div>
@@ -73,14 +73,14 @@
       </b-card>
 
       <b-checkbox
-        v-if="selectedExercise.canBeWeighted"
+        v-if="selectedExercise.canBeWeighted && !selectedExercise.alwaysWeighted"
         v-model="flags.weighted"
       >
         With additional weight
       </b-checkbox>
 
       <b-checkbox
-        v-if="selectedExercise.canBeAccelerated"
+        v-if="selectedExercise.canBeAccelerated && !selectedExercise.alwaysAccelerated"
         v-model="flags.accelerated"
       >
         Accelerated tempo
@@ -133,18 +133,18 @@
 
 <script lang="ts" setup>
 import { ref, reactive, computed, onMounted, watch } from 'vue'
-import { useExerciseStore } from '@/presentation/stores/exerciseStore'
-import { useTagStore } from '@/presentation/stores/tagStore'
-import { useComboStore } from '@/presentation/stores/comboStore'
-import { useModalService } from '@/presentation/composition/useModalService'
-import { ModalKey } from '@/presentation/modals/modalKeys'
-import type { Combination } from '@/domain/entities/Combination'
+import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
+import { useTagStore } from '@/presentation/stores/tagStore.ts'
+import { useComboStore } from '@/presentation/stores/comboStore.ts'
+import { useModalService } from '@/presentation/composition/useModalService.ts'
+import { ModalKey } from '@/presentation/modals/modalKeys.ts'
+import type { Combination } from '@/domain/entities/Combination.ts'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
-import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise'
-import { useRecordStore } from '@/presentation/stores/recordStore'
+import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise.ts'
+import { useRecordStore } from '@/presentation/stores/recordStore.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BInput from '@/presentation/components/shared/BInput.vue'
-import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
+import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
 import { categoryTagMap } from '@/presentation/constants/progress/data.ts'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
@@ -240,10 +240,10 @@ const makeRecord = () => {
   record.tagIds = record.tagIds.filter(
     (i) => !([DEFAULT_TAG_IDS.WEIGHT, DEFAULT_TAG_IDS.PACE].includes(i))
   )
-  if (flags.weighted) {
+  if (flags.weighted || selectedExercise.value.alwaysWeighted) {
     record.tagIds.push(DEFAULT_TAG_IDS.WEIGHT)
   }
-  if (flags.accelerated) {
+  if (flags.accelerated || selectedExercise.value.alwaysAccelerated) {
     record.tagIds.push(DEFAULT_TAG_IDS.PACE)
   }
 

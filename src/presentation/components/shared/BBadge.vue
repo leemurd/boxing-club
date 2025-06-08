@@ -21,7 +21,7 @@ withDefaults(defineProps<{
 </script>
 
 <style lang="scss" scoped>
-.badge {
-  font-size: inherit;
-}
+//.badge {
+//  font-size: inherit;
+//}
 </style>

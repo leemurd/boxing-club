@@ -61,14 +61,17 @@ export const useExerciseStore = defineStore('exercise', () => {
 
   /** Обновление существующего упражнения */
   async function updateExercise(ex: Exercise) {
+    // console.log({ ...ex })
+    const val = { ...ex }
+    console.log(val)
     const userId = await getUserId()
     if (!userId) return
     loading.value = true
     try {
       const uc = container.get<UpdateExerciseUseCase>(TYPES.UpdateExerciseUseCase)
-      await uc.execute(userId, ex)
-      const idx = exercises.value.findIndex((e) => e.id === ex.id)
-      if (idx !== -1) exercises.value.splice(idx, 1, ex)
+      await uc.execute(userId, val)
+      const idx = exercises.value.findIndex((e) => e.id === val.id)
+      if (idx !== -1) exercises.value.splice(idx, 1, val)
     } finally {
       loading.value = false
     }
