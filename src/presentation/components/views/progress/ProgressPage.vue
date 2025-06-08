@@ -68,43 +68,6 @@
       :items="recentFive"
     />
 
-    <!--    <section v-if="recentFive.length">-->
-    <!--      <h2 class="h5 mb-3 text-center">Recent Records</h2>-->
-    <!--      <table class="table table-sm">-->
-    <!--        <thead>-->
-    <!--          <tr>-->
-    <!--            <th>Date</th>-->
-    <!--            <th>Exercise</th>-->
-    <!--            <th>Amount</th>-->
-    <!--            <th/>-->
-    <!--          </tr>-->
-    <!--        </thead>-->
-    <!--        <tbody>-->
-    <!--          <tr-->
-    <!--            v-for="rec in recentFive"-->
-    <!--            :key="rec.id"-->
-    <!--          >-->
-    <!--            <td>{{ formatDateTime(rec.timestamp) }}</td>-->
-    <!--            <td>{{ getExerciseName(rec.exerciseId) }}</td>-->
-    <!--            <td>-->
-    <!--              {{ rec.amount }}-->
-    <!--              {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}-->
-    <!--            </td>-->
-    <!--            <td>-->
-    <!--              <b-button-->
-    <!--                v-if="rec.id"-->
-    <!--                size="small"-->
-    <!--                color="red"-->
-    <!--                @click="progress.deleteRecord(rec?.id)"-->
-    <!--              >-->
-    <!--                <i class="bi bi-x"/>-->
-    <!--              </b-button>-->
-    <!--            </td>-->
-    <!--          </tr>-->
-    <!--        </tbody>-->
-    <!--      </table>-->
-    <!--    </section>-->
-
     <empty-state
       v-if="!(recentFive.length || dailyTotals.length || byCategory.length || topTags.length)"
       title="Empty state"

@@ -2,56 +2,56 @@
 <template>
   <div class="progress-line">
     <div class="progress-line__title">
-      <span class="">
+      <span>
         <slot
           name="name"
           v-bind="{ name }"
-        >
-          {{ name }}:
-        </slot>
+        >{{ name }}:</slot>
       </span>
       <div class="d-flex flex-shrink-0 text-dark-emphasis">
         <span
           v-if="reps"
           class="me-2"
-        >{{ reps }} reps,</span>
+        >{{ reps }} reps</span>
         <span
           v-if="min"
           class="me-2"
-        >{{ min.toFixed(1) }} min,</span>
-        <span
-          v-if="sets"
-        >{{ sets }} sets</span>
+        >{{ min.toFixed(1) }} min</span>
+        <span v-if="sets">  {{ sets }} sets</span>
       </div>
     </div>
+
     <div
       class="progress-stacked"
       :style="`height: ${height}px`"
     >
-      <!-- Сегмент за reps -->
+      <!-- репы -->
       <div
         v-if="reps"
-        class="progress"
+        class="progress flex-shrink-1"
         role="progressbar"
+        :aria-valuenow="reps"
         aria-valuemin="0"
         aria-valuemax="100"
         :style="`width: ${pctReps}%; height: ${height}px`"
       >
         <div
           class="progress-bar bg-primary"
-          :class="{
-            'progress-bar-striped progress-bar-animated': loading
-          }"
+          :class="{'progress-bar-striped progress-bar-animated': loading}"
         >
-          <span class="progress-line__hint text-bg-primary">{{ (pctReps > 20 && !loading) ? 'reps' : '' }}</span>
+          <span
+            v-if="pctReps > 15 && !loading"
+            class="progress-line__hint"
+          >reps</span>
         </div>
       </div>
 
-      <!-- Сегмент за minutes -->
+      <!-- минуты -->
       <div
         v-if="min"
-        class="progress"
+        class="progress flex-shrink-0"
         role="progressbar"
+        :aria-valuenow="min"
         aria-valuemin="0"
         aria-valuemax="100"
         :style="`width: ${pctMin}%; height: ${height}px`"
@@ -60,80 +60,56 @@
           :class="[
             `progress-bar bg-${darkColor}`,
             `text-bg-${darkColor}`,
-            {
-              'progress-bar-striped progress-bar-animated': loading
-            }
-          ]
-          "
+            { 'progress-bar-striped progress-bar-animated': loading }
+          ]"
         >
-          <span class="progress-line__hint">{{ (pctMin > 30 && !loading) ? 'minutes' : '' }}</span>
+          <span
+            v-if="pctMin > 15 && !loading"
+            class="progress-line__hint"
+          >min</span>
         </div>
       </div>
-
-      <!-- Сегмент за sets -->
-      <!--      <div-->
-      <!--        v-if="sets"-->
-      <!--        class="progress"-->
-      <!--        role="progressbar"-->
-      <!--        aria-valuemin="0"-->
-      <!--        aria-valuemax="100"-->
-      <!--        :style="`width: ${pctSets}%; height: ${height}px`"-->
-      <!--      >-->
-      <!--        <div-->
-      <!--          class="progress-bar bg-secondary"-->
-      <!--          :class="{-->
-      <!--            'progress-bar-striped progress-bar-animated': loading-->
-      <!--          }"-->
-      <!--        >-->
-      <!--          <span class="progress-line__hint text-bg-secondary">{{ (pctSets > 20 && !loading) ? 'sets' : '' }}</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useThemeStore } from '@/presentation/stores/themeStore'
 
-const props = withDefaults(
-  defineProps<{
-    height?: number
-    name: string
-    reps: number
-    min: number
-    sets: number,
-    loading?: boolean
-  }>(),
-  { height: 12 }
-)
+const props = withDefaults(defineProps<{
+  name: string
+  reps: number
+  min: number
+  sets?: number
+  height?: number
+  loading?: boolean
+}>(), {
+  height: 12,
+  sets: 0,
+  loading: false
+})
 
 const themeStore = useThemeStore()
-const darkColor = computed(() => (themeStore.isDarkTheme ? 'light' : 'dark'))
+const darkColor = computed(() => themeStore.isDarkTheme ? 'light' : 'dark')
 
-// сумма всех трёх показателей
-const sum = computed(() => props.reps + props.min + props.sets || 1)
-
-// доля reps, minutes и sets в процентах
-const pctReps = computed(() => Math.round((props.reps / sum.value) * 50))
-const pctMin  = computed(() => Math.round((props.min  / sum.value) * 50))
-// const pctSets = computed(() => Math.round((props.sets / sum.value) * 100))
+// теперь просто берем сами значения (не нормируем по сумме)
+const pctReps = computed(() => props.reps)
+const pctMin  = computed(() => props.min)
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .progress-line {
   &__title {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    font-size: 16px;
-    font-weight: 500;
+    align-items: center;
     margin-bottom: 0.25rem;
+    font-size: 1rem;
+    font-weight: 500;
   }
   &__hint {
-    font-size: 9px;
+    font-size: 0.6rem;
   }
 }
 </style>

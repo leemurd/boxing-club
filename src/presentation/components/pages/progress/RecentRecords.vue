@@ -28,7 +28,7 @@
         </b-dropdown>
       </div>
 
-      <div class="card-title">
+      <div class="card-title mb-0">
         <div class="row pe-5">
           <div class="col">{{ getExerciseName(rec.exerciseId) }}</div>
           <div class="col-auto">{{ rec.amount }} {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}</div>
