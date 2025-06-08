@@ -19,3 +19,9 @@ withDefaults(defineProps<{
   color: 'secondary'
 })
 </script>
+
+<style lang="scss" scoped>
+.badge {
+  font-size: inherit;
+}
+</style>
