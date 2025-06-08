@@ -67,23 +67,23 @@
       </div>
 
       <!-- Сегмент за sets -->
-      <div
-        v-if="sets"
-        class="progress"
-        role="progressbar"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        :style="`width: ${pctSets}%; height: ${height}px`"
-      >
-        <div
-          class="progress-bar bg-secondary"
-          :class="{
-            'progress-bar-striped progress-bar-animated': loading
-          }"
-        >
-          <span class="progress-line__hint text-bg-secondary">{{ (pctSets > 20 && !loading) ? 'sets' : '' }}</span>
-        </div>
-      </div>
+      <!--      <div-->
+      <!--        v-if="sets"-->
+      <!--        class="progress"-->
+      <!--        role="progressbar"-->
+      <!--        aria-valuemin="0"-->
+      <!--        aria-valuemax="100"-->
+      <!--        :style="`width: ${pctSets}%; height: ${height}px`"-->
+      <!--      >-->
+      <!--        <div-->
+      <!--          class="progress-bar bg-secondary"-->
+      <!--          :class="{-->
+      <!--            'progress-bar-striped progress-bar-animated': loading-->
+      <!--          }"-->
+      <!--        >-->
+      <!--          <span class="progress-line__hint text-bg-secondary">{{ (pctSets > 20 && !loading) ? 'sets' : '' }}</span>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </div>
 
@@ -113,8 +113,8 @@ const sum = computed(() => props.reps + props.min + props.sets || 1)
 
 // доля reps, minutes и sets в процентах
 const pctReps = computed(() => Math.round((props.reps / sum.value) * 50))
-const pctMin  = computed(() => Math.round((props.min  / sum.value) * 100))
-const pctSets = computed(() => Math.round((props.sets / sum.value) * 100))
+const pctMin  = computed(() => Math.round((props.min  / sum.value) * 50))
+// const pctSets = computed(() => Math.round((props.sets / sum.value) * 100))
 </script>
 
 <style lang="scss" scoped>

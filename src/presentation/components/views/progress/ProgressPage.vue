@@ -1,22 +1,26 @@
 <!-- src/presentation/components/views/progress/ProgressPage.vue -->
 <template>
-  <div class="progress-page py-4">
-    <img
-      :src="avatarImg"
-      class="progress-page-main__avatar mb-4"
-    >
+  <div class="progress-page">
+    <b-card class="mb-4">
+      <h5 class="card-title mb-4 text-center">{{ fullname }}</h5>
+      <img
+        :src="avatarImg"
+        class="progress-page-main__avatar mb-4"
+      >
 
-    <b-button
-      color="dark"
-      class="w-100 mb-4"
-      outline
-      @click="$router.push({name: 'ProgressRecord'})"
-    >New Record</b-button>
+      <b-button
+        color="dark"
+        class="w-100"
+        @click="$router.push({name: 'ProgressRecord'})"
+      >New Record</b-button>
+    </b-card>
+
 
     <!-- Фильтр периода -->
     <filter-bar class="mb-5" />
 
     <progress-stats-row
+      v-if="dailyTotals.length"
       label="Daily Load"
       :items="dailyTotals"
     >
@@ -26,11 +30,13 @@
     </progress-stats-row>
 
     <progress-stats-row
+      v-if="byCategory.length"
       label="By Category"
       :items="byCategory"
     />
 
     <progress-stats-row
+      v-if="topTags.length"
       label="By Tag"
       :items="topTags"
     >
@@ -39,7 +45,7 @@
       </template>
     </progress-stats-row>
 
-    <section>
+    <section v-if="recentFive.length">
       <h2 class="h5 mb-3">Recent Records</h2>
       <table class="table table-sm">
         <thead>
@@ -47,6 +53,7 @@
             <th>Date</th>
             <th>Exercise</th>
             <th>Amount</th>
+            <th/>
           </tr>
         </thead>
         <tbody>
@@ -60,10 +67,35 @@
               {{ rec.amount }}
               {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}
             </td>
+            <td>
+              <b-button
+                v-if="rec.id"
+                size="small"
+                color="red"
+                @click="progress.deleteRecord(rec?.id)"
+              >
+                <i class="bi bi-x"></i>
+              </b-button>
+            </td>
           </tr>
         </tbody>
       </table>
     </section>
+
+    <empty-state
+      v-if="!(recentFive.length || dailyTotals.length || byCategory.length || topTags.length)"
+      title="Empty state"
+      description="No records found for this period"
+    >
+      <template #button>
+        <b-button
+          color="dark"
+          class="w-100"
+          outline
+          @click="$router.push({name: 'ProgressRecord'})"
+        >New Record</b-button>
+      </template>
+    </empty-state>
   </div>
 </template>
 
@@ -76,10 +108,14 @@ import FilterBar from '@/presentation/components/pages/progress/FilterBar.vue'
 import avatarImg from '@/presentation/assets/avatar-colored.svg'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import ProgressStatsRow from '@/presentation/components/pages/progress/ProgressStatsRow.vue'
+import EmptyState from '@/presentation/components/shared/EmptyState.vue'
+import BCard from '@/presentation/components/shared/BCard.vue'
+import { useAuthStore } from '@/presentation/stores/authStore.ts'
 
 const progress  = useProgressStore()
 const exStore   = useExerciseStore()
 const tagStore  = useTagStore()
+const authStore = useAuthStore()
 
 // Загрузка данных при монтировании
 onMounted(async () => {
@@ -88,6 +124,7 @@ onMounted(async () => {
   await progress.loadAll()
 })
 
+const fullname = computed(() => authStore.currentUser?.firstName + ' ' + authStore.currentUser?.lastName)
 // Ежедневная статистика
 const dailyTotals = computed(() => progress.dailyTotals)
 // Статистика по категориям

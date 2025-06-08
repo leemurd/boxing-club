@@ -2,7 +2,9 @@
   <div
     class="card"
     :class="{
-      'border-0': noBorder
+      'border-0': noBorder && isDarkMode,
+      [isDarkMode ? 'text-bg-dark' : 'bg-light']: true,
+      // [`bg-${isDarkMode ? 'dark' : ''}`]: isDarkMode,
     }"
   >
     <div
@@ -35,8 +37,14 @@
 </template>
 
 <script setup lang="ts">
+import { useThemeStore } from '@/presentation/stores/themeStore.ts'
+import { computed } from 'vue'
+
 const props = defineProps<{
   noPadding?: boolean,
   noBorder?: boolean,
 }>()
+
+const themeStore = useThemeStore()
+const isDarkMode = computed(() => themeStore.isDarkTheme)
 </script>

@@ -148,7 +148,6 @@ import BSelect from '@/presentation/components/shared/BSelect.vue'
 import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
 import BBadge from '@/presentation/components/shared/BBadge.vue'
-import { categoryTagMap } from '@/presentation/constants/progress/data.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -167,7 +166,7 @@ const categories = Object.values(ExerciseCategory)
 const form = ref<Exercise>({
   id:              id.value || '',
   name:            '',
-  category:        null,
+  category:        ExerciseCategory.PHYSICS,
   measurement:     'repetitions',
   canBeWeighted:   false,
   canBeAccelerated:false,
@@ -239,8 +238,7 @@ watch(() => form.value.category, (val) => {
   form.value.tagIds = [
     ...form.value.tagIds.filter(
       (item) => ![DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.TECHNIQUE].includes(item)
-    ),
-    categoryTagMap[val]
+    )
   ]
 }, {
   immediate: true
