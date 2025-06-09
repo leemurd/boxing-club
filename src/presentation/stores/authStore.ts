@@ -6,7 +6,6 @@ import type { IAuthRepository } from '@/domain/repositories/IAuthRepository'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { User } from '@/domain/entities/User'
 import { useThemeStore } from '@/presentation/stores/themeStore.ts'
-import { useRecordStore } from '@/presentation/stores/recordStore.ts'
 import { getUC } from '@/infrastructure/di/resolver.ts'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -18,7 +17,6 @@ export const useAuthStore = defineStore('auth', () => {
   const authRepo = getUC<IAuthRepository>(TYPES.IAuthRepository)
   const userRepo = getUC<IUserRepository>(TYPES.IUserRepository)
   const auth = getAuth()
-  const recordStore = useRecordStore()
   const isDarkMode = computed(() => useThemeStore().isDarkTheme)
 
   function init() {
@@ -71,7 +69,6 @@ export const useAuthStore = defineStore('auth', () => {
       await authRepo.signOut()
       error.value = ''
       isLoggedIn.value = false
-      recordStore.clearStats()
     } catch (err: any) {
       error.value = err.message
     }

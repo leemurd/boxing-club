@@ -1,18 +1,15 @@
 // src/infrastructure/data/TrainingRepositoryImpl.ts
 
 import { injectable } from 'inversify'
-import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { collection, addDoc, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import type { ITrainingRepository } from '@/domain/repositories/ITrainingRepository'
 import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
 import type { MeasurementUnit, ExerciseCategory } from '@/domain/entities/Exercise'
-import type { DefaultTagId } from '@/domain/constants/defaultTags'
-import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
-import type { ProgressEntity } from '@/presentation/constants/progress/types.ts'
-import { getShortDate } from '@/presentation/utils/dateTime.ts'
+import { db } from '@/infrastructure/firebase/firebaseConfig'
 
 @injectable()
 export class TrainingRepositoryImpl implements ITrainingRepository {
-  private db = getFirestore(firebaseApp)
+  private db = db
 
   private col(userId: string) {
     return collection(this.db, 'users', userId, 'trainingRecords')
@@ -51,90 +48,6 @@ export class TrainingRepositoryImpl implements ITrainingRepository {
           ...d.data()
         }) as TrainingRecord
     )
-  }
-
-  async getDailyTotals(userId: string, from: Date, to: Date): Promise<ProgressEntity<string>[]> {
-    const records = await this.getRecords(userId, from, to)
-    type Acc = { reps: number; minutes: number; sets: number }
-    const map: Record<string, Acc> = {}
-
-    for (const r of records) {
-      // ← парсим полную метку, а не «YYYY-MM-DD»
-      const dayKey = getShortDate(new Date(r.timestamp))
-      if (!map[dayKey]) {
-        map[dayKey] = {
-          reps: 0,
-          minutes: 0,
-          sets: 0
-        }
-      }
-      if (r.measurement === 'repetitions') {
-        map[dayKey].reps += r.amount
-      } else {
-        // если у вас хранят секунды, переводим их в минуты
-        map[dayKey].minutes += r.amount / 60
-      }
-      map[dayKey].sets += 1
-    }
-
-    return Object.entries(map).map(([name, acc]) => ({
-      name,
-      reps: acc.reps,
-      minutes: acc.minutes,
-      sets: acc.sets
-    }))
-  }
-
-  async getTotalsByCategory(userId: string, from: Date, to: Date): Promise<ProgressEntity<ExerciseCategory>[]> {
-    const records = await this.getRecords(userId, from, to)
-    type Acc = { reps: number; seconds: number; sets: number }
-    const map: Record<ExerciseCategory, Acc> = {} as any
-
-    for (const r of records) {
-      if (!map[r.category])
-        map[r.category] = {
-          reps: 0,
-          seconds: 0,
-          sets: 0
-        }
-      if (r.measurement === 'repetitions') map[r.category].reps += r.amount
-      else map[r.category].seconds += r.amount
-      map[r.category].sets += 1
-    }
-
-    return Object.entries(map).map(([name, { reps, seconds, sets }]) => ({
-      name: name as ExerciseCategory,
-      reps,
-      minutes: seconds / 60,
-      sets
-    }))
-  }
-
-  async getTotalsByTag(userId: string, from: Date, to: Date): Promise<ProgressEntity<DefaultTagId>[]> {
-    const records = await this.getRecords(userId, from, to)
-    type Acc = { reps: number; seconds: number; sets: number }
-    const map: Record<DefaultTagId, Acc> = {} as any
-
-    for (const r of records) {
-      for (const t of r.tagIds as DefaultTagId[]) {
-        if (!map[t])
-          map[t] = {
-            reps: 0,
-            seconds: 0,
-            sets: 0
-          }
-        if (r.measurement === 'repetitions') map[t].reps += r.amount
-        else map[t].seconds += r.amount
-        map[t].sets += 1
-      }
-    }
-
-    return Object.entries(map).map(([name, { reps, seconds, sets }]) => ({
-      name: name as DefaultTagId,
-      reps,
-      minutes: seconds / 60,
-      sets
-    }))
   }
 
   async deleteRecord(userId: string, recordId: string): Promise<void> {

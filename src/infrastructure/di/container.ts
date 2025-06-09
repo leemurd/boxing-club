@@ -31,9 +31,6 @@ import { TagRepositoryImpl } from '@/infrastructure/data/TagRepositoryImpl.ts'
 // Use-cases — прогресс
 import { LogExerciseUseCase } from '@/application/useCases/record/LogExerciseUseCase'
 import { GetRecordsUseCase } from '@/application/useCases/record/GetRecordsUseCase'
-import { GetDailyTotalsUseCase } from '@/application/useCases/record/GetDailyTotalsUseCase'
-import { GetTotalsByCategoryUseCase } from '@/application/useCases/record/GetTotalsByCategoryUseCase'
-import { GetTotalsByTagUseCase } from '@/application/useCases/record/GetTotalsByTagUseCase'
 import { DeleteRecordUseCase } from '@/application/useCases/record/DeleteRecordUseCase'
 // Use-cases — упражнений
 import { GetExercisesUseCase } from '@/application/useCases/exercise/GetExercisesUseCase'
@@ -78,9 +75,6 @@ container.bind<ITrainingRepository>(TYPES.ITrainingRepository).to(TrainingReposi
 // --- Use Cases: progress ---
 container.bind<LogExerciseUseCase>(TYPES.LogExerciseUseCase).to(LogExerciseUseCase).inSingletonScope()
 container.bind<GetRecordsUseCase>(TYPES.GetRecordsUseCase).to(GetRecordsUseCase).inSingletonScope()
-container.bind<GetDailyTotalsUseCase>(TYPES.GetDailyTotalsUseCase).to(GetDailyTotalsUseCase).inSingletonScope()
-container.bind<GetTotalsByCategoryUseCase>(TYPES.GetTotalsByCategoryUseCase).to(GetTotalsByCategoryUseCase).inSingletonScope()
-container.bind<GetTotalsByTagUseCase>(TYPES.GetTotalsByTagUseCase).to(GetTotalsByTagUseCase).inSingletonScope()
 container.bind<DeleteRecordUseCase>(TYPES.DeleteRecordUseCase).to(DeleteRecordUseCase).inSingletonScope()
 // --- Use Cases: упражнений ---
 container.bind<GetExercisesUseCase>(TYPES.GetExercisesUseCase).to(GetExercisesUseCase).inSingletonScope()

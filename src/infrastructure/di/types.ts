@@ -10,9 +10,6 @@ export const TYPES = {
   ITrainingRepository: Symbol.for('ITrainingRepository'),
   LogExerciseUseCase: Symbol.for('LogExerciseUseCase'),
   GetRecordsUseCase: Symbol.for('GetRecordsUseCase'),
-  GetDailyTotalsUseCase: Symbol.for('GetDailyTotalsUseCase'),
-  GetTotalsByCategoryUseCase: Symbol.for('GetTotalsByCategoryUseCase'),
-  GetTotalsByTagUseCase: Symbol.for('GetTotalsByTagUseCase'),
   DeleteRecordUseCase: Symbol.for('DeleteRecordUseCase'),
   // exercise
   IExerciseRepository: Symbol.for('IExerciseRepository'),

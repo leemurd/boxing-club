@@ -64,12 +64,12 @@
     </progress-stats-row>
 
     <recent-records
-      v-if="recentFive.length"
-      :items="recentFive"
+      v-if="recentRecordsList.length"
+      :items="recentRecordsList"
     />
 
     <empty-state
-      v-if="!(recentFive.length || dailyTotals.length || byCategory.length || topTags.length)"
+      v-if="!(recentRecordsList.length || dailyTotals.length || byCategory.length || topTags.length)"
       title="Empty state"
       description="No records found for this period"
     >
@@ -115,69 +115,21 @@ onMounted(async () => {
 })
 
 const fullname = computed(() => authStore.currentUser?.firstName + ' ' + authStore.currentUser?.lastName)
-// Ежедневная статистика
-const dailyTotals = computed(() => progress.dailyTotals)
-// Статистика по категориям
-const byCategory = computed(() => progress.byCategory)
-// Top-5 тегов по reps
-const topTags = computed(() =>
-  [...progress.byTag]
-    .sort((a, b) => b.reps - a.reps)
-    // .slice(0, 10)
-)
 
-// Последние 5 записей
-const recentFive = computed(() =>
+const dailyTotals = computed(() => progress.dailyTotals)
+const byCategory = computed(() => progress.byCategory)
+const topTags = computed(() => [...progress.byTag].sort((a, b) => b.reps - a.reps))
+const byExercise = computed(() => progress.byExercise)
+const byCombo = computed( () => progress.byCombo)
+
+// Последние 10 записей
+const recentRecordsList = computed(() =>
   progress.records
     .slice()
     .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
     .slice(0, 10)
 )
 
-// По упражнениям
-const byExercise = computed(() => {
-  const map: Record<string, { reps: number; seconds: number; sets: number }> = {}
-  for (const r of progress.records) {
-    const key = r.exerciseId
-    map[key] ??= {
-      reps: 0,
-      seconds: 0,
-      sets: 0
-    }
-    if (r.measurement === 'repetitions') map[key].reps += r.amount
-    else map[key].seconds += r.amount
-    map[key].sets += 1
-  }
-  return Object.entries(map).map(([name, acc]) => ({
-    name,
-    reps: acc.reps,
-    minutes: acc.seconds / 60,
-    sets: acc.sets
-  }))
-})
-
-// По комбо
-const byCombo = computed( () => {
-  const map: Record<string, { reps: number; seconds: number; sets: number }> = {}
-  for (const r of progress.records) {
-    if (!r.comboId) continue
-    const key = r.comboId
-    map[key] ??= {
-      reps: 0,
-      seconds: 0,
-      sets: 0
-    }
-    if (r.measurement === 'repetitions') map[key].reps += r.amount
-    else map[key].seconds += r.amount
-    map[key].sets += 1
-  }
-  return Object.entries(map).map(([name, acc]) => ({
-    name,
-    reps: acc.reps,
-    minutes: acc.seconds / 60,
-    sets: acc.sets
-  }))
-})
 
 // Хелперы
 function getExerciseName(id: string) {

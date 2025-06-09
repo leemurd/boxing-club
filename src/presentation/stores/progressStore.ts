@@ -1,104 +1,103 @@
 // src/presentation/stores/progressStore.ts
-
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { getUC } from '@/infrastructure/di/resolver'
 import { TYPES } from '@/infrastructure/di/types'
 import type { TrainingRecord } from '@/domain/entities/TrainingRecord'
-import type { ExerciseCategory } from '@/domain/entities/Exercise'
+import type { ExerciseCategory, MeasurementUnit } from '@/domain/entities/Exercise'
 import { TimeRange } from '@/presentation/components/shared/types'
-import { getUserId } from '@/presentation/utils/getUserId.ts'
-import type { GetRecordsUseCase } from '@/application/useCases/record/GetRecordsUseCase.ts'
-import type { GetTotalsByTagUseCase } from '@/application/useCases/record/GetTotalsByTagUseCase.ts'
-import type { GetDailyTotalsUseCase } from '@/application/useCases/record/GetDailyTotalsUseCase.ts'
-import type { GetTotalsByCategoryUseCase } from '@/application/useCases/record/GetTotalsByCategoryUseCase.ts'
+import { getUserId } from '@/presentation/utils/getUserId'
+import type { ProgressEntity } from '@/presentation/constants/progress/types'
 import type { DeleteRecordUseCase } from '@/application/useCases/record/DeleteRecordUseCase.ts'
-import type { ProgressEntity } from '@/presentation/constants/progress/types.ts'
-import type { DefaultTagId } from '@/domain/constants/defaultTags.ts'
+import type { GetRecordsUseCase } from '@/application/useCases/record/GetRecordsUseCase.ts'
+import type { LogExerciseUseCase } from '@/application/useCases/record/LogExerciseUseCase.ts'
+import { useToast } from 'vue-toastification'
+import {
+  calcByCategory,
+  calcByCombo,
+  calcByExercise,
+  calcByTag,
+  calcDailyTotals,
+  computeDateRange
+} from '@/application/services/progressCalculators.ts'
+
+const toast = useToast()
 
 export const useProgressStore = defineStore('progress', () => {
-  // вместо строковых литералов теперь TimeRange
   const periodType = ref<TimeRange>(TimeRange.WEEK)
   const cursor = ref<Date>(new Date())
-
-  const dateRange = computed(() => {
-    const to = new Date(cursor.value)
-    let from: Date
-
-    switch (periodType.value) {
-      case TimeRange.DAY:
-        from = new Date(to)
-        from.setHours(0, 0, 0, 0)
-        to.setHours(23, 59, 59, 999)
-        break
-
-      case TimeRange.WEEK:
-        from = new Date(to)
-        from.setDate(to.getDate() - 6)
-        from.setHours(0, 0, 0, 0)
-        to.setHours(23, 59, 59, 999)
-        break
-
-      case TimeRange.MONTH:
-        from = new Date(to)
-        from.setDate(to.getDate() - 29)
-        from.setHours(0, 0, 0, 0)
-        to.setHours(23, 59, 59, 999)
-        break
-
-      case TimeRange.ALL:
-        from = new Date(0)
-        to.setHours(23, 59, 59, 999)
-        break
-    }
-
-    return {
-      from,
-      to
-    }
-  })
-
   const records = ref<TrainingRecord[]>([])
   const dailyTotals = ref<ProgressEntity<string>[]>([])
   const byCategory = ref<ProgressEntity<ExerciseCategory>[]>([])
-  const byTag = ref<ProgressEntity<DefaultTagId>[]>([])
-  const isLoading = ref<boolean>(false)
+  const byTag = ref<ProgressEntity<string>[]>([])
+  const byExercise = ref<ProgressEntity<string>[]>([])
+  const byCombo = ref<ProgressEntity<string>[]>([])
+  const isLoading = ref(false)
 
-  // загрузка всех данных при изменении фильтра
+  // Основная загрузка + пересчёт всех агрегатов
   async function loadAll() {
-    const { from, to } = dateRange.value
+    const { from, to } = computeDateRange(periodType.value, cursor.value)
     const userId = await getUserId()
     if (!userId) return
-    isLoading.value = true
-    // console.log(isLoading.value)
+
     records.value = await getUC<GetRecordsUseCase>(TYPES.GetRecordsUseCase).execute(userId, from, to)
-    dailyTotals.value = await getUC<GetDailyTotalsUseCase>(TYPES.GetDailyTotalsUseCase).execute(userId, from, to)
-    byCategory.value = await getUC<GetTotalsByCategoryUseCase>(TYPES.GetTotalsByCategoryUseCase).execute(userId, from, to)
-    byTag.value = await getUC<GetTotalsByTagUseCase>(TYPES.GetTotalsByTagUseCase).execute(userId, from, to)
-    isLoading.value = false
-    // console.log(isLoading.value)
+    dailyTotals.value = calcDailyTotals(records.value)
+    byCategory.value = calcByCategory(records.value)
+    byTag.value = calcByTag(records.value)
+    byExercise.value = calcByExercise(records.value)
+    byCombo.value = calcByCombo(records.value)
   }
 
-  async function deleteRecord(recordId: string) {
+  async function logExercise(
+    exerciseId: string,
+    category: ExerciseCategory,
+    amount: number,
+    unit: MeasurementUnit,
+    tagIds: string[],
+    comboId: string | null
+  ) {
     const userId = await getUserId()
     if (!userId) return
-    await getUC<DeleteRecordUseCase>(TYPES.DeleteRecordUseCase).execute(userId, recordId)
+    try {
+      await getUC<LogExerciseUseCase>(TYPES.LogExerciseUseCase).execute(
+        userId,
+        exerciseId,
+        category,
+        amount,
+        unit,
+        tagIds,
+        comboId || null
+      )
+      toast.success('Successfully logged exercise')
+    } catch (err) {
+      console.log(err)
+      toast.error(err)
+    }
+  }
+
+  // После логирования или удаления записи — просто вызвать loadAll()
+  async function deleteRecord(id: string) {
+    const userId = await getUserId()
+    if (!userId) return
+    await getUC<DeleteRecordUseCase>(TYPES.DeleteRecordUseCase).execute(userId, id)
     await loadAll()
   }
 
-  // следим за periodType и cursor
+  // Перезагрузим при смене фильтра
   watch([periodType, cursor], loadAll, { immediate: true })
 
   return {
     periodType,
     cursor,
-    isLoading,
-    dateRange,
     records,
     dailyTotals,
     byCategory,
     byTag,
+    byExercise,
+    byCombo,
+    isLoading,
     loadAll,
+    logExercise,
     deleteRecord
   }
 })

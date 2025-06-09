@@ -141,7 +141,6 @@ import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise.ts'
-import { useRecordStore } from '@/presentation/stores/recordStore.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
@@ -149,10 +148,11 @@ import { categoryTagMap } from '@/presentation/constants/progress/data.ts'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
+import { useProgressStore } from '@/presentation/stores/progressStore.ts'
 
 // STORES и SERVICES
 const exStore = useExerciseStore()
-const recordStore = useRecordStore()
+const progressStore = useProgressStore()
 const tagStore = useTagStore()
 const comboStore = useComboStore()
 const modal = useModalService()
@@ -223,7 +223,6 @@ const clearCombo = () => {
   selectedCombo.value = null
 }
 
-// Собираем record перед сохранением
 const makeRecord = () => {
   if (!selectedExercise.value) return
   record.exerciseId = selectedExercise.value.id
@@ -249,18 +248,15 @@ const makeRecord = () => {
 
 }
 
-// Проверка, можно ли сохранить запись (наличие упражнения + quantity > 0)
 const canAdd = computed(() => {
   return !!selectedExercise.value && quantity.value > 0
 })
 
-// Действие «Add Progress» → logExercise + сброс формы
 async function addRecord() {
   if (!canAdd.value) return
 
   makeRecord()
-  // Вызовём метод стора, передав все поля из record
-  await recordStore.logExercise(
+  await progressStore.logExercise(
     record.exerciseId,
     record.category,
     record.amount,
@@ -273,7 +269,6 @@ async function addRecord() {
   clear()
 }
 
-// Когда меняется категория, берём первое упражнение из filteredExercises
 watch(
   () => selectedCategory.value,
   () => {
@@ -281,28 +276,11 @@ watch(
   }
 )
 
-// Когда меняется упражнение, сразу пересобираем объект record
 watch(
   () => selectedExercise.value,
   () => makeRecord()
 )
 
-// watch(
-//   () => [flags.weighted, flags.accelerated],
-//   () => {
-//     record.tagIds = record.tagIds.filter(
-//       (i) => !([DEFAULT_TAG_IDS.WEIGHT, DEFAULT_TAG_IDS.PACE].includes(i))
-//     )
-//     if (flags.weighted) {
-//       record.tagIds.push(DEFAULT_TAG_IDS.WEIGHT)
-//     }
-//     if (flags.accelerated) {
-//       record.tagIds.push(DEFAULT_TAG_IDS.PACE)
-//     }
-//   }
-// )
-
-// При монтировании подгружаем данные из стора
 const init = async () => {
   await exStore.loadAll()
   await tagStore.load()
