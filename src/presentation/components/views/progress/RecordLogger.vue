@@ -112,7 +112,6 @@
       <div class="d-flex flex-column gap-2 mt-4">
         <b-button
           color="primary"
-          :disabled="!canAdd"
           @click="addRecord"
         >
           Add Progress
@@ -149,6 +148,7 @@ import BCard from '@/presentation/components/shared/BCard.vue'
 import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
 import { useProgressStore } from '@/presentation/stores/progressStore.ts'
+import { useRouter } from 'vue-router'
 
 // STORES и SERVICES
 const exStore = useExerciseStore()
@@ -156,6 +156,7 @@ const progressStore = useProgressStore()
 const tagStore = useTagStore()
 const comboStore = useComboStore()
 const modal = useModalService()
+const router = useRouter()
 
 // Список категорий и текущее значение
 const categories = [ExerciseCategory.PHYSICS, ExerciseCategory.TECHNIQUE, ExerciseCategory.PRACTICE]
@@ -267,14 +268,12 @@ async function addRecord() {
 
   quantity.value = 0
   clear()
+  await router.push({ name: 'ProgressPage' })
 }
 
-watch(
-  () => selectedCategory.value,
-  () => {
-    selectedExercise.value = filteredExercises.value[0] || null
-  }
-)
+watch(() => selectedCategory.value, () => {
+  selectedExercise.value = filteredExercises.value[0] || null
+})
 
 watch(
   () => selectedExercise.value,

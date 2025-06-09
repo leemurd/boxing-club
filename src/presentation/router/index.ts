@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
         name: 'ProgressRecord',
         component: RecordLogger,
         meta: {
-          name: 'Progress Record'
+          name: 'New Record'
         }
       }
     ]

@@ -49,15 +49,8 @@ src/
 
 ---
 
-## 🚀 Быстрый старт
-
-1. **Установить зависимости**
-```bash
-   npm install
-   # or
-   yarn install
-````
-2.	Настроить Firebase
+## 🚀 Project Setup
+Настроить Firebase
 – В src/infrastructure/firebase/firebaseConfig.ts положить свои настройки:
 ````
     export const firebaseConfig = {
@@ -67,7 +60,6 @@ src/
       // ...
     };
 ````
-## Project Setup
 
 ```sh
     npm install

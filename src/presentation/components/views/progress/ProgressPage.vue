@@ -25,18 +25,21 @@
       v-if="dailyTotals.length"
       label="Daily Load"
       :items="dailyTotals"
+      class="mb-5"
     />
 
     <progress-stats-row
       v-if="byCategory.length"
       label="Categories"
       :items="byCategory"
+      class="mb-5"
     />
 
     <progress-stats-row
       v-if="byExercise.length"
       label="Exercises"
       :items="byExercise"
+      class="mb-5"
     >
       <template #name="{ name }">
         {{ getExerciseName(name) }}:
@@ -47,6 +50,7 @@
       v-if="byCombo.length"
       label="Combos"
       :items="byCombo"
+      class="mb-5"
     >
       <template #name="{ name }">
         {{ getComboTitle(name) }}:
@@ -57,6 +61,7 @@
       v-if="topTags.length"
       label="Tags"
       :items="topTags"
+      class="mb-5"
     >
       <template #name="{ name }">
         {{ getTagName(name) }}:
@@ -69,7 +74,7 @@
     />
 
     <empty-state
-      v-if="!(recentRecordsList.length || dailyTotals.length || byCategory.length || topTags.length)"
+      v-if="!recentRecordsList.length"
       title="Empty state"
       description="No records found for this period"
     >

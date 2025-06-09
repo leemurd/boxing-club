@@ -1,7 +1,10 @@
 <template>
   <!-- Ежедневная нагрузка -->
-  <section class="mb-5">
-    <h2 class="h5 mb-2 text-center">{{ label }}</h2>
+  <section>
+    <h2
+      v-if="label?.length"
+      class="h5 mb-2 text-center"
+    >{{ label }}</h2>
     <b-card no-border>
       <div
         v-for="(item, index) in items"

@@ -68,9 +68,8 @@ export const useProgressStore = defineStore('progress', () => {
         tagIds,
         comboId || null
       )
-      toast.success('Successfully logged exercise')
+      toast.success('Record added successfully.')
     } catch (err) {
-      console.log(err)
       toast.error(err)
     }
   }
