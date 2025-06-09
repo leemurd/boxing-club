@@ -26,13 +26,13 @@ const toast = useToast()
 export const useProgressStore = defineStore('progress', () => {
   const periodType = ref<TimeRange>(TimeRange.WEEK)
   const cursor = ref<Date>(new Date())
+
   const records = ref<TrainingRecord[]>([])
   const dailyTotals = ref<ProgressEntity<string>[]>([])
   const byCategory = ref<ProgressEntity<ExerciseCategory>[]>([])
   const byTag = ref<ProgressEntity<string>[]>([])
   const byExercise = ref<ProgressEntity<string>[]>([])
   const byCombo = ref<ProgressEntity<string>[]>([])
-  const isLoading = ref(false)
 
   // Основная загрузка + пересчёт всех агрегатов
   async function loadAll() {
@@ -95,7 +95,6 @@ export const useProgressStore = defineStore('progress', () => {
     byTag,
     byExercise,
     byCombo,
-    isLoading,
     loadAll,
     logExercise,
     deleteRecord
