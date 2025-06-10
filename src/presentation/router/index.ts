@@ -1,4 +1,11 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import {
+  // createRouter,
+  // createWebHistory,
+  type RouteRecordRaw
+} from 'vue-router'
+// import { createURL } from '@ionic/vue-router'
+import { createRouter, createWebHistory } from '@ionic/vue-router'
+
 import EnemyCard from '@/presentation/components/views/EnemyCard.vue'
 import Account from '@/presentation/components/views/Account.vue'
 import Signup from '@/presentation/components/views/auth/Signup.vue'
@@ -18,7 +25,6 @@ import TagEditPage from '@/presentation/components/views/tags/TagEditPage.vue'
 import ExerciseEditPage from '@/presentation/components/views/exercises/ExerciseEditPage.vue'
 import ExercisesIndex from '@/presentation/components/views/exercises/ExercisesIndex.vue'
 import RecordLogger from '@/presentation/components/views/progress/RecordLogger.vue'
-// import NewRecord from '@/presentation/components/views/progress/NewRecord.vue'
 
 const routes: RouteRecordRaw[] = [
   {

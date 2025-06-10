@@ -1,10 +1,17 @@
 import '@/presentation/styles/main.scss'
+import { IonicVue }  from '@ionic/vue'
 // import * as Popper from "@popperjs/core"
 // import all as bootstrap from 'bootstrap'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import Toast, { type PluginOptions, POSITION } from 'vue-toastification'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import 'vue-toastification/dist/index.css'
+
+// стили Ionic
+import '@ionic/vue/css/core.css'
+import '@ionic/vue/css/normalize.css'
+import '@ionic/vue/css/structure.css'
+import '@ionic/vue/css/typography.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -32,11 +39,14 @@ const toastOptions: PluginOptions = {
   maxToasts: 2
 }
 
+app.use(IonicVue)
 app.use(createPinia())
 app.use(router)
 app.use(Toast, toastOptions)
 
-app.mount('#app')
+// app.mount('#app')
+
+router.isReady().then(() => app.mount('#app'))
 
 const authStore = useAuthStore()
 authStore.init()

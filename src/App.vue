@@ -9,7 +9,9 @@
       }"
     >
       <h1 class="text-center mb-4">{{ $route.meta.name }}</h1>
-      <router-view />
+      <ion-app>
+        <router-view />
+      </ion-app>
       <modal-container />
     </div>
     <footer-main/>
@@ -17,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import { IonApp } from '@ionic/vue'
 import { RouterView } from 'vue-router'
 import HeaderMain from '@/presentation/components/layout/header/HeaderMain.vue'
 import ModalContainer from '@/presentation/components/modals/ModalContainer.vue'
