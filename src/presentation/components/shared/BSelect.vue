@@ -1,37 +1,63 @@
 <template>
-  <select
-    :model-value="modelValue"
-    class="form-select"
-    :disabled="disabled"
-    @input="$emit('update:model-value', $event.target?.value)"
-  >
-    <option
-      v-for="(item, key) in items"
-      :key="key"
-      :value="item[itemId] || item"
-    >{{ item[itemVal] || item }}</option>
-  </select>
+  <ion-item :disabled="disabled">
+    <ion-select
+      v-model="internalValue"
+      interface="popover"
+      :disabled="disabled"
+    >
+      <ion-select-option
+        v-for="(item, index) in items"
+        :key="index"
+        :value="getValue(item)"
+      >
+        {{ getLabel(item) }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{
-  loading?: boolean,
-  modelValue: any,
-  disabled?: boolean,
-  items: any[],
-  itemId?: string,
-  itemVal?: string
-}>(), {
-  itemId: 'id',
-  itemVal: 'name'
-})
+import { computed } from 'vue'
+import { IonItem, IonSelect, IonSelectOption } from '@ionic/vue'
 
-defineEmits<{
-  'update:model-value': [val: any]
+type Item = Record<string, any>
+
+const props = withDefaults(
+  defineProps<{
+    modelValue: any
+    disabled?: boolean
+    items: any[]
+    optionId?: string
+    optionValue?: string
+  }>(),
+  {
+    disabled: false,
+    optionId: 'id',
+    optionValue: 'name'
+  }
+)
+
+const emit = defineEmits<{
+  (e: 'update:model-value', val: any): void
 }>()
 
+// Двусторонняя связь
+const internalValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emit('update:model-value', val)
+})
+
+// Получить значение опции
+function getValue(item: Item) {
+  return props.optionId && item[props.optionId] != null
+    ? item[props.optionId]
+    : item
+}
+
+// Получить отображаемый текст опции
+function getLabel(item: Item) {
+  return props.optionValue && item[props.optionValue] != null
+    ? item[props.optionValue]
+    : item
+}
 </script>
-
-<style scoped lang="scss">
-
-</style>

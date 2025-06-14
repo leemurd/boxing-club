@@ -1,27 +1,33 @@
+<!-- IonicBadge.vue -->
 <template>
-  <span
-    class="badge me-1"
-    :class="[`bg-${color}`, {
-      'rounded-pill': rounded,
-    }]"
+  <ion-badge
+    :color="color"
+    :class="{ 'badge-pill': rounded }"
   >
-    <slot/>
-  </span>
+    <slot />
+  </ion-badge>
 </template>
 
 <script setup lang="ts">
-import type { ButtonColor } from '@/presentation/components/shared/types.ts'
+import { IonBadge } from '@ionic/vue'
+import type { ButtonColor } from '@/presentation/components/shared/types'
 
-withDefaults(defineProps<{
-  color?: ButtonColor,
-  rounded?: boolean,
-}>(), {
-  color: 'secondary'
-})
+// Props definition
+const props = withDefaults(
+  defineProps<{
+    color?: ButtonColor
+    rounded?: boolean
+  }>(),
+  {
+    color: 'secondary',
+    rounded: false
+  }
+)
 </script>
 
-<style lang="scss" scoped>
-//.badge {
-//  font-size: inherit;
-//}
+<style scoped>
+/* Optional custom styling */
+.badge-pill {
+  border-radius: 10px;
+}
 </style>

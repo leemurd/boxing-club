@@ -1,64 +1,66 @@
 <template>
-  <div>
-    <div class="mb-3 text-center">
-      <label class="form-label mb-2">Title (required)</label>
-      <b-input
-        v-model="category.name"
-        placeholder="Combo name"
-      />
+  <page-default header-back>
+    <div>
+      <div class="mb-3 text-center">
+        <label class="form-label mb-2">Title (required)</label>
+        <b-input
+          v-model="category.name"
+          placeholder="Combo name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <b-card no-padding>
+          <template #header>
+            <div class="text-center">Combinations</div>
+          </template>
+          <template #default>
+            <list-group
+              v-if="combos.length"
+              :items="combos"
+              item-val="title"
+              item-id="id"
+              item-link
+              no-border
+              :primary-callback="openCombo"
+            >
+              <template #actions="{ item }">
+                <b-dropdown-item @click="openCombo(item)">Edit</b-dropdown-item>
+              </template>
+            </list-group>
+            <div
+              v-else
+              class="p-2 text-center"
+            >Empty</div>
+          </template>
+          <template #footer>
+            <div class="d-flex flex-column">
+              <b-button
+                color="secondary"
+                size="small"
+                class="m-auto"
+                @click="createCombo"
+              >New Combo</b-button>
+            </div>
+          </template>
+        </b-card>
+
+      </div>
+
+      <div class="d-flex flex-column mt-3 gap-2">
+        <b-button
+          color="primary"
+          :disabled="category.name?.trim().length === 0"
+          @click="saveCombo"
+        >{{ isNew ? 'Create' : 'Save' }}</b-button>
+
+        <b-button
+          color="secondary"
+          @click="$router.back()"
+        >Back</b-button>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <b-card no-padding>
-        <template #header>
-          <div class="text-center">Combinations</div>
-        </template>
-        <template #default>
-          <list-group
-            v-if="combos.length"
-            :items="combos"
-            item-val="title"
-            item-id="id"
-            item-link
-            no-border
-            :primary-callback="openCombo"
-          >
-            <template #actions="{ item }">
-              <b-dropdown-item @click="openCombo(item)">Edit</b-dropdown-item>
-            </template>
-          </list-group>
-          <div
-            v-else
-            class="p-2 text-center"
-          >Empty</div>
-        </template>
-        <template #footer>
-          <div class="d-flex flex-column">
-            <b-button
-              color="secondary"
-              size="small"
-              class="m-auto"
-              @click="createCombo"
-            >New Combo</b-button>
-          </div>
-        </template>
-      </b-card>
-
-    </div>
-
-    <div class="d-flex flex-column mt-3 gap-2">
-      <b-button
-        color="primary"
-        :disabled="category.name?.trim().length === 0"
-        @click="saveCombo"
-      >{{ isNew ? 'Create' : 'Save' }}</b-button>
-
-      <b-button
-        color="secondary"
-        @click="$router.back()"
-      >Back</b-button>
-    </div>
-  </div>
+  </page-default>
 </template>
 
 <script lang="ts" setup>
@@ -72,6 +74,7 @@ import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -83,7 +86,7 @@ const category = ref<ComboCategory>({
   name: ''
 })
 
-const combos = computed<Combination[]>(() => categoryStore.getCombosByCategoryId(route.params.id))
+const combos = computed<Combination[]>(() => categoryStore.getCombosByCategoryId(route.params.id as string))
 
 const loadCategory = async (id: string) => {
   const res = await categoryStore.getById(id)

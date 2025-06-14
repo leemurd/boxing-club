@@ -1,52 +1,52 @@
 <template>
-  <div class="exercises">
-    <div class="form-label text-center">Category</div>
-    <b-button-group
-      v-model="selectedCategory"
-      :items="categories"
-      color="light"
-      class="mb-4 w-100"
-    />
+  <page-default header-back>
+    <div class="exercises">
+      <div class="form-label text-center">Category</div>
+      <horizontal-segment-group
+        v-model="selectedCategory"
+        :items="categories"
+        class="mb-4 w-100"
+      />
 
-    <div class="form-label text-center">
-      Exercises
+      <div class="form-label text-center">
+        Exercises
+      </div>
+
+      <list-group
+        :items="filteredExercises"
+        item-id="id"
+        item-val="name"
+        class="w-100"
+        item-link
+        :primary-callback="openExercise"
+      >
+        <template #icon>
+          <i class="bi bi-lightning-charge"/>
+        </template>
+        <template #actions="{ item }">
+          <b-dropdown-item
+            @click="openExercise(item)"
+          >Open</b-dropdown-item>
+          <b-dropdown-item
+            v-if="!exStore.isDefault(item.id)"
+            @click="removeExercise(item)"
+          >Remove</b-dropdown-item>
+        </template>
+      </list-group>
+
+      <b-button
+        color="dark"
+        class="w-100 mt-3"
+        size="default"
+        @click="$router.push('/exercises/new')"
+      >
+        + New Exercise
+      </b-button>
     </div>
-
-    <list-group
-      :items="filteredExercises"
-      item-id="id"
-      item-val="name"
-      class="w-100"
-      item-link
-      :primary-callback="openExercise"
-    >
-      <template #icon>
-        <i class="bi bi-lightning-charge"/>
-      </template>
-      <template #actions="{ item }">
-        <b-dropdown-item
-          @click="openExercise(item)"
-        >Open</b-dropdown-item>
-        <b-dropdown-item
-          v-if="!exStore.isDefault(item.id)"
-          @click="removeExercise(item)"
-        >Remove</b-dropdown-item>
-      </template>
-    </list-group>
-
-    <b-button
-      color="dark"
-      class="w-100 mt-3"
-      size="medium"
-      @click="$router.push('/exercises/new')"
-    >
-      + New Exercise
-    </b-button>
-  </div>
+  </page-default>
 </template>
 
 <script setup lang="ts">
-import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
 import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise.ts'
 import { computed, onMounted, ref } from 'vue'
@@ -54,6 +54,8 @@ import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import { useRouter } from 'vue-router'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
 
 const router = useRouter()
 const exStore = useExerciseStore()

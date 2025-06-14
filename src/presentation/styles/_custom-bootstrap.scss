@@ -1,7 +1,7 @@
 // 1. Подключаем базовые функции/переменные, если нужно
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
+//@import "bootstrap/scss/variables-dark";
 
 $container-max-width: 400px;
 $container-max-widths: (
@@ -28,21 +28,6 @@ $my-theme-colors: (
         "light"    : #F3F4F6,
         "dark"     : $dark
 );
-
-//$my-theme-colors-dark: (
-//        "primary"  : #1E3A8A,
-//        "secondary": #F59E0B,
-//        "success"  : #10B981,
-//        "danger"   : #EF4444,
-//        "warning"  : #FBBF24,
-//        "info"     : #3B82F6,
-//        "light"    : #F3F4F6,
-//        "dark"     : #111827
-//);
-
-// 3) Сливаем с дефолтной картой для светлой темы
-//$theme-colors: map-merge($theme-colors, $my-theme-colors);
-//$theme-colors-dark: map-merge($theme-colors-dark, $my-theme-colors-dark);
 
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";

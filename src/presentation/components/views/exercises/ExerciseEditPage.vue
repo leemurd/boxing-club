@@ -1,147 +1,149 @@
 <!-- src/presentation/components/views/exercises/ExerciseEditPage.vue -->
 <template>
-  <div class="">
-    <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
+  <page-default header-back>
+    <div class="">
+      <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
 
-    <div>
-      <!-- Name -->
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <b-input
-          v-model="form.name"
-          :loading="isLoading"
-          type="text"
-          placeholder="Exercise name"
-          required
-          :disabled="isDefault"
-        />
-      </div>
+      <div>
+        <!-- Name -->
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <b-input
+            v-model="form.name"
+            :loading="isLoading"
+            type="text"
+            placeholder="Exercise name"
+            required
+            :disabled="isDefault"
+          />
+        </div>
 
-      <!-- Category -->
-      <div class="mb-3">
-        <label class="form-label">Category</label>
-        <b-select
-          v-model="form.category"
-          :items="categories"
-          :disabled="isDefault"
-        />
-      </div>
+        <!-- Category -->
+        <div class="mb-3">
+          <label class="form-label">Category</label>
+          <b-select
+            v-model="form.category"
+            :items="categories"
+            :disabled="isDefault"
+          />
+        </div>
 
-      <!-- Measurement Unit -->
-      <div class="mb-3">
-        <label class="form-label">Measurement Unit</label>
-        <b-select
-          v-model="form.measurement"
-          :items="['repetitions', 'seconds']"
-          class="form-select"
-          :disabled="isDefault"
-        />
-      </div>
+        <!-- Measurement Unit -->
+        <div class="mb-3">
+          <label class="form-label">Measurement Unit</label>
+          <b-select
+            v-model="form.measurement"
+            :items="['repetitions', 'seconds']"
+            class="form-select"
+            :disabled="isDefault"
+          />
+        </div>
 
-      <!-- Flags -->
-      <div class="d-flex flex-column gap-2 mb-4">
-        <b-checkbox
-          v-model="form.canBeWeighted"
-          :disabled="isDefault"
-        >
-          Can be weighted
-        </b-checkbox>
-        <b-checkbox
-          v-model="form.alwaysWeighted"
-          :disabled="isDefault"
-        >
-          Is always weighted
-        </b-checkbox>
-        <b-checkbox
-          v-model="form.canBeAccelerated"
-          :disabled="isDefault"
-        >
-          Can be accelerated
-        </b-checkbox>
-        <b-checkbox
-          v-model="form.alwaysAccelerated"
-          :disabled="isDefault"
-        >
-          Is always accelerated
-        </b-checkbox>
-        <b-checkbox
-          v-model="form.canHaveCombo"
-          :disabled="isDefault"
-        >
-          Can be with combo
-        </b-checkbox>
-        <b-checkbox
-          v-model="form.isFavorite"
-        >
-          Favorite
-        </b-checkbox>
-      </div>
+        <!-- Flags -->
+        <div class="d-flex flex-column gap-2 mb-4">
+          <b-checkbox
+            v-model="form.canBeWeighted"
+            :disabled="isDefault"
+          >
+            Can be weighted
+          </b-checkbox>
+          <b-checkbox
+            v-model="form.alwaysWeighted"
+            :disabled="isDefault"
+          >
+            Is always weighted
+          </b-checkbox>
+          <b-checkbox
+            v-model="form.canBeAccelerated"
+            :disabled="isDefault"
+          >
+            Can be accelerated
+          </b-checkbox>
+          <b-checkbox
+            v-model="form.alwaysAccelerated"
+            :disabled="isDefault"
+          >
+            Is always accelerated
+          </b-checkbox>
+          <b-checkbox
+            v-model="form.canHaveCombo"
+            :disabled="isDefault"
+          >
+            Can be with combo
+          </b-checkbox>
+          <b-checkbox
+            v-model="form.isFavorite"
+          >
+            Favorite
+          </b-checkbox>
+        </div>
 
 
-      <!-- Tags -->
-      <b-card class="mb-4">
-        <template #header>
-          <div class="d-flex justify-content-between align-items-center">
-            <label class="form-label mb-0">Tags</label>
-            <b-button
-              v-if="!isDefault"
-              color="secondary"
-              size="small"
-              class="ms-auto"
-              @click="openTagModal"
-            >
-              Select Tags
-            </b-button>
-          </div>
-        </template>
+        <!-- Tags -->
+        <b-card class="mb-4">
+          <template #header>
+            <div class="d-flex justify-content-between align-items-center">
+              <label class="form-label mb-0">Tags</label>
+              <b-button
+                v-if="!isDefault"
+                color="secondary"
+                size="small"
+                class="ms-auto"
+                @click="openTagModal"
+              >
+                Select Tags
+              </b-button>
+            </div>
+          </template>
 
-        <template
-          v-if="form.tagIds.length > 0"
-          #default
-        >
-          <div class="card-text">
-            <b-badge
-              v-for="tagId in form.tagIds"
-              :key="tagId"
-              :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'secondary' : 'primary'"
-            >
-              {{ tagStore.list.find(t => t.id === tagId)?.name }}
-            </b-badge>
-          </div>
-        </template>
-      </b-card>
+          <template
+            v-if="form.tagIds.length > 0"
+            #default
+          >
+            <div class="card-text">
+              <b-badge
+                v-for="tagId in form.tagIds"
+                :key="tagId"
+                :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'secondary' : 'primary'"
+              >
+                {{ tagStore.list.find(t => t.id === tagId)?.name }}
+              </b-badge>
+            </div>
+          </template>
+        </b-card>
 
-      <!-- Actions -->
-      <div class="d-flex flex-column">
-        <b-button
-          color="primary"
-          class="mb-2 w-100"
-          type="submit"
-          :disabled="form.name.trim().length === 0"
-          @click="onSave"
-        >
-          {{ isNew ? 'Create' : 'Save' }}
-        </b-button>
-        <b-button
-          color="secondary"
-          type="button"
-          class="mb-2 w-100"
-          @click="onCancel"
-        >
-          Go back
-        </b-button>
-        <b-button
-          v-if="!isDefault && !isNew"
-          color="red"
-          class="w-100 mt-4"
-          type="button"
-          @click="onRemove"
-        >
-          Remove
-        </b-button>
+        <!-- Actions -->
+        <div class="d-flex flex-column">
+          <b-button
+            color="primary"
+            class="mb-2 w-100"
+            type="submit"
+            :disabled="form.name.trim().length === 0"
+            @click="onSave"
+          >
+            {{ isNew ? 'Create' : 'Save' }}
+          </b-button>
+          <b-button
+            color="secondary"
+            type="button"
+            class="mb-2 w-100"
+            @click="onCancel"
+          >
+            Go back
+          </b-button>
+          <b-button
+            v-if="!isDefault && !isNew"
+            color="danger"
+            class="w-100 mt-4"
+            type="button"
+            @click="onRemove"
+          >
+            Remove
+          </b-button>
+        </div>
       </div>
     </div>
-  </div>
+  </page-default>
 </template>
 
 <script lang="ts" setup>
@@ -161,6 +163,7 @@ import BSelect from '@/presentation/components/shared/BSelect.vue'
 import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
 import BBadge from '@/presentation/components/shared/BBadge.vue'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -195,7 +198,7 @@ onUserLoaded(async () => {
   await tagStore.load()
   if (!isNew.value) {
     await exStore.loadById(id.value!)
-    const current = exStore.current
+    const {current} = exStore
     if (current) {
       Object.assign(form.value, current)
     }
@@ -263,7 +266,11 @@ watch(() => form.value.canBeWeighted, (val) => {
 watch(() => form.value.category, () => {
   form.value.tagIds = [
     ...form.value.tagIds.filter(
-      (item) => ![DEFAULT_TAG_IDS.PHYSICS, DEFAULT_TAG_IDS.PRACTICE, DEFAULT_TAG_IDS.TECHNIQUE].includes(item)
+      (item) => ![
+        DEFAULT_TAG_IDS.PHYSICS as string,
+        DEFAULT_TAG_IDS.PRACTICE as string,
+        DEFAULT_TAG_IDS.TECHNIQUE as string
+      ].includes(item)
     )
   ]
 }, {

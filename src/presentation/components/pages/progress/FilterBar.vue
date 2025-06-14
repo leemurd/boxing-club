@@ -4,9 +4,9 @@
     <div class="row mb-3">
       <div class="col-auto">
         <b-button
-          color="secondary"
+          color="dark"
+          size="small"
           outline
-          size="medium"
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(-1)"
         >
@@ -20,9 +20,9 @@
       </div>
       <div class="col-auto">
         <b-button
-          color="secondary"
+          color="dark"
+          size="small"
           outline
-          size="medium"
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(1)"
         >
@@ -32,19 +32,13 @@
     </div>
 
     <div class="d-flex align-items-center justify-content-between">
-      <b-button-group
+      <horizontal-segment-group
         v-model="periodType"
-        size="medium"
-        class="w-100"
-        color="light"
         :items="dateRangeItems"
         option-value="value"
+        option-label="label"
         @update:model-value="onPeriodChange"
-      >
-        <template #default="{ item }">
-          {{ item.label }}
-        </template>
-      </b-button-group>
+      />
     </div>
   </div>
 </template>
@@ -56,8 +50,8 @@ import { TimeRange } from '@/presentation/components/shared/types'
 import { dateRangeItems } from '@/presentation/constants/progress/data'
 import { storeToRefs } from 'pinia'
 import BButton from '@/presentation/components/shared/BButton.vue'
-import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import { getShortDate } from '@/presentation/utils/dateTime.ts'
+import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
 
 const store = useProgressStore()
 const { periodType, cursor } = storeToRefs(store)

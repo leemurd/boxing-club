@@ -13,14 +13,14 @@
 
         <div v-else>
           <b-button
-            color="red"
+            color="danger"
             outline
             size="small"
             @click="$emit('clear')"
           >Clear</b-button>
 
           <b-button
-            color="red"
+            color="danger"
             outline
             size="small"
             class="ms-2"

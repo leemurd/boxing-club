@@ -8,29 +8,24 @@
 
     <div class="">
       <label class="form-label mb-2">Action</label>
-      <b-button-group
+      <horizontal-segment-group
         v-model="selectedCategory"
-        color="light"
-        class="w-100"
         :items="categoryOptions"
       />
     </div>
 
     <div class="">
       <label class="form-label mb-2">Option</label>
-      <b-button-group
+      <vertical-radio-group
         v-if="selectedCategory && selectedActionId"
         v-model="selectedActionId"
-        color="light"
-        vertical
         option-value="id"
-        class="w-100"
         :items="availableActions"
       >
         <template #default="{ item }">
           {{ item?.name }}
         </template>
-      </b-button-group>
+      </vertical-radio-group>
 
       <b-button
         color="dark"
@@ -60,17 +55,19 @@ import { getNextActions } from '@/application/useCases/combination/getNextAction
 import { GetPunchesUseCase } from '@/application/useCases/combination/GetPunchesUseCase.ts'
 import { generateRandomCombo } from '@/application/useCases/combination/generateRandomCombo.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
-import BButtonGroup from '@/presentation/components/shared/BButtonGroup.vue'
 import ComboPreview from '@/presentation/components/pages/combos/ComboPreview.vue'
 import RandomComboCard from '@/presentation/components/pages/combos/RandomComboCard.vue'
 import { getUC } from '@/infrastructure/di/resolver.ts'
+import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
+import VerticalRadioGroup from '@/presentation/components/shared/VerticalRadioGroup.vue'
 
 export default defineComponent({
   name: 'CombinationBuilderView',
   components: {
+    VerticalRadioGroup,
+    HorizontalSegmentGroup,
     RandomComboCard,
     ComboPreview,
-    BButtonGroup,
     BButton
   },
   props: {

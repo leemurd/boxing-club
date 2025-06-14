@@ -1,33 +1,33 @@
 <template>
-  <div class="profile-page">
-    <div v-if="loading">Загрузка...</div>
-    <div v-else-if="user">
-      <div class="card border-0">
-        <div class="card-body">
-          <h5 class="card-title">{{ `${user.firstName} ${user.lastName}` }}</h5>
-          <p class="card-text">{{ user.email }}</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
+  <page-default header-back>
+    <div class="profile-page">
+      <div v-if="loading">Загрузка...</div>
+      <div v-else-if="user">
+        <b-card>
+          <template #header>
+            <ion-card-title>{{ `${user.firstName} ${user.lastName}` }}</ion-card-title>
+            <ion-card-subtitle>{{ user.email }}</ion-card-subtitle>
+          </template>
+          <template #default>
             <theme-toggle/>
-          </li>
-        </ul>
-        <div class="card-body align-items-center d-flex gap-2">
-          <b-button
-            color="red"
-            class="col"
-            size="small"
-            @click="confirmLogout"
-          >Log out</b-button>
-        </div>
+          </template>
+          <template #footer>
+            <b-button
+              color="danger"
+              class="w-100 ion-padding"
+              size="default"
+              @click="confirmLogout"
+            >Log out</b-button>
+          </template>
+        </b-card>
       </div>
+      <b-alert
+        v-else
+        message="Пользователь не найден."
+        class="mt-3"
+      />
     </div>
-    <b-alert
-      v-else
-      message="Пользователь не найден."
-      class="mt-3"
-    />
-  </div>
+  </page-default>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +45,9 @@ import { useToast } from 'vue-toastification'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import { getUC } from '@/infrastructure/di/resolver.ts'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import BCard from '@/presentation/components/shared/BCard.vue'
+import { IonCardTitle, IonCardSubtitle } from '@ionic/vue'
 
 const { openModalByKey } = useModalService()
 

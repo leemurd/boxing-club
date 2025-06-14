@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <page-default header-back>
     <div class="d-flex mb-3">
       <input
         v-model="newName"
@@ -28,19 +28,20 @@
         <b-dropdown-item @click="removeTag(item.id)">Delete</b-dropdown-item>
       </template>
     </list-group>
-  </div>
+  </page-default>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import type { Tag } from '@/domain/entities/Tag.ts'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 
 const tagStore = useTagStore()
-const router = useRouter()
+const router = useProjectRouter()
 
 const newName = ref('')
 

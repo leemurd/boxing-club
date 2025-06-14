@@ -1,4 +1,9 @@
-import type { DropdownItem } from '@/presentation/components/shared/BDropdown.vue'
+export interface DropdownItem {
+  label: string
+  value: any
+  onClick?: () => void
+  // disabled?: boolean
+}
 
 export const comboRandomItems: DropdownItem[] = [
   {
@@ -7,10 +12,10 @@ export const comboRandomItems: DropdownItem[] = [
   },
   {
     label: '4 moves',
-    value: 4,
+    value: 4
   },
   {
-    label: `5 move`,
+    label: `5 moves`,
     value: 5
   },
   {

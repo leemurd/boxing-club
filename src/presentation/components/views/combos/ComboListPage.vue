@@ -1,6 +1,6 @@
 <!-- src/presentation/pages/ComboListPage.vue -->
 <template>
-  <div>
+  <page-default header-back>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <b-button
         color="dark"
@@ -10,7 +10,7 @@
       </b-button>
 
       <b-button
-        color="link"
+        color="dark"
         @click="$router.push({name: 'ComboCategories'})"
       >Open categories</b-button>
     </div>
@@ -26,7 +26,7 @@
         <b-dropdown-item @click="remove(item.id)">Remove</b-dropdown-item>
       </template>
     </list-group>
-  </div>
+  </page-default>
 </template>
 
 <script lang="ts" setup>
@@ -38,6 +38,7 @@ import type { Combination } from '@/domain/entities/Combination.ts'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const comboStore = useComboStore()
 const router = useRouter()

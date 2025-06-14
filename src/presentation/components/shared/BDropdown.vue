@@ -1,19 +1,12 @@
+<!-- src/presentation/components/shared/BDropdown.vue-->
 <template>
-  <div
-    ref="root"
-    class="dropdown dropdown-center"
-  >
+  <div>
     <b-button
-      ref="toggleEl"
+      :id="getName"
       :color="color"
       :size="size"
-      :outline="outline"
-      v-bind="attrs"
-      class="dropdown-toggle"
-      :class="{'dropdown-toggle--is-action-btn': isActionBtn}"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-      type="button"
+      fill="clear"
+      :class="{ 'action-btn': isActionBtn }"
     >
       <slot
         name="btn-text"
@@ -21,109 +14,112 @@
       >
         {{ modelValueLabel }}
       </slot>
+      <ion-icon
+        v-if="isIconVisible"
+        slot="end"
+        :icon="isOpen ? chevronUp : chevronDown"
+      />
     </b-button>
 
-    <ul class="dropdown-menu">
-      <slot name="menu">
-        <template v-if="items && items?.length > 0">
-          <li
-            v-for="(item, i) in items"
-            :key="i"
-          >
-            <button
-              class="dropdown-item"
-              :class="{ active: isActive(item) }"
-              type="button"
-              @click.prevent="select(item)"
-            >
-              <slot
-                name="item"
-                :item="item"
-                :is-active="isActive(item)"
-                :select="() => select(item)"
-              >
-                {{ item.label }}
-              </slot>
-            </button>
-          </li>
-        </template>
-      </slot>
-    </ul>
+    <ion-popover
+      :trigger="getName"
+      trigger-action="click"
+      :dismiss-on-select="true"
+      @ion-popover-did-present="onOpen"
+      @ion-popover-did-dismiss="onClose"
+    >
+      <ion-content>
+        <!--        class="ion-padding"-->
+        <slot name="menu">
+<!--          <template v-if="items && items.length">-->
+<!--            <ion-list>-->
+<!--              <ion-item-->
+<!--                v-for="(item, i) in items"-->
+<!--                :key="i"-->
+<!--                button-->
+<!--                :detail="false"-->
+<!--                :class="{ active: isActive(item) }"-->
+<!--                @click.prevent="select(item)"-->
+<!--              >-->
+<!--                <slot-->
+<!--                  name="item"-->
+<!--                  :item="item"-->
+<!--                  :is-active="isActive(item)"-->
+<!--                  :select="() => select(item)"-->
+<!--                >-->
+<!--                  {{ item.label }}-->
+<!--                </slot>-->
+<!--              </ion-item>-->
+<!--            </ion-list>-->
+<!--          </template>-->
+        </slot>
+      </ion-content>
+    </ion-popover>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  onMounted,
-  onBeforeUnmount,
-  computed,
-  useAttrs,
-  type Component,
-  useTemplateRef
-} from 'vue'
-import Dropdown from 'bootstrap/js/dist/dropdown'
-import type { ButtonColor, ButtonSize } from '@/presentation/components/shared/types.ts'
-import BButton from '@/presentation/components/shared/BButton.vue'
-import { onClickOutside } from '@vueuse/core'
+import { ref, computed } from 'vue'
+import { IonButton, IonPopover, IonContent, IonList, IonItem, IonIcon } from '@ionic/vue'
+import { chevronDownOutline, chevronUpOutline } from 'ionicons/icons'
+// import type { ToggleCustomEvent } from '@ionic/vue' // err
+import type { ButtonColor } from '@/presentation/components/shared/types'
+import type { ButtonSize } from '@/presentation/components/shared/types'
+import type { DropdownItem } from '@/presentation/constants/combo/data.ts'
+import { exclusiveName } from '@/presentation/utils/exclusiveName.ts'
+import BButton from '@/presentation/components/shared/BButton.vue' // err
 
-export interface DropdownItem {
-  label: string
-  value: any
-  onClick?: () => void
-  // disabled?: boolean
-}
-
-const props = defineProps<{
+// Props
+const props = withDefaults(defineProps<{
   items?: DropdownItem[]
-  /** Текущее выбранное value */
-  modelValue?: any,
+  modelValue?: any
   color?: ButtonColor
-  size?: ButtonSize,
-  outline?: boolean,
-  isActionBtn?: boolean,
-}>()
+  size?: ButtonSize
+  isActionBtn?: boolean
+  isIconVisible?: boolean
+}>(), {
+  items: () => [],
+  color: 'primary',
+  size: 'default',
+  isActionBtn: false,
+  isIconVisible: true
+})
 
+// Emit
 const emit = defineEmits<{
   (e: 'update:model-value', value: any): void
 }>()
-defineOptions({
-  inheritAttrs: false
-})
 
-const root = useTemplateRef<HTMLElement>('root')
-const toggleEl = useTemplateRef<Component>('toggleEl')
-const attrs = useAttrs()
-let bsDropdown: ReturnType<typeof Dropdown> | null = null
+// Dropdown state
+const isOpen = ref(false)
 
-/** Удобство: если передали modelValue, но для toggle нет слота, покажем метку пункта */
+// Icon refs
+const chevronDown = chevronDownOutline
+const chevronUp = chevronUpOutline
+
+// Label for the button
 const modelValueLabel = computed(() => {
   const found = props.items?.find((i) => i.value === props.modelValue)
   return found?.label ?? ''
 })
 
-onMounted(() => {
-  if (toggleEl.value) {
-    bsDropdown = new Dropdown(toggleEl.value.$el)
+// Methods
+const getName = exclusiveName()
 
-    onClickOutside(toggleEl.value?.$el, () => {
-      bsDropdown?.hide()
-    })
-  } else {
-    console.warn('Dropdown не смонтирован')
-  }
-})
-
-onBeforeUnmount(() => {
-  bsDropdown?.dispose()
-})
-
-function isActive(item: DropdownItem) {
+function isActive(item: any) {
   return props.modelValue === item.value
 }
 
-function select(item: DropdownItem) {
+function select(item: any) {
   emit('update:model-value', item.value)
-  bsDropdown?.hide()
+}
+
+function onOpen() {
+  isOpen.value = true
+}
+
+function onClose() {
+  isOpen.value = false
 }
 </script>
 
@@ -137,5 +133,19 @@ function select(item: DropdownItem) {
       }
     }
   }
+}
+</style>
+
+<style scoped lang="scss">
+/* Дополнительный класс для “action”-кнопки */
+.action-btn {
+  --padding-end: 0.5rem;
+  --padding-start: 0.5rem;
+}
+
+/* Стили активного пункта */
+ion-item.active {
+  --background: var(--ion-color-primary-tint);
+  color: var(--ion-color-primary-contrast);
 }
 </style>

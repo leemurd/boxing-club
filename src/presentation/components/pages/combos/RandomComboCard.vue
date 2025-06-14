@@ -5,7 +5,7 @@
     <b-card>
       <div class="d-flex flex-column w-100 gap-1">
         <b-button
-          size="medium"
+          size="default"
           color="secondary"
           @click="$emit('on-generate')"
         >
@@ -17,7 +17,7 @@
         <b-dropdown
           :model-value="iterations"
           :items="comboRandomItems"
-          size="medium"
+          size="default"
           color="secondary"
           class="w-100"
           @update:model-value="$emit('update:iterations', $event)"

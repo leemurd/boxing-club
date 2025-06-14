@@ -1,3 +1,5 @@
+import type { DefaultTagId } from '@/domain/constants/defaultTags.ts'
+
 export enum ExerciseCategory {
   PHYSICS = 'Physics',
   TECHNIQUE = 'Technique',
@@ -17,7 +19,7 @@ export interface Exercise {
   canBeAccelerated: boolean
   alwaysWeighted?: boolean
   alwaysAccelerated?: boolean
-  tagIds: string[]
+  tagIds: DefaultTagId[] | string[]
   isFavorite: boolean
   canHaveCombo: boolean
 }

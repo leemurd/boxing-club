@@ -1,4 +1,3 @@
-// src/presentation/stores/themeStore.ts
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
@@ -8,24 +7,45 @@ import { getUserId } from '@/presentation/utils/getUserId'
 export const useThemeStore = defineStore('theme', () => {
   const isDarkTheme = ref(false)
 
-  const stored = localStorage.getItem('darkTheme')
-  if (stored !== null) isDarkTheme.value = stored === 'true'
+  // Попытка загрузить из Firebase сразу при старте
+  loadThemeFromFirebase()
 
+  // Инициализация из localStorage или системных настроек
+  const stored = localStorage.getItem('darkTheme')
+  if (stored !== null) {
+    // Ресторе из localStorage (приоритет)
+    isDarkTheme.value = stored === 'true'
+  } else {
+    // Инициализация на основе системной схемы
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+    applyTheme(prefersDark.matches)
+    isDarkTheme.value = prefersDark.matches
+    // Слушаем изменения системной схемы
+    prefersDark.addEventListener('change', ({ matches }) => {
+      isDarkTheme.value = matches
+    })
+  }
+
+  // Apply CSS-классы и синхронизация при любом изменении
   watch(
     isDarkTheme,
     (newVal) => {
-      document.documentElement.setAttribute('data-bs-theme', newVal ? 'dark' : 'light')
+      applyTheme(newVal)
       localStorage.setItem('darkTheme', String(newVal))
       saveThemeToFirebase(newVal)
     },
     { immediate: true }
   )
 
+  function applyTheme(dark: boolean) {
+    document.body.classList.toggle('dark', dark)
+    document.documentElement.classList.toggle('ion-palette-dark', dark)
+  }
+
   function toggleTheme() {
     isDarkTheme.value = !isDarkTheme.value
   }
 
-  /** Загружает из users/{userId}.preferences.darkTheme */
   async function loadThemeFromFirebase() {
     const userId = await getUserId()
     const userDoc = doc(db, 'users', userId)
@@ -37,7 +57,6 @@ export const useThemeStore = defineStore('theme', () => {
     }
   }
 
-  /** Сохраняет в users/{userId}.preferences.darkTheme */
   async function saveThemeToFirebase(theme: boolean) {
     const userId = await getUserId()
     const userDoc = doc(db, 'users', userId)

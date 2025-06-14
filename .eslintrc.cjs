@@ -36,6 +36,7 @@ module.exports = {
         ignores: []
       }
     ],
+    'vue/no-deprecated-slot-attribute': 'off',
     'vue/multi-word-component-names': 'off',
     // 'vue/html-closing-bracket-newline': 'always',
     'vue/html-closing-bracket-newline': 'warn',

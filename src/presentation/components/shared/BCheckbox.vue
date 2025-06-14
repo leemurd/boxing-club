@@ -1,26 +1,18 @@
 <template>
-  <div class="form-check">
-    <input
-      :id="name"
-      ref="checkboxRef"
-      v-model="localValue"
-      class="form-check-input"
-      type="checkbox"
-      :disabled="disabled"
-      @change="$emit('update:model-value', localValue)"
-    >
-    <label
-      class="form-check-label"
-      :for="name"
-    >
-      <slot/>
-    </label>
-  </div>
+  <ion-checkbox
+    ref="checkboxRef"
+    :value="modelValue"
+    label-placement="end"
+    :disabled="disabled"
+    @ion-change="$emit('update:model-value', $event.target.checked)"
+  >
+    <slot/>
+  </ion-checkbox>
 </template>
 
 <script setup lang="ts">
-import { ref, useTemplateRef, watch } from 'vue'
-import { exclusiveName } from '@/presentation/utils/exclusiveName.ts'
+import { useTemplateRef } from 'vue'
+import { IonCheckbox } from '@ionic/vue'
 
 const props = withDefaults(defineProps<{
   modelValue: any,
@@ -32,14 +24,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
   'update:model-value': [val: any]
 }>()
-
-const localValue = ref()
 const checkboxRef = useTemplateRef('checkboxRef')
-const name: string = exclusiveName()
-
-watch(() => props.modelValue, (val) => {
-  localValue.value = val
-})
 </script>
 
 <style scoped lang="scss">

@@ -1,51 +1,21 @@
 <template>
-  <div
-    class="card"
-    :class="{
-      // 'border-0': noBorder && isDarkMode,
-      'border-0': noBorder,
-      [isDarkMode ? 'bg-dark' : 'bg-light']: true,
-      // [`bg-${isDarkMode ? 'dark' : ''}`]: isDarkMode,
-    }"
-  >
-    <div
-      v-if="$slots['header']"
-      class="card-header text-muted"
-      :class="{
-        'border-bottom-0': !$slots['default'] || noBorder,
-      }"
-    >
+  <ion-card>
+    <ion-card-header v-if="$slots.header">
       <slot name="header"/>
-    </div>
+    </ion-card-header>
 
-    <div
-      v-if="$slots['default']"
-      class="card-body"
-      :class="{
-        'p-0': noPadding
-      }"
-    >
+    <ion-card-content v-if="$slots['default']">
       <slot/>
-    </div>
+    </ion-card-content>
 
-    <div
-      v-if="$slots['footer']"
-      class="card-footer text-body-secondary"
-    >
-      <slot name="footer"/>
-    </div>
-  </div>
+    <template v-if="$slots.footer">
+      <ion-buttons>
+        <slot name="footer"/>
+      </ion-buttons>
+    </template>
+  </ion-card>
 </template>
 
 <script setup lang="ts">
-import { useThemeStore } from '@/presentation/stores/themeStore.ts'
-import { computed } from 'vue'
-
-const props = defineProps<{
-  noPadding?: boolean,
-  noBorder?: boolean,
-}>()
-
-const themeStore = useThemeStore()
-const isDarkMode = computed(() => themeStore.isDarkTheme)
+import { IonCard, IonCardContent, IonCardHeader, IonButtons } from '@ionic/vue'
 </script>

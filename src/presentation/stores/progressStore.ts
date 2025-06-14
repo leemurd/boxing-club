@@ -76,6 +76,7 @@ export const useProgressStore = defineStore('progress', () => {
 
   // После логирования или удаления записи — просто вызвать loadAll()
   async function deleteRecord(id: string) {
+    if (!id) return
     const userId = await getUserId()
     if (!userId) return
     await getUC<DeleteRecordUseCase>(TYPES.DeleteRecordUseCase).execute(userId, id)

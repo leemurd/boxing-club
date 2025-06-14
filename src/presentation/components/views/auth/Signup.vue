@@ -1,5 +1,5 @@
 <template>
-  <div class="register-page">
+  <page-default class="register-page">
     <form @submit.prevent="handleRegister">
       <div class="mb-3">
         <label
@@ -76,8 +76,8 @@
         />
       </div>
       <b-button
-        color="blue"
-        size="medium"
+        color="primary"
+        size="default"
         type="submit"
         class="w-100"
       >
@@ -95,7 +95,7 @@
       :message="errorMessage"
       class="mt-3"
     />
-  </div>
+  </page-default>
 </template>
 
 <script lang="ts" setup>
@@ -105,6 +105,7 @@ import BAlert from '@/presentation/components/shared/BAlert.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const email = ref('')
 const firstName = ref('')

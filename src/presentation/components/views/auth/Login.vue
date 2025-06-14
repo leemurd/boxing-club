@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <page-default>
     <form
       @submit.prevent="handleLogin"
     >
@@ -29,8 +29,8 @@
       </div>
 
       <b-button
-        color="blue"
-        size="medium"
+        color="primary"
+        size="default"
         type="submit"
         class="w-100"
       >
@@ -43,7 +43,7 @@
         </small> <RouterLink to="/signup">Sign up</RouterLink>
       </p>
     </form>
-  </div>
+  </page-default>
 </template>
 
 <script setup lang="ts">
@@ -53,6 +53,7 @@ import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import { useToast } from 'vue-toastification'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const toast = useToast()
 

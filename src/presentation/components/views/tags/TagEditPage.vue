@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <page-default header-back>
     <h1 class="mb-4">{{ isNew ? 'Новый тег' : 'Редактировать тег' }}</h1>
 
     <div class="mb-3">
@@ -22,7 +22,7 @@
       class="btn btn-secondary"
       @click="goBack"
     >Отмена</button>
-  </div>
+  </page-default>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +30,7 @@ import { reactive, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import type { Tag } from '@/domain/entities/Tag'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const route = useRoute()
 const router = useRouter()

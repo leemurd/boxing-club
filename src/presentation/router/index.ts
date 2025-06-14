@@ -1,7 +1,7 @@
 import {
   // createRouter,
   // createWebHistory,
-  type RouteRecordRaw
+  type RouteRecordRaw, RouterView
 } from 'vue-router'
 // import { createURL } from '@ionic/vue-router'
 import { createRouter, createWebHistory } from '@ionic/vue-router'
@@ -14,7 +14,7 @@ import NotFoundPage from '@/presentation/components/views/auth/NotFoundPage.vue'
 import { requireAuth } from './guards'
 import PunchCounter from '@/presentation/components/views/PunchCounter.vue'
 import ProgressPage from '@/presentation/components/views/progress/ProgressPage.vue'
-import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
+// import RouterViewWithSlots from '@/presentation/components/layout/router/RouterViewWithSlots.vue'
 import ComboListPage from '@/presentation/components/views/combos/ComboListPage.vue'
 import ComboEditPage from '@/presentation/components/views/combos/ComboEditPage.vue'
 import Combos from '@/presentation/components/views/combos/Combos.vue'
@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Progress',
-    component: RouterViewWithSlots,
+    component: RouterView,
     beforeEnter: requireAuth,
     meta: {
       name: 'My Progress',
@@ -59,7 +59,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/exercises',
     name: 'Exercises',
-    component: RouterViewWithSlots,
+    component: RouterView,
     beforeEnter: requireAuth,
     // component: ExercisesPage,
     meta: {
@@ -137,7 +137,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/combos/categories',
         name: 'ComboCategories',
-        component: RouterViewWithSlots,
+        component: RouterView,
         redirect: '/combos/categories/index',
         children: [
           {
@@ -171,7 +171,7 @@ const routes: RouteRecordRaw[] = [
 
   {
     path: '/tags',
-    component: RouterViewWithSlots,
+    component: RouterView,
     meta: {
       requiresAuth: true,
       tags: ['userRoute'],

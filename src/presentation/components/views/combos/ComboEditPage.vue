@@ -1,37 +1,39 @@
 <template>
-  <div>
-    <combination-builder-view
-      v-model="combo.punches"
-      :is-new="isNew"
-      class="mb-4"
-    />
-
-    <div class="mb-3 text-center">
-      <label class="form-label mb-2">Title (required)</label>
-      <b-input
-        v-model="combo.title"
-        placeholder="Combo name"
+  <page-default header-back>
+    <div>
+      <combination-builder-view
+        v-model="combo.punches"
+        :is-new="isNew"
+        class="mb-4"
       />
+
+      <div class="mb-3 text-center">
+        <label class="form-label mb-2">Title (required)</label>
+        <b-input
+          v-model="combo.title"
+          placeholder="Combo name"
+        />
+      </div>
+
+      <combo-categories-card
+        :category-ids="combo.categoryIds"
+        @on-edit="openCategoryModal"
+      />
+
+      <div class="d-flex flex-column mt-3 gap-2">
+        <b-button
+          color="primary"
+          :disabled="combo.title?.trim().length === 0 || combo.punches.length === 0"
+          @click="saveCombo"
+        >{{ isNew ? 'Create' : 'Save' }}</b-button>
+
+        <b-button
+          color="secondary"
+          @click="$router.back()"
+        >Back</b-button>
+      </div>
     </div>
-
-    <combo-categories-card
-      :category-ids="combo.categoryIds"
-      @on-edit="openCategoryModal"
-    />
-
-    <div class="d-flex flex-column mt-3 gap-2">
-      <b-button
-        color="primary"
-        :disabled="combo.title?.trim().length === 0 || combo.punches.length === 0"
-        @click="saveCombo"
-      >{{ isNew ? 'Create' : 'Save' }}</b-button>
-
-      <b-button
-        color="secondary"
-        @click="$router.back()"
-      >Back</b-button>
-    </div>
-  </div>
+  </page-default>
 </template>
 
 <script lang="ts" setup>
@@ -47,6 +49,7 @@ import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import ComboCategoriesCard from '@/presentation/components/pages/combos/ComboCategoriesCard.vue'
 import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const route = useRoute()
 const router = useRouter()

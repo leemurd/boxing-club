@@ -1,4 +1,5 @@
 <template>
+  <!--  <page-default>-->
   <div class="punch-counter">
     <!-- Ручной режим -->
     <template v-if="!recording && !timerActive">
@@ -68,7 +69,7 @@
     <div class="controls">
       <b-button
         v-if="recording"
-        color="red"
+        color="danger"
         size="large"
         class="w-100"
         @click="resetCounter"
@@ -125,13 +126,16 @@
       </div>
     </div>
   </div>
+<!--  </page-default>-->
+
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { Collapse } from 'bootstrap'
+// import { Collapse } from 'bootstrap'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useToast } from 'vue-toastification'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const toast = useToast()
 
@@ -262,15 +266,15 @@ function resetCounter() {
 const isSettingsOpened = ref(false)
 
 function toggleNavbar() {
-  const navbar = document.getElementById('navbarSupportedContent2')
-  if (navbar) {
-    let bsCollapse = Collapse.getInstance(navbar)
-    if (!bsCollapse) {
-      bsCollapse = new Collapse(navbar, { toggle: false })
-    }
-    bsCollapse.toggle()
-    isSettingsOpened.value = !isSettingsOpened.value
-  }
+  // const navbar = document.getElementById('navbarSupportedContent2')
+  // if (navbar) {
+  //   let bsCollapse = Collapse.getInstance(navbar)
+  //   if (!bsCollapse) {
+  //     bsCollapse = new Collapse(navbar, { toggle: false })
+  //   }
+  //   bsCollapse.toggle()
+  //   isSettingsOpened.value = !isSettingsOpened.value
+  // }
 }
 
 watch(() => error.value, (val) => {

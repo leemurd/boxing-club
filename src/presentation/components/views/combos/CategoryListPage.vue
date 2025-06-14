@@ -1,34 +1,36 @@
 <template>
-  <div>
-    <div class="d-flex justify-content-between mb-3 align-items-center">
-      <b-button
-        color="dark"
-        @click="openAddCategoryModal"
+  <page-default header-back>
+    <div>
+      <div class="d-flex justify-content-between mb-3 align-items-center">
+        <b-button
+          color="dark"
+          @click="openAddCategoryModal"
+        >
+          New category
+        </b-button>
+
+        <b-button
+          color="primary"
+          @click="$router.push({name: 'ComboList'})"
+        >Back to combos</b-button>
+      </div>
+
+      <list-group
+        :items="categoryStore.list"
+        item-val="name"
+        :primary-callback="openCategory"
+        item-link
       >
-        New category
-      </b-button>
-
-      <b-button
-        color="link"
-        @click="$router.push({name: 'ComboList'})"
-      >Back to combos</b-button>
+        <template #icon>
+          <i class="bi bi-folder2-open"/>
+        </template>
+        <template #actions="{ item }">
+          <b-dropdown-item @click="openCategory(item)">Edit</b-dropdown-item>
+          <b-dropdown-item @click="removeCategory(item.id)">Remove</b-dropdown-item>
+        </template>
+      </list-group>
     </div>
-
-    <list-group
-      :items="categoryStore.list"
-      item-val="name"
-      :primary-callback="openCategory"
-      item-link
-    >
-      <template #icon>
-        <i class="bi bi-folder2-open"/>
-      </template>
-      <template #actions="{ item }">
-        <b-dropdown-item @click="openCategory(item)">Edit</b-dropdown-item>
-        <b-dropdown-item @click="removeCategory(item.id)">Remove</b-dropdown-item>
-      </template>
-    </list-group>
-  </div>
+  </page-default>
 </template>
 
 <script setup lang="ts">
@@ -41,6 +43,7 @@ import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import { useRouter } from 'vue-router'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 
 const categoryStore = useCategoryStore()
 const modal = useModalService()

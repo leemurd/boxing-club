@@ -1,7 +1,10 @@
 <template>
-  <div class="not-found">
+  <page-default class="not-found">
     <h1>404</h1>
     <p>Page not found.</p>
     <router-link to="/">Go to homepage</router-link>
-  </div>
+  </page-default>
 </template>
+<script setup lang="ts">
+import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+</script>

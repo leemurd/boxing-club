@@ -1,40 +1,29 @@
 <template>
   <div v-if="items.length">
     <h2 class="h5 mb-3 text-center">Recent Records</h2>
-    <b-card
+    <ion-card
       v-for="rec in items"
       :key="rec.id"
-      class="mb-2"
+      class="mb-0"
       no-border
     >
-      <div class="d-flex w-100 justify-content-between align-items-center">
-        <div class="text-muted small">
-          {{ formatDateTime(rec.timestamp) }}
-        </div>
+      <ion-card-header>
+        <ion-card-title class="mb-2">{{ getExerciseName(rec.exerciseId) }}</ion-card-title>
+        <ion-card-subtitle>{{ formatDateTime(rec.timestamp) }}</ion-card-subtitle>
+      </ion-card-header>
 
-        <b-dropdown
-          is-action-btn
-          outline
-          color="link"
-          size="small"
-          @click.prevent.stop
-        >
-          <template #btn-text>
-            <i class="bi bi-three-dots-vertical"/>
-          </template>
-          <template #menu>
-            <b-dropdown-item @click="progress.deleteRecord(rec.id)">Delete</b-dropdown-item>
-          </template>
-        </b-dropdown>
-      </div>
+      <ion-card-content class="ion-text-center">
+        {{ rec.amount }} {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}
+      </ion-card-content>
+      <ion-button
+        color="danger"
+        fill="clear"
+        @click="progress.deleteRecord(rec?.id || '')"
+      >Delete</ion-button>
+      <!--        <ion-button fill="clear">Action 1</ion-button>-->
+      <!-- <b-dropdown-item @click="progress.deleteRecord(rec.id)">Delete</b-dropdown-item>-->
 
-      <div class="card-title mb-0">
-        <div class="row pe-5">
-          <div class="col font-slab">{{ getExerciseName(rec.exerciseId) }}</div>
-          <div class="col-auto">{{ rec.amount }} {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}</div>
-        </div>
-      </div>
-    </b-card>
+    </ion-card>
   </div>
 </template>
 
@@ -42,10 +31,8 @@
 import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
 import { useProgressStore } from '@/presentation/stores/progressStore.ts'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
-import BCard from '@/presentation/components/shared/BCard.vue'
 import { getShortDateWithTime } from '@/presentation/utils/dateTime.ts'
-import BDropdown from '@/presentation/components/shared/BDropdown.vue'
-import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
+import { IonCardContent, IonCardHeader, IonCardTitle, IonButton, IonCardSubtitle, IonCard } from '@ionic/vue'
 
 defineProps<{
   items: TrainingRecord[]
