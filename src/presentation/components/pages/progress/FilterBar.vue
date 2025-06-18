@@ -1,37 +1,34 @@
 <!-- src/presentation/components/shared/FilterBar.vue -->
 <template>
-  <div>
-    <div class="row mb-3">
-      <div class="col-auto">
+  <ion-grid>
+    <ion-row class="ion-margin-bottom ion-align-items-center">
+      <ion-col size="auto">
         <b-button
           color="dark"
-          size="small"
+          size="default"
           outline
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(-1)"
         >
           Prev
         </b-button>
-      </div>
-      <div class="col p-0 d-flex align-items-center">
-        <div class="text-center flex-grow-1 mb-0 fw-normal">
-          {{ displayRange }}
-        </div>
-      </div>
-      <div class="col-auto">
+      </ion-col>
+      <ion-col class="ion-text-center">
+        {{ displayRange }}
+      </ion-col>
+      <ion-col size="auto">
         <b-button
           color="dark"
-          size="small"
+          size="default"
           outline
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(1)"
         >
           Next
         </b-button>
-      </div>
-    </div>
-
-    <div class="d-flex align-items-center justify-content-between">
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <horizontal-segment-group
         v-model="periodType"
         :items="dateRangeItems"
@@ -39,8 +36,8 @@
         option-label="label"
         @update:model-value="onPeriodChange"
       />
-    </div>
-  </div>
+    </ion-row>
+  </ion-grid>
 </template>
 
 <script lang="ts" setup>
@@ -52,6 +49,7 @@ import { storeToRefs } from 'pinia'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { getShortDate } from '@/presentation/utils/dateTime.ts'
 import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
+import { IonGrid, IonRow, IonCol } from '@ionic/vue'
 
 const store = useProgressStore()
 const { periodType, cursor } = storeToRefs(store)

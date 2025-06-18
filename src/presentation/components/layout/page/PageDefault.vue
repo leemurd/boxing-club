@@ -18,21 +18,18 @@
       <slot/>
       <!--      <modal-container />-->
     </ion-content>
-    <footer-main />
+    <!--    <footer-main />-->
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import {
   IonContent,
-  IonPage,
-  IonToolbar,
-  IonTitle,
-  IonFooter
+  IonPage
 } from '@ionic/vue'
 import MainHeader from "@/presentation/components/layout/header/MainHeader.vue"
-import FooterMain from '@/presentation/components/layout/footer/FooterMain.vue'
-import ModalContainer from '@/presentation/components/modals/ModalContainer.vue'
+// import FooterMain from '@/presentation/components/layout/footer/FooterMain.vue'
+// import ModalContainer from '@/presentation/components/modals/ModalContainer.vue'
 
 
 defineProps<{

@@ -5,6 +5,7 @@
     :fill="outline ? 'outline' : 'solid'"
     :size="size"
     :type="type"
+    :expand="expand"
   >
     <slot />
   </ion-button>
@@ -29,6 +30,7 @@ const props = withDefaults(
     outline?: boolean
     submit?: boolean
     type?: 'submit' | 'button' | 'reset'
+    expand?: 'block' | 'full'
   }>(),
   {
     color: 'primary',

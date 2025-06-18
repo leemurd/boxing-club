@@ -4,5 +4,4 @@ export interface IUserRepository {
   createUser(user: User): Promise<void>
   getUser(userId: string): Promise<User | null>
   updateUser(user: User): Promise<void>
-  // Дополнительные методы, если нужны (например, удаление)
 }

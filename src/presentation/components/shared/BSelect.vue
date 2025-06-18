@@ -1,24 +1,22 @@
 <template>
-  <ion-item :disabled="disabled">
-    <ion-select
-      v-model="internalValue"
-      interface="popover"
-      :disabled="disabled"
+  <ion-select
+    v-model="internalValue"
+    interface="popover"
+    :disabled="disabled"
+  >
+    <ion-select-option
+      v-for="(item, index) in items"
+      :key="index"
+      :value="getValue(item)"
     >
-      <ion-select-option
-        v-for="(item, index) in items"
-        :key="index"
-        :value="getValue(item)"
-      >
-        {{ getLabel(item) }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
+      {{ getLabel(item) }}
+    </ion-select-option>
+  </ion-select>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IonItem, IonSelect, IonSelectOption } from '@ionic/vue'
+import { IonSelect, IonSelectOption } from '@ionic/vue'
 
 type Item = Record<string, any>
 

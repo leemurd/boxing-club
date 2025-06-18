@@ -28,9 +28,7 @@ import {
   IonList,
   IonItem,
   IonRadio,
-  IonLabel,
-  IonCard,
-  IonCardContent
+  IonLabel
 } from '@ionic/vue'
 
 // Props definition

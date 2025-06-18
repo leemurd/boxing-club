@@ -90,22 +90,24 @@
         </small> <RouterLink to="/login">Login</RouterLink>
       </p>
     </form>
-    <b-alert
+
+    <b-card
       v-if="errorMessage"
-      :message="errorMessage"
       class="mt-3"
-    />
+    >
+      {{ errorMessage }}
+    </b-card>
   </page-default>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import BCard from '@/presentation/components/shared/BCard.vue'
 
 const email = ref('')
 const firstName = ref('')

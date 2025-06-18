@@ -6,18 +6,17 @@
         <ion-card-title class="ion-text-center">{{ fullname }}</ion-card-title>
       </ion-card-header>
       <ion-card-content class="ion-text-center">
-        <img
+        <ion-img
           :src="avatarImg"
-          class="progress-page-main__avatar mb-4"
-        >
-        <ion-button
+          class="progress-page-main__avatar ioc-margin-bottom"
+        />
+        <b-button
           expand="block"
           color="dark"
+          class="ion-margin-bottom"
           @click="$router.push({ name: 'ProgressRecord' })"
-        >
-          New Record
-        </ion-button>
-        <filter-bar class="mt-4" />
+        >New Record</b-button>
+        <filter-bar/>
       </ion-card-content>
     </ion-card>
 
@@ -25,7 +24,7 @@
       v-if="dailyTotals.length"
       label="Daily Load"
       :items="dailyTotals"
-      class="mb-3"
+      class="ioc-margin-bottom"
     />
     <progress-stats-row
       v-if="byCategory.length"
@@ -67,15 +66,15 @@
       title="Empty state"
       description="No records found for this period"
     >
-      <template #button>
-        <ion-button
+      <template #footer>
+        <b-button
           expand="block"
           color="dark"
           fill="outline"
           @click="$router.push({ name: 'ProgressRecord' })"
         >
           New Record
-        </ion-button>
+        </b-button>
       </template>
     </empty-state>
   </page-default>
@@ -88,13 +87,14 @@ import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import { useComboStore } from '@/presentation/stores/comboStore'
 import { useAuthStore } from '@/presentation/stores/authStore'
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton } from '@ionic/vue'
+import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonImg } from '@ionic/vue'
 import FilterBar from '@/presentation/components/pages/progress/FilterBar.vue'
 import ProgressStatsRow from '@/presentation/components/pages/progress/ProgressStatsRow.vue'
 import RecentRecords from '@/presentation/components/pages/progress/RecentRecords.vue'
 import EmptyState from '@/presentation/components/shared/EmptyState.vue'
 import avatarImg from '@/presentation/assets/avatar-colored.svg'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 const progress   = useProgressStore()
 const exStore    = useExerciseStore()

@@ -165,8 +165,8 @@ export default defineComponent({
   text-align: center;
   gap: 24px;
   max-width: 430px;
-  @include media-breakpoint-down(sm) {
-    max-width: 100%;
-  }
+  //@include media-breakpoint-down(sm) {
+  //  max-width: 100%;
+  //}
 }
 </style>

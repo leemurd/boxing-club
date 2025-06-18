@@ -58,7 +58,7 @@
       >
         <div
           :class="[
-            `progress-bar bg-${darkColor}`,
+            `progress-bar bg-${darkColor} progress-bar--minutes`,
             `text-bg-${darkColor}`,
             { 'progress-bar-striped progress-bar-animated': loading }
           ]"
@@ -110,6 +110,14 @@ const pctMin  = computed(() => props.min)
   }
   &__hint {
     font-size: 0.6rem;
+  }
+}
+
+[dark] {
+  .progress-bar {
+    &--minutes {
+      background-color: red!important;
+    }
   }
 }
 </style>

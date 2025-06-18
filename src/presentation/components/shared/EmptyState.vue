@@ -1,19 +1,22 @@
 <template>
-  <div class="card empty-state">
-    <div class="card-body empty-state-body">
-      <h5 class="card-title">
-        <slot name="title">{{ title }}</slot>
-      </h5>
+  <b-card>
+    <template #header>
+      <slot name="title">{{ title }}</slot>
+    </template>
+    <template #default>
       <slot name="description">
-        <p class="card-text">{{ description }}</p>
+        {{ description }}
       </slot>
-
-      <slot name="button"/>
-    </div>
-  </div>
+    </template>
+    <template #footer>
+      <slot name="footer"/>
+    </template>
+  </b-card>
 </template>
 
 <script setup lang="ts">
+import BCard from '@/presentation/components/shared/BCard.vue'
+
 defineProps<{
   title: string,
   description: string,

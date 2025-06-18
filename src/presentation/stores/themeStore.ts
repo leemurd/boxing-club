@@ -32,14 +32,18 @@ export const useThemeStore = defineStore('theme', () => {
     (newVal) => {
       applyTheme(newVal)
       localStorage.setItem('darkTheme', String(newVal))
+      // bootstrap
       saveThemeToFirebase(newVal)
     },
     { immediate: true }
   )
 
   function applyTheme(dark: boolean) {
+    // ionic
     document.body.classList.toggle('dark', dark)
     document.documentElement.classList.toggle('ion-palette-dark', dark)
+    // bootstrap
+    document.documentElement.setAttribute('data-bs-theme', dark ? 'dark' : 'light')
   }
 
   function toggleTheme() {

@@ -8,7 +8,7 @@
         :items="categories"
       />
 
-      <div class="form-label text-center">Select exercise</div>
+      <div class="form-label text-center mt-3">Select exercise</div>
 
       <vertical-radio-group
         v-model="selectedExercise"
@@ -18,7 +18,7 @@
       />
 
       <div v-if="selectedExercise">
-        <h4 class="mb-3 text-center">
+        <h4 class="mb-3 mt-3 text-center">
           {{ selectedExercise.name }}
           ({{ selectedExercise.measurement === 'seconds' ? 'sec' : 'reps' }})
         </h4>
@@ -87,13 +87,15 @@
             class="px-3 w-100"
             @click="decrement"
           >-</b-button></div>
-          <div class="col"><b-input
-            v-model.number="quantity"
-            type="text"
-            placeholder="Count"
-            class="text-center"
-            :min="0"
-          /></div>
+          <div class="col">
+            <b-input
+              v-model.number="quantity"
+              type="text"
+              placeholder="Count"
+              class="text-center"
+              :min="0"
+            />
+          </div>
           <div class="col"><b-button
             color="secondary"
             outline

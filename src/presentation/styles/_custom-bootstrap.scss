@@ -1,22 +1,33 @@
 // 1. Подключаем базовые функции/переменные, если нужно
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
-//@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/variables-dark";
 
-$container-max-width: 400px;
-$container-max-widths: (
-        sm: $container-max-width,
-        md: $container-max-width,
-        lg: $container-max-width,
-        xl: $container-max-width,
-        xxl: $container-max-width
-);
-$spinner-animation-speed: 1.3s;
-$container-padding-x: 2.5rem;
+//$container-max-width: 400px;
+//$container-max-widths: (
+//        sm: $container-max-width,
+//        md: $container-max-width,
+//        lg: $container-max-width,
+//        xl: $container-max-width,
+//        xxl: $container-max-width
+//);
+//$spinner-animation-speed: 1.3s;
+//$container-padding-x: 2.5rem;
 
-$border-color: $gray-300 !default;
-$light-color-disabled: #E3E5E6;
-
+//$container-max-width: 400px;
+//$container-max-widths: (
+//        sm: $container-max-width,
+//        md: $container-max-width,
+//        lg: $container-max-width,
+//        xl: $container-max-width,
+//        xxl: $container-max-width
+//);
+//$spinner-animation-speed: 1.3s;
+//$container-padding-x: 2.5rem;
+//
+//$border-color: $gray-300 !default;
+//$light-color-disabled: #E3E5E6;
+//
 $my-theme-colors: (
         "primary"  : $blue-800,
         //"secondary": $secondary,
@@ -29,7 +40,12 @@ $my-theme-colors: (
         "dark"     : $dark
 );
 
+//$progress-bg: $gray-800;
+//
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/progress";
 @import "bootstrap/scss/utilities";
-@import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap-utilities";
+//@import "bootstrap/scss/bootstrap";

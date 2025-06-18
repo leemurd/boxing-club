@@ -21,11 +21,9 @@
           </template>
         </b-card>
       </div>
-      <b-alert
-        v-else
-        message="Пользователь не найден."
-        class="mt-3"
-      />
+      <b-card v-else>
+        Пользователь не найден.
+      </b-card>
     </div>
   </page-default>
 </template>
@@ -37,7 +35,6 @@ import { getAuth } from 'firebase/auth'
 import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository.ts'
 import type { User } from '@/domain/entities/User.ts'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
 import ThemeToggle from '@/presentation/components/pages/profile/ThemeToggle.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
@@ -58,7 +55,6 @@ function confirmLogout() {
     onApply: handleLogout
   })
 }
-//
 
 const toast = useToast()
 

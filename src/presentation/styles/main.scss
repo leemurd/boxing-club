@@ -3,6 +3,7 @@
 @import "_custom-bootstrap";
 @import "mixins";
 @import "typography";
+@import "custom-ionic";
 
 html, body {
   min-height: 100%;
@@ -14,15 +15,41 @@ html, body {
   height: 100%;
 }
 
-.btn {
-  //@include slabFont;
-}
-
-[data-bs-theme=dark] {
-  body {
-    background-color: $dark-bg-subtle-dark;
-    color: $body-color-dark;
-  }
-}
-
 .cursor-pointer {cursor: pointer;}
+
+:root {
+  --ion-background-color: #ffffff;
+}
+[dark] {
+  --ion-background-color: #000000;
+}
+
+:root {
+  --ion-item-border-color: var(--ion-background-color-step-200);
+}
+
+:root.ios {
+  --ion-background-color: var(--ion-background-color-step-50, #f2f2f6);
+  --ion-toolbar-background: var(--ion-background-color);
+  --ion-item-background: #fff;
+}
+
+:root.md {
+  --ion-background-color: var(--ion-background-color-step-100, #f9f9f9);
+  --ion-toolbar-background: var(--ion-background-color);
+  --ion-item-background: #fff;
+}
+
+.ion-palette-dark.ios,
+.ion-palette-dark.md {
+  --ion-item-background: #1c1c1d;
+}
+
+//
+:root {
+  --vh: 1vh;
+}
+
+html, body, #app, ion-app, ion-content {
+  height: calc(var(--vh) * 100) !important;
+}

@@ -1,77 +1,47 @@
 <template>
-  <input
-    v-if="loading"
+  <ion-input
     ref="inputRef"
-    :value="'Loading'"
+    :value="modelValue"
     :type="type"
-    class="form-control"
-    :class="{
-      [size ? `form-control-${size}` : '']: size,
-    }"
     :placeholder="placeholder"
+    :required="required"
     :disabled="disabled"
-  >
-  <input
-    v-else
-    ref="inputRef"
-    v-model="localValue"
-    :type="type"
-    class="form-control"
-    :class="{
-      [size ? `form-control-${size}` : '']: size,
-    }"
-    :placeholder="placeholder"
-    :disabled="disabled"
-  >
+    @ion-input="onIonInput"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef, watch } from 'vue'
+import { ref, onMounted } from 'vue'
+import { IonInput } from '@ionic/vue'
 
 const props = withDefaults(defineProps<{
-  modelValue: any,
-  type?: 'text' | 'password' | 'email' | 'number',
-  placeholder?: string,
-  required?: boolean,
-  autofocus?: boolean,
-  size?: 'sm' | '' | 'lg',
-  disabled?: boolean,
-  loading?: boolean,
+  modelValue: string | number
+  type?: 'text' | 'password' | 'email' | 'number'
+  placeholder?: string
+  required?: boolean
+  autofocus?: boolean
+  disabled?: boolean
 }>(), {
   type: 'text',
-  size: ''
+  placeholder: '',
+  required: false,
+  autofocus: false,
+  disabled: false
 })
 
 const emit = defineEmits<{
-  (e: 'update:model-value', value: any): void
+  (e: 'update:modelValue', value: string | number): void
 }>()
 
-const inputRef = useTemplateRef('inputRef')
-const localValue = ref(props.modelValue)
+const inputRef = ref<InstanceType<typeof IonInput> | null>(null)
 
-watch(() => props.modelValue, (value) => {
-  // if (!value) return
-  localValue.value = value
-}, { immediate: true })
+function onIonInput(event: CustomEvent) {
+  emit('update:modelValue', event.detail.value)
+}
 
-watch(() => localValue.value, (value) => {
-  emit('update:model-value', value)
-}, { immediate: true })
-
-onMounted(() => {
-  if (props.autofocus) {
-    inputRef.value?.focus()
-  }
-})
+// onMounted(() => {
+//   if (props.autofocus) {
+//     inputRef.value?.setFocus()
+//   }
+// })
 </script>
-
-<style scoped lang="scss">
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type=number]{
-  -moz-appearance: textfield;
-}
-</style>

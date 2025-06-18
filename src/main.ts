@@ -1,6 +1,8 @@
 // src/main.ts
 import '@/presentation/styles/main.scss'
 import { IonicVue } from '@ionic/vue'
+import { Capacitor } from '@capacitor/core'
+import { Keyboard } from '@capacitor/keyboard'
 // import 'bootstrap/dist/js/bootstrap.min.js'
 import Toast, { type PluginOptions, POSITION } from 'vue-toastification'
 
@@ -50,6 +52,18 @@ document.addEventListener(
   'dblclick',
   function (e) {
     e.preventDefault()
+    console.log(1232133123)
   },
   { passive: false }
 )
+
+function updateVh() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
+}
+window.addEventListener('resize', updateVh)
+updateVh()
+
+// 3) На мобильных дополнительно ловим скрытие клавиатуры
+if (Capacitor.getPlatform() !== 'web') {
+  Keyboard.addListener('keyboardDidHide', updateVh)
+}

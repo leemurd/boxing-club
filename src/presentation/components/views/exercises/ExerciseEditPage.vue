@@ -34,7 +34,6 @@
           <b-select
             v-model="form.measurement"
             :items="['repetitions', 'seconds']"
-            class="form-select"
             :disabled="isDefault"
           />
         </div>
