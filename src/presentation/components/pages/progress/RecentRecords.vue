@@ -4,7 +4,7 @@
     <ion-card
       v-for="rec in items"
       :key="rec.id"
-      class="mb-0"
+      class="ion-no-margin ion-margin-bottom"
       no-border
     >
       <ion-card-header>

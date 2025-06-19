@@ -1,6 +1,6 @@
 <!-- src/presentation/components/views/EnemyCard.vue -->
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="enemy-card">
 
       <div class="enemy-card__item">

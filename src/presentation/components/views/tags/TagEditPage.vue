@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <h1 class="mb-4">{{ isNew ? 'Новый тег' : 'Редактировать тег' }}</h1>
 
     <div class="mb-3">

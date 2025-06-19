@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <div>
       <div class="mb-3 text-center">
         <label class="form-label mb-2">Title (required)</label>
@@ -53,11 +53,6 @@
           :disabled="category.name?.trim().length === 0"
           @click="saveCombo"
         >{{ isNew ? 'Create' : 'Save' }}</b-button>
-
-        <b-button
-          color="secondary"
-          @click="$router.back()"
-        >Back</b-button>
       </div>
     </div>
   </page-default>

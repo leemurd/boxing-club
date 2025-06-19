@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="profile-page">
       <div v-if="loading">Загрузка...</div>
       <div v-else-if="user">

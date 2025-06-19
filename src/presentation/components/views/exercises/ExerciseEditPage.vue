@@ -1,6 +1,6 @@
 <!-- src/presentation/components/views/exercises/ExerciseEditPage.vue -->
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="">
       <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
 

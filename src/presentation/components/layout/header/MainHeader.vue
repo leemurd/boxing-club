@@ -1,3 +1,4 @@
+<!--src/presentation/components/layout/header/MainHeader.vue-->
 <template>
   <ion-header :translucent="true">
     <ion-toolbar>
@@ -5,23 +6,19 @@
         slot="start"
       >
         <slot name="start">
-          <ion-back-button
-            v-if="headerBack"
-            default-href="/"
-            @click="router.back()"
-          />
           <ion-menu-button
-            v-else
+            v-if="$route.name === 'ProgressPage'"
             :auto-hide="false"
+          />
+          <ion-back-button
+            v-else
+            default-href="/"
+            @click="router.canGoBack ? router.back() : router.navigate({ name: 'Progress' })"
           />
         </slot>
       </ion-buttons>
       <ion-title>
-        <img
-          :src="logo"
-          class="navbar-brand-logo"
-        >
-        {{ $route.meta.name }}
+        <header-logo/>
       </ion-title>
       <ion-buttons
         v-if="$slots['end']"
@@ -36,19 +33,8 @@
 
 <script setup lang="ts">
 import { IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonBackButton } from '@ionic/vue'
-import logo from '@/presentation/assets/app-logo3.png'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
-
-defineProps<{
-  headerBack?: boolean
-}>()
+import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
 
 const router = useProjectRouter()
 </script>
-
-<style scoped lang="scss">
-.navbar-brand-logo {
-  height: 24px;
-  margin-right: 8px;
-}
-</style>

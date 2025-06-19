@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="d-flex mb-3">
       <input
         v-model="newName"
@@ -56,9 +56,7 @@ async function addTag() {
   newName.value = ''
 }
 
-// function goEdit(id: string) {
 function goEdit(tag: Tag) {
-  console.log(tag)
   router.push({
     name: 'TagEdit',
     params: { id: tag.id }

@@ -1,6 +1,6 @@
 <!-- src/presentation/pages/ComboListPage.vue -->
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <b-button
         color="dark"
@@ -11,7 +11,7 @@
 
       <b-button
         color="dark"
-        @click="$router.push({name: 'ComboCategories'})"
+        @click="$router.push({name: 'ComboCategoriesIndex'})"
       >Open categories</b-button>
     </div>
 

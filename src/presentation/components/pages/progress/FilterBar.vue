@@ -5,7 +5,7 @@
       <ion-col size="auto">
         <b-button
           color="dark"
-          size="default"
+          size="small"
           outline
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(-1)"
@@ -19,7 +19,7 @@
       <ion-col size="auto">
         <b-button
           color="dark"
-          size="default"
+          size="small"
           outline
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(1)"
@@ -74,16 +74,13 @@ function shiftCursor(delta: number) {
 
 // форматтер дат вида "1 Feb"
 
-
 // вычисляем строку диапазона
 const displayRange = computed(() => {
   if (periodType.value === TimeRange.ALL) {
     return 'All time'
   }
 
-  const end = new Date(cursor.value)   // курсор — это конец периода
-  // const fmt = (d: Date) =>
-  //   d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+  const end = new Date(cursor.value) // курсор — это конец периода
 
   if (periodType.value === TimeRange.DAY) {
     return getShortDate(end)

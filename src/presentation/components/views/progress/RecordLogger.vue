@@ -1,6 +1,6 @@
 <!-- src/presentation/components/views/progress/RecordLogger.vue -->
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="exercise-logger">
       <div class="form-label text-center">Select category</div>
       <horizontal-segment-group

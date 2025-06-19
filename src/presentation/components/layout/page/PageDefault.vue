@@ -1,3 +1,4 @@
+<!--src/presentation/components/layout/page/PageDefault.vue-->
 <template>
   <ion-page>
     <slot name="header">
@@ -16,9 +17,7 @@
       class="ion-padding"
     >
       <slot/>
-      <!--      <modal-container />-->
     </ion-content>
-    <!--    <footer-main />-->
   </ion-page>
 </template>
 
@@ -28,8 +27,6 @@ import {
   IonPage
 } from '@ionic/vue'
 import MainHeader from "@/presentation/components/layout/header/MainHeader.vue"
-// import FooterMain from '@/presentation/components/layout/footer/FooterMain.vue'
-// import ModalContainer from '@/presentation/components/modals/ModalContainer.vue'
 
 
 defineProps<{

@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <div class="exercises">
       <div class="form-label text-center">Category</div>
       <horizontal-segment-group

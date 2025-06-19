@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <div>
       <div class="d-flex justify-content-between mb-3 align-items-center">
         <b-button
@@ -8,11 +8,6 @@
         >
           New category
         </b-button>
-
-        <b-button
-          color="primary"
-          @click="$router.push({name: 'ComboList'})"
-        >Back to combos</b-button>
       </div>
 
       <list-group
@@ -54,7 +49,7 @@ onMounted(() => {
 })
 
 const openCategory = (cat: ComboCategory) => {
-  router.push(`/combos/categories/${cat.id}`)
+  router.push(`/categories/${cat.id}`)
 }
 
 const openAddCategoryModal = () => {

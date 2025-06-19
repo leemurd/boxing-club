@@ -164,9 +164,6 @@ export default defineComponent({
   flex-direction: column;
   text-align: center;
   gap: 24px;
-  max-width: 430px;
-  //@include media-breakpoint-down(sm) {
-  //  max-width: 100%;
-  //}
+  width: 100%;
 }
 </style>

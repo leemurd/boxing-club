@@ -1,3 +1,4 @@
+<!--src/presentation/components/layout/header/AppMenu.vue-->
 <template>
   <ion-menu
     side="start"
@@ -8,11 +9,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-title>
-          <img
-            :src="logo"
-            class="navbar-brand-logo"
-          >
-          My Boxing
+          <header-logo>My Boxing</header-logo>
         </ion-title>
       </ion-toolbar>
     </ion-header>
@@ -40,12 +37,11 @@ import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem,
 // import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
-import logo from '@/presentation/assets/app-logo3.png'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import type { RouteRecordRaw } from 'vue-router'
+import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
 
 const authStore = useAuthStore()
-// const router = useRouter()
 const router = useProjectRouter()
 const routes = router.getRoutes()
 

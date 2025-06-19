@@ -52,7 +52,6 @@ document.addEventListener(
   'dblclick',
   function (e) {
     e.preventDefault()
-    console.log(1232133123)
   },
   { passive: false }
 )

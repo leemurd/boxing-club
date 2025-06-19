@@ -1,3 +1,4 @@
+<!--src/presentation/components/views/auth/NotFoundPage.vue-->
 <template>
   <page-default class="not-found">
     <h1>404</h1>

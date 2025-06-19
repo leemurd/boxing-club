@@ -1,5 +1,5 @@
 <template>
-  <page-default header-back>
+  <page-default>
     <div>
       <combination-builder-view
         v-model="combo.punches"
@@ -26,11 +26,6 @@
           :disabled="combo.title?.trim().length === 0 || combo.punches.length === 0"
           @click="saveCombo"
         >{{ isNew ? 'Create' : 'Save' }}</b-button>
-
-        <b-button
-          color="secondary"
-          @click="$router.back()"
-        >Back</b-button>
       </div>
     </div>
   </page-default>
