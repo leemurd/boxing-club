@@ -5,8 +5,9 @@
     menu-id="main-menu"
     content-id="main-content"
     type="overlay"
+    class="app-menu"
   >
-    <ion-header>
+    <ion-header class="ion-no-border">
       <ion-toolbar>
         <ion-title>
           <header-logo>My Boxing</header-logo>
@@ -14,13 +15,18 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-list lines="none">
+      <ion-list lines="full">
         <ion-item
           v-for="r in visibleRoutes"
           :key="r.path"
           :router-link="r.path"
           button
           :detail="false"
+          class="app-menu__item ion-text-nowrap"
+          :class="{
+            'app-menu__item-selected': isCurrentRoute(r),
+          }"
+          :color="isCurrentRoute(r) ? 'light' : ''"
           @click="closeMenu()"
         >
           <ion-label>
@@ -38,12 +44,14 @@ import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem,
 import { computed } from 'vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
-import type { RouteRecordRaw } from 'vue-router'
+import { type RouteRecordRaw, useRoute } from 'vue-router'
 import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
 
 const authStore = useAuthStore()
 const router = useProjectRouter()
+const route = useRoute()
 const routes = router.getRoutes()
+const isCurrentRoute = (r: RouteRecordRaw) => r.path === route.path
 
 const visibleRoutes = computed(() => {
   if (authStore.loading) return []
@@ -63,4 +71,13 @@ function closeMenu() {
   height: 24px;
   margin-right: 8px;
 }
+
+ion-item:not(.app-menu__item-selected)::part(native) {
+  background: var(--ion-background-color);
+  //color: var(--color);
+}
+
+//ion-item.app-menu__item-selected::part(native) {
+  //background: var(--ion-card-background);
+//}
 </style>

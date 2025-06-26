@@ -1,6 +1,6 @@
 <template>
   <b-card class="mb-3">
-    <template #header>
+    <template v-slot:header>
       <div class="d-flex justify-content-between align-items-center">
         <div class="card-title mb-0">Categories</div>
         <b-button
@@ -15,7 +15,7 @@
 
     <template
       v-if="categoryIds.length"
-      #default
+      v-slot
     >
       <div class="d-flex align-items-center justify-content-center">
         <div v-if="categoryIds.length">
