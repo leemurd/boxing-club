@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import { getAuth } from 'firebase/auth'
 import { TYPES } from '@/infrastructure/di/types.ts'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository.ts'
@@ -60,7 +60,7 @@ const toast = useToast()
 
 const user = ref<User | null>(null)
 const loading = ref(true)
-const router = useRouter()
+const router = useProjectRouter()
 
 const userRepo = getUC<IUserRepository>(TYPES.IUserRepository)
 const authStore = useAuthStore()

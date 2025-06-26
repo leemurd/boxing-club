@@ -33,16 +33,15 @@ import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import { ComboCategory } from '@/domain/entities/ComboCategory.ts'
-import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
-import { useRouter } from 'vue-router'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 
 const categoryStore = useCategoryStore()
 const modal = useModalService()
-const router = useRouter()
+const router = useProjectRouter()
 
 onMounted(() => {
   categoryStore.load()

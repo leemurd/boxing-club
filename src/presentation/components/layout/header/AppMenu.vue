@@ -26,7 +26,7 @@
           :class="{
             'app-menu__item-selected': isCurrentRoute(r),
           }"
-          :color="isCurrentRoute(r) ? 'light' : ''"
+          :color="isCurrentRoute(r) ? themeStore.getAccentColor : ''"
           @click="closeMenu()"
         >
           <ion-label>
@@ -40,18 +40,25 @@
 
 <script setup lang="ts">
 import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel } from '@ionic/vue'
-// import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import { type RouteRecordRaw, useRoute } from 'vue-router'
 import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
+import { useThemeStore } from '@/presentation/stores/themeStore.ts'
 
 const authStore = useAuthStore()
 const router = useProjectRouter()
-const route = useRoute()
+const themeStore = useThemeStore()
 const routes = router.getRoutes()
-const isCurrentRoute = (r: RouteRecordRaw) => r.path === route.path
+const route = useRoute()
+
+const isCurrentRoute = (r: RouteRecordRaw): boolean => {
+  const normalize = (p: string) => p.replace(/\/+$/, '')
+  const current = normalize(route.path)
+  const base    = normalize(r.path)
+  return current === base || current.startsWith(base + '/')
+}
 
 const visibleRoutes = computed(() => {
   if (authStore.loading) return []

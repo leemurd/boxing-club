@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { db } from '@/infrastructure/firebase/firebaseConfig'
 import { getUserId } from '@/presentation/utils/getUserId'
@@ -67,9 +67,14 @@ export const useThemeStore = defineStore('theme', () => {
     await setDoc(userDoc, { preferences: { darkTheme: theme } }, { merge: true })
   }
 
+  const getAccentColor = computed(() => (isDarkTheme.value ? 'dark' : 'dark'))
+  const getModeColor = computed(() => (isDarkTheme.value ? 'light' : 'light'))
+
   return {
     isDarkTheme,
     toggleTheme,
-    loadThemeFromFirebase
+    loadThemeFromFirebase,
+    getAccentColor,
+    getModeColor
   }
 })

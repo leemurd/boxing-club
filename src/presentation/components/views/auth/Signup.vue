@@ -102,7 +102,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
@@ -117,7 +117,7 @@ const password = ref('')
 const confirmPassword = ref('')
 const errorMessage = ref('')
 
-const router = useRouter()
+const router = useProjectRouter()
 const authStore = useAuthStore()
 
 async function handleRegister() {
