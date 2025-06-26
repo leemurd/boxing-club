@@ -6,7 +6,7 @@
       <div class="d-flex flex-column w-100 gap-1">
         <b-button
           size="default"
-          color="secondary"
+          color="medium"
           @click="$emit('on-generate')"
         >
           <span class="small">Generate combo</span>
@@ -18,7 +18,7 @@
           :model-value="iterations"
           :items="comboRandomItems"
           size="default"
-          color="secondary"
+          color="medium"
           class="w-100"
           @update:model-value="$emit('update:iterations', $event)"
         >

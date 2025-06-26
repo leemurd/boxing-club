@@ -6,7 +6,7 @@
         <b-button
           color="dark"
           size="small"
-          outline
+          fill="outline"
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(-1)"
         >
@@ -20,7 +20,7 @@
         <b-button
           color="dark"
           size="small"
-          outline
+          fill="outline"
           :disabled="periodType === TimeRange.ALL"
           @click="shiftCursor(1)"
         >

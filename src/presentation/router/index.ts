@@ -1,7 +1,6 @@
 // src/router/index.ts
-import { RouterView, type RouteRecordRaw } from 'vue-router'
+import { type RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from '@ionic/vue-router'
-
 import EnemyCard from '@/presentation/components/views/EnemyCard.vue'
 import Account from '@/presentation/components/views/Account.vue'
 import PunchCounter from '@/presentation/components/views/PunchCounter.vue'
@@ -18,12 +17,12 @@ import { RouterTags } from '@/presentation/router/routerTypes.ts'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: RouterView,
+    component: () => import('@/presentation/components/layout/router/SectionLayout.vue'),
     beforeEnter: requireAuth,
     children: [
       ...progressRoutes,
       ...exerciseRoutes,
-      ...comboRoutes,
+      comboRoutes,
       ...comboCategoryRoutes,
       ...tagRoutes,
       {
@@ -69,4 +68,8 @@ export const router = createRouter({
 
 router.afterEach((to) => {
   document.title = to.meta.name ? `${to.meta.name} | My Boxing` : 'My Boxing'
+
+  //
+  // const active = document.activeElement as HTMLElement
+  // if (active?.blur) active.blur()
 })

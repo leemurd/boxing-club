@@ -1,6 +1,6 @@
 <!-- src/presentation/components/views/exercises/ExerciseEditPage.vue -->
 <template>
-  <page-default>
+  <page-default header-back>
     <div class="">
       <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
 
@@ -85,7 +85,7 @@
               <label class="form-label mb-0">Tags</label>
               <b-button
                 v-if="!isDefault"
-                color="secondary"
+                color="medium"
                 size="small"
                 class="ms-auto"
                 @click="openTagModal"
@@ -123,7 +123,7 @@
             {{ isNew ? 'Create' : 'Save' }}
           </b-button>
           <b-button
-            color="secondary"
+            color="medium"
             type="button"
             class="mb-2 w-100"
             @click="onCancel"

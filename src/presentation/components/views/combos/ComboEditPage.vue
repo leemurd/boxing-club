@@ -1,5 +1,5 @@
 <template>
-  <page-default>
+  <page-default header-back>
     <div>
       <combination-builder-view
         v-model="combo.punches"

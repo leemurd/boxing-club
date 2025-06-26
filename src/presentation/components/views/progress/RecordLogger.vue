@@ -1,14 +1,14 @@
 <!-- src/presentation/components/views/progress/RecordLogger.vue -->
 <template>
-  <page-default>
+  <page-default header-back>
     <div class="exercise-logger">
-      <div class="form-label text-center">Select category</div>
+      <div class="form-label text-center mb-2">Select category</div>
       <horizontal-segment-group
         v-model="selectedCategory"
         :items="categories"
       />
 
-      <div class="form-label text-center mt-3">Select exercise</div>
+      <div class="form-label text-center mt-4 mb-2">Select exercise</div>
 
       <vertical-radio-group
         v-model="selectedExercise"
@@ -43,7 +43,7 @@
               <div class="flex-grow-1">
                 <b-button
                   class="w-100"
-                  color="secondary"
+                  color="medium"
                   @click="openComboSelector"
                 >
                   Select Combo
@@ -81,12 +81,13 @@
         </b-checkbox>
 
         <div class="d-flex gap-2 mb-2 mt-4">
-          <div class="col"><b-button
-            color="secondary"
-            outline
-            class="px-3 w-100"
-            @click="decrement"
-          >-</b-button></div>
+          <div class="col">
+            <b-button
+              color="medium"
+              outline
+              class="px-3 w-100"
+              @click="decrement"
+            >-</b-button></div>
           <div class="col">
             <b-input
               v-model.number="quantity"
@@ -96,12 +97,13 @@
               :min="0"
             />
           </div>
-          <div class="col"><b-button
-            color="secondary"
-            outline
-            class="px-3 w-100"
-            @click="increment"
-          >+</b-button></div>
+          <div class="col">
+            <b-button
+              color="medium"
+              outline
+              class="px-3 w-100"
+              @click="increment"
+            >+</b-button></div>
         </div>
 
         <!-- Action Buttons -->

@@ -80,7 +80,7 @@
 
     <!-- Range input для порога и cooldown -->
     <b-button
-      color="secondary"
+      color="medium"
       class="mt-3 font-sans"
       type="button"
       size="small"

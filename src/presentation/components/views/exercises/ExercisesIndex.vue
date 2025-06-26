@@ -1,14 +1,14 @@
 <template>
   <page-default>
-    <div class="exercises">
-      <div class="form-label text-center">Category</div>
+    <div class="ion-padding-bottom">
+      <div class="form-label text-center mb-2">Category</div>
       <horizontal-segment-group
         v-model="selectedCategory"
         :items="categories"
         class="mb-4 w-100"
       />
 
-      <div class="form-label text-center">
+      <div class="form-label text-center mb-2">
         Exercises
       </div>
 
@@ -33,16 +33,15 @@
           >Remove</b-dropdown-item>
         </template>
       </list-group>
+    </div>
 
-      <b-button
-        color="dark"
-        class="w-100 mt-3"
-        size="default"
-        @click="$router.push('/exercises/new')"
+    <template v-slot:footer>
+      <b-button-block
+        @click="router.push({ name: 'ExerciseCreate' })"
       >
         + New Exercise
-      </b-button>
-    </div>
+      </b-button-block>
+    </template>
   </page-default>
 </template>
 
@@ -50,14 +49,14 @@
 import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
 import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise.ts'
 import { computed, onMounted, ref } from 'vue'
-import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
-import { useRouter } from 'vue-router'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
+import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 
-const router = useRouter()
+const router = useProjectRouter()
 const exStore = useExerciseStore()
 const categories = [ExerciseCategory.PHYSICS, ExerciseCategory.TECHNIQUE, ExerciseCategory.PRACTICE]
 const selectedCategory = ref<string>(ExerciseCategory.PHYSICS)
@@ -65,7 +64,7 @@ const selectedCategory = ref<string>(ExerciseCategory.PHYSICS)
 const filteredExercises = computed<Exercise[]>(() =>
   exStore.exercises.filter((e) => e.category === selectedCategory.value)
 )
-function openExercise(ex: Exercise) {
+const openExercise = (ex: Exercise) => {
   router.push({
     name: 'ExerciseEdit',
     params: { id: ex.id }
@@ -82,9 +81,3 @@ onMounted(async () => {
   await exStore.loadAll()
 })
 </script>
-
-<style lang="scss" scoped>
-.exercises {
-  padding-bottom: 30px;
-}
-</style>

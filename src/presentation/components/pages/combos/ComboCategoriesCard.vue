@@ -5,7 +5,7 @@
         <div class="card-title mb-0">Categories</div>
         <b-button
           color="primary"
-          outline
+          fill="outline"
           class="ms-2"
           size="small"
           @click="$emit('on-edit')"

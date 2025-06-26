@@ -9,7 +9,7 @@ function useProjectRouter() {
   const routerMap: Record<string, any> = {
     canGoBack: router.canGoBack,
     navigate: router.navigate,
-    push: vueRouter.push,
+    push: router.push,
     replace: vueRouter.replace,
     back: vueRouter.back,
     forward: vueRouter.forward,

@@ -1,8 +1,8 @@
-<!-- IonicButton.vue -->
+<!-- src/presentation/components/shared/BButton.vue -->
 <template>
   <ion-button
     :color="color"
-    :fill="outline ? 'outline' : 'solid'"
+    :fill="fill"
     :size="size"
     :type="type"
     :expand="expand"
@@ -27,21 +27,20 @@ const props = withDefaults(
     color?: ButtonColor
     size?: ButtonSize
     fill?: 'clear' | 'outline' | 'solid' | 'default'
-    outline?: boolean
     submit?: boolean
     type?: 'submit' | 'button' | 'reset'
     expand?: 'block' | 'full'
   }>(),
   {
-    color: 'primary',
-    size: 'default',
-    fill: 'default',
+    // color: '',
+    // size: '',
+    // fill: '',
     submit: false,
     type: 'button'
   }
 )
 
 const {
-  color, size, outline, type
+  color, size, type
 } = toRefs(props)
 </script>

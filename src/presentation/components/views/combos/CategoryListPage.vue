@@ -1,15 +1,6 @@
 <template>
-  <page-default>
+  <page-default header-back>
     <div>
-      <div class="d-flex justify-content-between mb-3 align-items-center">
-        <b-button
-          color="dark"
-          @click="openAddCategoryModal"
-        >
-          New category
-        </b-button>
-      </div>
-
       <list-group
         :items="categoryStore.list"
         item-val="name"
@@ -25,6 +16,14 @@
         </template>
       </list-group>
     </div>
+
+    <template v-slot:footer>
+      <b-button-block
+        @click="openAddCategoryModal"
+      >
+        New category
+      </b-button-block>
+    </template>
   </page-default>
 </template>
 
@@ -39,6 +38,7 @@ import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import { useRouter } from 'vue-router'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
 
 const categoryStore = useCategoryStore()
 const modal = useModalService()

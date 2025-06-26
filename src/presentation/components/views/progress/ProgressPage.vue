@@ -14,7 +14,7 @@
           expand="block"
           color="dark"
           class="ion-margin-bottom"
-          @click="$router.push({ name: 'ProgressRecord' })"
+          @click="router.push({ name: 'ProgressRecord' })"
         >New Record</b-button>
         <filter-bar/>
       </ion-card-content>
@@ -87,7 +87,13 @@ import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import { useComboStore } from '@/presentation/stores/comboStore'
 import { useAuthStore } from '@/presentation/stores/authStore'
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonImg } from '@ionic/vue'
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonImg,
+} from '@ionic/vue'
 import FilterBar from '@/presentation/components/pages/progress/FilterBar.vue'
 import ProgressStatsRow from '@/presentation/components/pages/progress/ProgressStatsRow.vue'
 import RecentRecords from '@/presentation/components/pages/progress/RecentRecords.vue'
@@ -95,12 +101,14 @@ import EmptyState from '@/presentation/components/shared/EmptyState.vue'
 import avatarImg from '@/presentation/assets/avatar-colored.svg'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 
 const progress   = useProgressStore()
 const exStore    = useExerciseStore()
 const tagStore   = useTagStore()
 const comboStore = useComboStore()
 const authStore  = useAuthStore()
+const router = useProjectRouter()
 
 onMounted(async () => {
   await tagStore.load()

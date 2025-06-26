@@ -1,5 +1,5 @@
 <template>
-  <page-default>
+  <page-default header-back>
     <h1 class="mb-4">{{ isNew ? 'Новый тег' : 'Редактировать тег' }}</h1>
 
     <div class="mb-3">
@@ -11,17 +11,14 @@
       >
     </div>
 
-    <button
-      class="btn btn-success me-2"
-      :disabled="!tag.name.trim()"
-      @click="saveTag"
-    >
-      {{ isNew ? 'Создать' : 'Сохранить' }}
-    </button>
-    <button
-      class="btn btn-secondary"
-      @click="goBack"
-    >Отмена</button>
+    <template v-slot:footer>
+      <b-button-block
+        :disabled="!tag.name.trim()"
+        @click="saveTag"
+      >
+        {{ isNew ? 'Создать' : 'Сохранить' }}
+      </b-button-block>
+    </template>
   </page-default>
 </template>
 
@@ -31,6 +28,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import type { Tag } from '@/domain/entities/Tag'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -7,7 +7,6 @@
       <ion-router-outlet/>
       <modal-container />
     </ion-content>
-    <!--    <ion-router-outlet id="main-content" />-->
   </ion-app>
 </template>
 

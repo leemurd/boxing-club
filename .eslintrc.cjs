@@ -36,6 +36,11 @@ module.exports = {
         ignores: []
       }
     ],
+    "vue/v-slot-style": ["warning", {
+      "atComponent": "longform" | "v-slot",
+      "default": "longform" | "v-slot",
+      "named": "longform",
+    }],
     'vue/no-deprecated-slot-attribute': 'off',
     'vue/multi-word-component-names': 'off',
     // 'vue/html-closing-bracket-newline': 'always',

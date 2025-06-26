@@ -6,14 +6,14 @@
         slot="start"
       >
         <slot name="start">
-          <ion-menu-button
-            v-if="$route.name === 'ProgressPage'"
-            :auto-hide="false"
-          />
           <ion-back-button
-            v-else
+            v-if="headerBack"
             default-href="/"
             @click="router.canGoBack ? router.back() : router.navigate({ name: 'Progress' })"
+          />
+          <ion-menu-button
+            v-else
+            :auto-hide="false"
           />
         </slot>
       </ion-buttons>
@@ -35,6 +35,10 @@
 import { IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonBackButton } from '@ionic/vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
+
+defineProps<{
+  headerBack?: boolean
+}>()
 
 const router = useProjectRouter()
 </script>

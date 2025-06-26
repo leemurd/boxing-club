@@ -1,5 +1,5 @@
 <template>
-  <page-default>
+  <page-default header-back>
     <div>
       <div class="mb-3 text-center">
         <label class="form-label mb-2">Title (required)</label>
@@ -18,8 +18,8 @@
             <list-group
               v-if="combos.length"
               :items="combos"
-              item-val="title"
-              item-id="id"
+              option-label="title"
+              option-id="id"
               item-link
               no-border
               :primary-callback="openCombo"
@@ -36,9 +36,8 @@
           <template #footer>
             <div class="d-flex flex-column">
               <b-button
-                color="secondary"
-                size="small"
-                class="m-auto"
+                color="medium"
+                size="default"
                 @click="createCombo"
               >New Combo</b-button>
             </div>

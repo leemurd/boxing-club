@@ -25,7 +25,7 @@
 
       <!-- Метка элемента -->
       <ion-label :class="{ 'ms-2': $slots.icon }">
-        {{ item[optionValue] ?? item }}
+        {{ item[optionLabel] ?? item }}
       </ion-label>
 
       <!-- Кнопка действий -->
@@ -67,13 +67,15 @@ import BDropdown from '@/presentation/components/shared/BDropdown.vue'
 
 const props = withDefaults(defineProps<{
   items: any[]
+  optionLabel?: string
   optionValue?: string
   itemLink?: boolean
   numbered?: boolean
   noBorder?: boolean
   primaryCallback?: (val: any) => void
 }>(), {
-  optionValue: 'name',
+  optionLabel: 'name',
+  optionValue: 'id',
   itemLink: false,
   numbered: false,
   noBorder: false

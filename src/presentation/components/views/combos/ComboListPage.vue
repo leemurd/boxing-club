@@ -1,23 +1,15 @@
 <!-- src/presentation/pages/ComboListPage.vue -->
 <template>
   <page-default>
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <template v-slot:header-end>
       <b-button
-        color="dark"
-        @click="$router.push({ name: 'ComboNew' })"
-      >
-        New combo
-      </b-button>
-
-      <b-button
-        color="dark"
-        @click="$router.push({name: 'ComboCategoriesIndex'})"
-      >Open categories</b-button>
-    </div>
+        @click="router.push({name: 'ComboCategoriesIndex'})"
+      >Categories</b-button>
+    </template>
 
     <list-group
       :items="comboStore.combos"
-      item-val="title"
+      option-label="title"
       :primary-callback="onEditCombo"
       item-link
     >
@@ -26,6 +18,14 @@
         <b-dropdown-item @click="remove(item.id)">Remove</b-dropdown-item>
       </template>
     </list-group>
+
+    <template v-slot:footer>
+      <b-button-block
+        @click="router.push({ name: 'ComboNew' })"
+      >
+        New combo
+      </b-button-block>
+    </template>
   </page-default>
 </template>
 
@@ -33,16 +33,18 @@
 import { useComboStore } from '@/presentation/stores/comboStore.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
-import { useRouter } from 'vue-router'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import { useModalService } from '@/presentation/composition/useModalService.ts'
 import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
+import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
 
 const comboStore = useComboStore()
-const router = useRouter()
 const { openModalByKey } = useModalService()
+
+const router = useProjectRouter()
 
 const onEditCombo = (combo: Combination) => {
   router.push({
