@@ -1,3 +1,4 @@
+// src/presentation/router/user/progress.ts
 import { RouterTags } from '@/presentation/router/routerTypes.ts'
 import type { RouteRecordRaw } from 'vue-router'
 import ProgressPage from '@/presentation/components/views/progress/ProgressPage.vue'
