@@ -26,7 +26,6 @@
           :class="{
             'app-menu__item-selected': isCurrentRoute(r),
           }"
-          :color="isCurrentRoute(r) ? themeStore.getAccentColor : ''"
           @click="closeMenu()"
         >
           <ion-label>

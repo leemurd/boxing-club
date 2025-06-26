@@ -4,14 +4,17 @@
       <div v-if="loading">Загрузка...</div>
       <div v-else-if="user">
         <b-card>
-          <template #header>
+          <template v-slot:header>
             <ion-card-title>{{ `${user.firstName} ${user.lastName}` }}</ion-card-title>
             <ion-card-subtitle>{{ user.email }}</ion-card-subtitle>
           </template>
-          <template #default>
-            <theme-toggle/>
+          <template v-slot>
+            <ion-item lines="none">
+              <theme-toggle/>
+            </ion-item>
+
           </template>
-          <template #footer>
+          <template v-slot:footer>
             <b-button
               color="danger"
               class="w-100 ion-padding"
@@ -44,7 +47,7 @@ import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import { getUC } from '@/infrastructure/di/resolver.ts'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
-import { IonCardTitle, IonCardSubtitle } from '@ionic/vue'
+import { IonCardTitle, IonCardSubtitle, IonItem } from '@ionic/vue'
 
 const { openModalByKey } = useModalService()
 
