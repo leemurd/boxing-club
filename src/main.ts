@@ -3,7 +3,6 @@ import '@/presentation/styles/main.scss'
 import { IonicVue } from '@ionic/vue'
 import { Capacitor } from '@capacitor/core'
 import { Keyboard } from '@capacitor/keyboard'
-// import 'bootstrap/dist/js/bootstrap.min.js'
 import Toast, { type PluginOptions, POSITION } from 'vue-toastification'
 
 import { createApp } from 'vue'

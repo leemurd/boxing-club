@@ -2,18 +2,17 @@
 <template>
   <page-default header-back>
     <div class="exercise-logger">
-      <div class="form-label text-center mb-2">Select category</div>
       <horizontal-segment-group
         v-model="selectedCategory"
         :items="categories"
+        label="Select category"
       />
-
-      <div class="form-label text-center mt-4 mb-2">Select exercise</div>
 
       <vertical-radio-group
         v-model="selectedExercise"
         :items="filteredExercises"
         option-label="name"
+        label="Select exercise"
         @update:model-value="selectExercise"
       />
 
@@ -27,7 +26,7 @@
           v-if="selectedExercise.canHaveCombo"
           class="mb-3"
         >
-          <template #default>
+          <template v-slot>
             <div class="d-flex justify-content-center align-items-center gap-2">
               Use combo
               <span
@@ -38,7 +37,7 @@
               </span>
             </div>
           </template>
-          <template #footer>
+          <template v-slot:footer>
             <div class="d-flex gap-2">
               <div class="flex-grow-1">
                 <b-button

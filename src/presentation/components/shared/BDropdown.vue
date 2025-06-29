@@ -19,6 +19,7 @@
         slot="end"
         :icon="isOpen ? chevronUp : chevronDown"
       />
+
     </b-button>
 
     <ion-popover
@@ -29,30 +30,7 @@
       @ion-popover-did-dismiss="onClose"
     >
       <ion-content>
-        <!--        class="ion-padding"-->
-        <slot name="menu">
-<!--          <template v-if="items && items.length">-->
-<!--            <ion-list>-->
-<!--              <ion-item-->
-<!--                v-for="(item, i) in items"-->
-<!--                :key="i"-->
-<!--                button-->
-<!--                :detail="false"-->
-<!--                :class="{ active: isActive(item) }"-->
-<!--                @click.prevent="select(item)"-->
-<!--              >-->
-<!--                <slot-->
-<!--                  name="item"-->
-<!--                  :item="item"-->
-<!--                  :is-active="isActive(item)"-->
-<!--                  :select="() => select(item)"-->
-<!--                >-->
-<!--                  {{ item.label }}-->
-<!--                </slot>-->
-<!--              </ion-item>-->
-<!--            </ion-list>-->
-<!--          </template>-->
-        </slot>
+        <slot name="menu"/>
       </ion-content>
     </ion-popover>
   </div>
@@ -60,14 +38,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { IonButton, IonPopover, IonContent, IonList, IonItem, IonIcon } from '@ionic/vue'
+import { IonPopover, IonContent, IonIcon } from '@ionic/vue'
 import { chevronDownOutline, chevronUpOutline } from 'ionicons/icons'
-// import type { ToggleCustomEvent } from '@ionic/vue' // err
 import type { ButtonColor } from '@/presentation/components/shared/types'
 import type { ButtonSize } from '@/presentation/components/shared/types'
 import type { DropdownItem } from '@/presentation/constants/combo/data.ts'
 import { exclusiveName } from '@/presentation/utils/exclusiveName.ts'
-import BButton from '@/presentation/components/shared/BButton.vue' // err
+import BButton from '@/presentation/components/shared/BButton.vue'
 
 // Props
 const props = withDefaults(defineProps<{
@@ -106,14 +83,6 @@ const modelValueLabel = computed(() => {
 // Methods
 const getName = exclusiveName()
 
-function isActive(item: any) {
-  return props.modelValue === item.value
-}
-
-function select(item: any) {
-  emit('update:model-value', item.value)
-}
-
 function onOpen() {
   isOpen.value = true
 }
@@ -124,28 +93,18 @@ function onClose() {
 </script>
 
 <style lang="scss" scoped>
-.dropdown {
-  display: inline-block;
-  &-toggle {
-    &--is-action-btn {
-      &:after {
-        display: none;
-      }
-    }
-  }
+ion-icon {
+  color: var(--ion-text-color);
 }
-</style>
 
-<style scoped lang="scss">
-/* Дополнительный класс для “action”-кнопки */
 .action-btn {
   --padding-end: 0.5rem;
   --padding-start: 0.5rem;
+  color: var(--ion-text-color);
 }
 
 /* Стили активного пункта */
 ion-item.active {
   --background: var(--ion-color-primary-tint);
-  color: var(--ion-color-primary-contrast);
 }
 </style>

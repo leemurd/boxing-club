@@ -6,18 +6,22 @@
     :placeholder="placeholder"
     :required="required"
     :disabled="disabled"
+    :label="label"
+    :label-placement="labelPlacement"
     @ion-input="onIonInput"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { IonInput } from '@ionic/vue'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   modelValue: string | number
   type?: 'text' | 'password' | 'email' | 'number'
-  placeholder?: string
+  placeholder?: string,
+  label?: string,
+  labelPlacement?: 'fixed' | 'stacked' | 'floating' | 'start' | 'end' | undefined
   required?: boolean
   autofocus?: boolean
   disabled?: boolean
@@ -26,7 +30,8 @@ const props = withDefaults(defineProps<{
   placeholder: '',
   required: false,
   autofocus: false,
-  disabled: false
+  disabled: false,
+  labelPlacement: 'start'
 })
 
 const emit = defineEmits<{

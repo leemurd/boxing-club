@@ -4,7 +4,6 @@
     :inset="false"
     lines="full"
     :class="{
-      'numbered-list': numbered,
       'no-border': noBorder
     }"
   >
@@ -41,13 +40,13 @@
           :is-icon-visible="false"
           @click.prevent.stop
         >
-          <template #btn-text>
+          <template v-slot:btn-text>
             <ion-icon
               slot="icon-only"
               :icon="ellipsisVertical"
             />
           </template>
-          <template #menu>
+          <template v-slot:menu>
             <slot
               name="actions"
               :item="item"
@@ -70,14 +69,12 @@ const props = withDefaults(defineProps<{
   optionLabel?: string
   optionValue?: string
   itemLink?: boolean
-  numbered?: boolean
   noBorder?: boolean
   primaryCallback?: (val: any) => void
 }>(), {
   optionLabel: 'name',
   optionValue: 'id',
   itemLink: false,
-  numbered: false,
   noBorder: false
 })
 
@@ -98,12 +95,6 @@ function primaryAction(item: any) {
 </script>
 
 <style scoped lang="scss">
-.numbered-list ion-item::before {
-  content: counter(item) '. ';
-  counter-increment: item;
-  margin-right: 8px;
-}
-
 .actionable {
   cursor: pointer;
 }
@@ -114,5 +105,9 @@ function primaryAction(item: any) {
 
 .no-border {
   --ion-item-border-style: none;
+}
+
+ion-icon {
+  color: var(--ion-text-color);
 }
 </style>

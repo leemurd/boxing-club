@@ -2,69 +2,67 @@
 <template>
   <page-default>
     <div class="enemy-card">
-
       <div class="enemy-card__item">
-        <div class="form-label text-center">Кто выше?</div>
         <horizontal-segment-group
           v-model="heightRelation"
           :items="sizeKeys"
+          label="Кто выше?"
         >
-          <template #default="{ item }">{{ sizeMap[item as BodyRelation] }}</template>
+          <template v-slot="{ item }">{{ sizeMap[item as BodyRelation] }}</template>
         </horizontal-segment-group>
       </div>
       <div class="enemy-card__item">
-        <div class="form-label text-center">Кто тяжелее?</div>
         <horizontal-segment-group
           v-model="weightRelation"
           :items="sizeKeys"
+          label="Кто тяжелее?"
         >
-          <template #default="{ item }">{{ sizeMap[item as BodyRelation] }}</template>
+          <template v-slot="{ item }">{{ sizeMap[item as BodyRelation] }}</template>
         </horizontal-segment-group>
       </div>
 
 
       <div class="enemy-card__item">
-        <div class="form-label text-center">Stance (Я)</div>
         <horizontal-segment-group
           v-model="myHandedness"
           :items="stanceKeys"
+          label="Stance (Я)"
         >
-          <template #default="{ item }">{{ stanceMap[item as StanceSide] }}</template>
+          <template v-slot="{ item }">{{ stanceMap[item as StanceSide] }}</template>
         </horizontal-segment-group>
       </div>
 
       <div class="enemy-card__item">
-        <div class="form-label text-center">Stance (Противник)</div>
         <horizontal-segment-group
           v-model="oppHandedness"
           :items="stanceKeys"
+          label="Stance (Противник)"
         >
-          <template #default="{ item }">{{ stanceMap[item as StanceSide] }}</template>
+          <template v-slot="{ item }">{{ stanceMap[item as StanceSide] }}</template>
         </horizontal-segment-group>
       </div>
 
       <div class="enemy-card__item">
-        <div class="form-label text-center">Стиль (Я)</div>
         <vertical-radio-group
           v-model="myStyle"
           :items="boxingStyleKeys"
+          label="Стиль (Я)"
         >
-          <template #default="{ item }">{{ boxingStyleMap[item as BoxerStyle] }}</template>
+          <template v-slot="{ item }">{{ boxingStyleMap[item as BoxerStyle] }}</template>
         </vertical-radio-group>
       </div>
 
       <div class="enemy-card__item">
-        <div class="form-label text-center">Руки (Я)</div>
         <vertical-radio-group
           v-model="myGuard"
           :items="boxingGuardKeys"
+          label="Руки (Я)"
         >
-          <template #default="{ item }">{{ boxingGuardMap[item as BoxerGuard] }}</template>
+          <template v-slot="{ item }">{{ boxingGuardMap[item as BoxerGuard] }}</template>
         </vertical-radio-group>
       </div>
 
       <div class="enemy-card__item">
-        <div class="form-label text-center">Стиль (Противник)</div>
         <vertical-radio-group
           v-model="oppStyle"
           color="light"
@@ -72,13 +70,13 @@
           size="small"
           class="w-100"
           :items="boxingStyleKeys"
+          label="Стиль (Противник)"
         >
-          <template #default="{ item }">{{ boxingStyleMap[item as BoxerStyle] }}</template>
+          <template v-slot="{ item }">{{ boxingStyleMap[item as BoxerStyle] }}</template>
         </vertical-radio-group>
       </div>
 
       <div class="enemy-card__item">
-        <div class="form-label text-center">Руки (Противник)</div>
         <vertical-radio-group
           v-model="oppGuard"
           color="light"
@@ -86,19 +84,11 @@
           size="small"
           class="w-100"
           :items="boxingGuardKeys"
+          label="Руки (Противник)"
         >
-          <template #default="{ item }">{{ boxingGuardMap[item as BoxerGuard] }}</template>
+          <template v-slot="{ item }">{{ boxingGuardMap[item as BoxerGuard] }}</template>
         </vertical-radio-group>
       </div>
-
-      <b-button
-        color="primary"
-        class="w-100"
-        size="large"
-        @click="calculateStrategy"
-      >
-        Get strategy
-      </b-button>
 
       <ul v-if="strategyResult.length">
         <li
@@ -108,6 +98,15 @@
           {{ item }}
         </li>
       </ul>
+
+      <b-button
+        color="primary"
+        class="w-100"
+        size="default"
+        @click="calculateStrategy"
+      >
+        Get strategy
+      </b-button>
     </div>
   </page-default>
 </template>
@@ -184,7 +183,6 @@ function calculateStrategy() {
 .enemy-card {
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
-  gap: 30px;
+  gap: 20px;
 }
 </style>

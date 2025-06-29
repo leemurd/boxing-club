@@ -2,16 +2,16 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  @include slabFont;
-}
+//h1, h2, h3, h4, h5, h6 {
+//  @include slabFont;
+//}
 
 h1 {
   font-size: 18px;
 }
-.font-slab {
-  @include slabFont;
-}
+//.font-slab {
+//  @include slabFont;
+//}
 
 .font-sans {
   //font-family: var(--bs-body-font-family)!important;

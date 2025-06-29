@@ -4,83 +4,92 @@
     <div class="">
       <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
 
-      <div>
-        <!-- Name -->
-        <div class="mb-3">
-          <label class="form-label">Name</label>
+      <ion-list lines="full">
+        <ion-item>
           <b-input
             v-model="form.name"
             :loading="isLoading"
             type="text"
-            placeholder="Exercise name"
+            label="Label"
             required
             :disabled="isDefault"
           />
-        </div>
-
-        <!-- Category -->
-        <div class="mb-3">
-          <label class="form-label">Category</label>
+        </ion-item>
+        <ion-item>
           <b-select
             v-model="form.category"
             :items="categories"
             :disabled="isDefault"
+            label="Category"
           />
-        </div>
-
-        <!-- Measurement Unit -->
-        <div class="mb-3">
-          <label class="form-label">Measurement Unit</label>
+        </ion-item>
+        <ion-item>
           <b-select
             v-model="form.measurement"
             :items="['repetitions', 'seconds']"
             :disabled="isDefault"
+            label="Measurement Unit"
           />
-        </div>
+        </ion-item>
+      </ion-list>
 
-        <!-- Flags -->
-        <div class="d-flex flex-column gap-2 mb-4">
+      <ion-list
+        class="ion-margin-top"
+        lines="none"
+      >
+        <ion-item>
           <b-checkbox
             v-model="form.canBeWeighted"
             :disabled="isDefault"
           >
             Can be weighted
           </b-checkbox>
+        </ion-item>
+        <ion-item>
           <b-checkbox
             v-model="form.alwaysWeighted"
             :disabled="isDefault"
           >
             Is always weighted
           </b-checkbox>
+        </ion-item>
+        <ion-item>
           <b-checkbox
             v-model="form.canBeAccelerated"
             :disabled="isDefault"
           >
             Can be accelerated
           </b-checkbox>
+        </ion-item>
+        <ion-item>
           <b-checkbox
             v-model="form.alwaysAccelerated"
             :disabled="isDefault"
           >
             Is always accelerated
           </b-checkbox>
+        </ion-item>
+        <ion-item>
           <b-checkbox
             v-model="form.canHaveCombo"
             :disabled="isDefault"
           >
             Can be with combo
           </b-checkbox>
+        </ion-item>
+        <ion-item>
           <b-checkbox
             v-model="form.isFavorite"
           >
             Favorite
           </b-checkbox>
-        </div>
+        </ion-item>
+      </ion-list>
 
-
+      <div>
         <!-- Tags -->
-        <b-card class="mb-4">
-          <template #header>
+        <b-card class="mb-4 ion-no-margin ion-margin-top">
+          <template v-slot:header>
             <div class="d-flex justify-content-between align-items-center">
               <label class="form-label mb-0">Tags</label>
               <b-button
@@ -97,16 +106,19 @@
 
           <template
             v-if="form.tagIds.length > 0"
-            #default
+            v-slot
           >
             <div class="card-text">
-              <b-badge
-                v-for="tagId in form.tagIds"
-                :key="tagId"
-                :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'secondary' : 'primary'"
-              >
-                {{ tagStore.list.find(t => t.id === tagId)?.name }}
-              </b-badge>
+              <div class="d-flex gap-1 flex-wrap">
+                <b-badge
+                  v-for="tagId in form.tagIds"
+                  :key="tagId"
+                  :color="tagStore.list.find(t => t.id === tagId)?.isAutomatic ? 'medium' : 'primary'"
+                >
+                  {{ tagStore.list.find(t => t.id === tagId)?.name }}
+                </b-badge>
+              </div>
+
             </div>
           </template>
         </b-card>
@@ -122,19 +134,13 @@
           >
             {{ isNew ? 'Create' : 'Save' }}
           </b-button>
-          <b-button
-            color="medium"
-            type="button"
-            class="mb-2 w-100"
-            @click="onCancel"
-          >
-            Go back
-          </b-button>
+
           <b-button
             v-if="!isDefault && !isNew"
             color="danger"
-            class="w-100 mt-4"
+            class="w-100 mt-2"
             type="button"
+            fill="outline"
             @click="onRemove"
           >
             Remove
@@ -163,6 +169,7 @@ import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
 import BBadge from '@/presentation/components/shared/BBadge.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import { IonItem, IonList } from '@ionic/vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -199,6 +206,7 @@ onUserLoaded(async () => {
     await exStore.loadById(id.value!)
     const {current} = exStore
     if (current) {
+      console.log(current)
       Object.assign(form.value, current)
     }
   } else {
@@ -226,11 +234,7 @@ async function onSave() {
   } else {
     await exStore.updateExercise(form.value)
   }
-  await router.push({ name: 'Exercises' })
-}
-
-function onCancel() {
-  router.back()
+  await router.push({ name: 'ExercisesIndex' })
 }
 
 const onRemove = async () => {

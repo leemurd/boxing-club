@@ -15,7 +15,6 @@ import { db } from '@/infrastructure/firebase/firebaseConfig'
 
 @injectable()
 export class CategoryRepositoryImpl implements ICategoryRepository {
-  // путь: users/{userId}/categories
   private col(userId: string) {
     return collection(db, 'users', userId, 'categories')
   }

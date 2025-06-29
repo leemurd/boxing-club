@@ -5,7 +5,7 @@
       <horizontal-segment-group
         v-model="selectedCategory"
         :items="categories"
-        class="mb-4 w-100"
+        class="mb-4"
       />
 
       <div class="form-label text-center mb-2">
@@ -16,14 +16,13 @@
         :items="filteredExercises"
         item-id="id"
         item-val="name"
-        class="w-100"
         item-link
         :primary-callback="openExercise"
       >
-        <template #icon>
+        <template v-slot:icon>
           <i class="bi bi-lightning-charge"/>
         </template>
-        <template #actions="{ item }">
+        <template v-slot:actions="{ item }">
           <b-dropdown-item
             @click="openExercise(item)"
           >Open</b-dropdown-item>

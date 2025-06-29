@@ -1,4 +1,4 @@
-<!-- IonicBadge.vue -->
+<!-- src/presentation/components/shared/BBadge.vue -->
 <template>
   <ion-badge
     :color="color"
@@ -12,21 +12,19 @@
 import { IonBadge } from '@ionic/vue'
 import type { ButtonColor } from '@/presentation/components/shared/types'
 
-// Props definition
-const props = withDefaults(
+withDefaults(
   defineProps<{
     color?: ButtonColor
     rounded?: boolean
   }>(),
   {
-    color: 'secondary',
+    color: 'medium',
     rounded: false
   }
 )
 </script>
 
-<style scoped>
-/* Optional custom styling */
+<style scoped lang="scss">
 .badge-pill {
   border-radius: 10px;
 }

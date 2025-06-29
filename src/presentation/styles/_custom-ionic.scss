@@ -1,4 +1,4 @@
-//// стили Ionic
+// src/presentation/styles/_custom-ionic.scss
 @import '@ionic/vue/css/core.css';
 @import '@ionic/vue/css/normalize.css';
 @import '@ionic/vue/css/structure.css';
@@ -11,4 +11,40 @@
 @import '@ionic/vue/css/flex-utils.css';
 @import '@ionic/vue/css/display.css';
 @import '@ionic/vue/css/palettes/dark.class.css';
+
+:root {
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+  --vh: 1vh;
+  --ion-item-border-color: var(--ion-background-color-step-200);
+}
+[dark] {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+}
+
+:root.ios {
+  --ion-background-color: var(--ion-background-color-step-50, #f2f2f6);
+  --ion-toolbar-background: var(--ion-background-color);
+  --ion-item-background: #fff;
+}
+:root.md {
+  --ion-background-color: var(--ion-background-color-step-100, #f9f9f9);
+  --ion-toolbar-background: var(--ion-background-color);
+  --ion-item-background: #fff;
+}
+.ion-palette-dark.ios,
+.ion-palette-dark.md {
+  --ion-item-background: #1c1c1d;
+}
+
+// colors
+:root {
+  --ion-color-primary: #0d6efd;
+  --ion-color-primary-rgb: 0, 102, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0f52c5;
+  --ion-color-primary-tint: #3581ff;
+}
 

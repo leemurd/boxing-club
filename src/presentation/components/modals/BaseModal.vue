@@ -77,7 +77,7 @@ function handleApply() {
   align-items: center;
 
   .modal-title {
-    color: var(--bs-body-color);
+    color: var(--ion-text-color);
   }
 }
 .close-btn {
@@ -89,7 +89,7 @@ function handleApply() {
 .modal-body {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  color: var(--bs-body-color);
+  color: var(--ion-text-color);
 }
 .modal-footer {
   display: flex;

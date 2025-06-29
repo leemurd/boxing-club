@@ -1,24 +1,36 @@
 <!-- src/presentation/components/shared/VerticalRadioGroup.vue -->
 <template>
-  <ion-radio-group v-model="internalValue">
-    <ion-list lines="none">
-      <ion-item
-        v-for="option in items"
-        :key="getOptionValue(option)"
-        button
-        :detail="false"
-        @click="internalValue = getOptionValue(option)"
+  <ion-list>
+    <ion-list-header v-if="label || $slots['label']">
+      <ion-label
+        class="text-center"
+        position="stacked"
       >
-        <ion-radio
-          slot="start"
-          :value="getOptionValue(option)"
-        />
-        <ion-label>
-          <slot :item="option">{{ getOptionLabel(option) }}</slot>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-radio-group>
+        <h2>
+          <slot name="label">{{ label }}</slot>
+        </h2>
+      </ion-label>
+    </ion-list-header>
+    <ion-radio-group v-model="internalValue">
+      <ion-list lines="none">
+        <ion-item
+          v-for="option in items"
+          :key="getOptionValue(option)"
+          button
+          :detail="false"
+          @click="internalValue = getOptionValue(option)"
+        >
+          <ion-radio
+            slot="start"
+            :value="getOptionValue(option)"
+          />
+          <ion-label>
+            <slot :item="option">{{ getOptionLabel(option) }}</slot>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-radio-group>
+  </ion-list>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +38,7 @@ import { ref, watch } from 'vue'
 import {
   IonRadioGroup,
   IonList,
+  IonListHeader,
   IonItem,
   IonRadio,
   IonLabel
@@ -39,6 +52,7 @@ const props = withDefaults(
     items: Option[]
     optionValue?: string
     optionLabel?: string
+    label?: string
   }>(),
   {
     optionValue: undefined,
@@ -74,3 +88,9 @@ function getOptionLabel(item: Option) {
   return props.optionLabel ? item[props.optionLabel] : item
 }
 </script>
+
+<style lang="scss" scoped>
+ion-list {
+  background-color: transparent;
+}
+</style>
