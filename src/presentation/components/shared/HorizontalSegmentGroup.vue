@@ -1,9 +1,8 @@
 <!-- src/presentation/components/shared/HorizontalSegmentGroup.vue -->
 <template>
   <ion-list lines="none">
-    <ion-list-header>
+    <ion-list-header v-if="label || $slots['label']">
       <ion-label
-        v-if="label || $slots['label']"
         position="stacked"
         class="text-center"
       >

@@ -20,3 +20,7 @@ html, body {
 html, body, #app, ion-app, ion-content {
   height: calc(var(--vh) * 100) !important;
 }
+
+.w-100 {
+  width: 100% !important;
+}

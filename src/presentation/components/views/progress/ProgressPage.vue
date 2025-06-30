@@ -16,7 +16,7 @@
           class="ion-margin-bottom"
           @click="router.push({ name: 'ProgressRecord' })"
         >New Record</b-button>
-        <filter-bar/>
+        <filter-bar />
       </ion-card-content>
     </ion-card>
 
@@ -38,7 +38,7 @@
       :items="byExercise"
       class="ion-margin-bottom"
     >
-      <template #name="{ name }">{{ getExerciseName(name) }}:</template>
+      <template v-slot:name="{ name }">{{ getExerciseName(name) }}:</template>
     </progress-stats-row>
     <progress-stats-row
       v-if="byCombo.length"
@@ -46,7 +46,7 @@
       :items="byCombo"
       class="ion-margin-bottom"
     >
-      <template #name="{ name }">{{ getComboTitle(name) }}:</template>
+      <template v-slot:name="{ name }">{{ getComboTitle(name) }}:</template>
     </progress-stats-row>
     <progress-stats-row
       v-if="topTags.length"
@@ -54,7 +54,7 @@
       :items="topTags"
       class="ion-margin-bottom"
     >
-      <template #name="{ name }">{{ getTagName(name) }}:</template>
+      <template v-slot:name="{ name }">{{ getTagName(name) }}:</template>
     </progress-stats-row>
 
     <recent-records
@@ -66,7 +66,7 @@
       title="Empty state"
       description="No records found for this period"
     >
-      <template #footer>
+      <template v-slot:footer>
         <b-button
           expand="block"
           color="dark"
@@ -92,7 +92,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonImg,
+  IonImg
 } from '@ionic/vue'
 import FilterBar from '@/presentation/components/pages/progress/FilterBar.vue'
 import ProgressStatsRow from '@/presentation/components/pages/progress/ProgressStatsRow.vue'

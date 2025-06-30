@@ -34,6 +34,7 @@
         :items="dateRangeItems"
         option-value="value"
         option-label="label"
+        class="w-100"
         @update:model-value="onPeriodChange"
       />
     </ion-row>
