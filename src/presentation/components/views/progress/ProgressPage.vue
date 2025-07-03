@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onUpdated } from 'vue'
 import { useProgressStore } from '@/presentation/stores/progressStore'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { useTagStore } from '@/presentation/stores/tagStore'
@@ -113,8 +113,12 @@ const router = useProjectRouter()
 onMounted(async () => {
   await tagStore.load()
   await exStore.loadAll()
-  await progress.loadAll()
   await comboStore.load()
+  await progress.loadAll()
+})
+
+onUpdated(async () => {
+  await progress.loadAll()
 })
 
 const fullname = computed(() => `${authStore.currentUser?.firstName} ${authStore.currentUser?.lastName}`)
