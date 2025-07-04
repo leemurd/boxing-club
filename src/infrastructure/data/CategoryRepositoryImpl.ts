@@ -1,3 +1,4 @@
+// src/infrastructure/data/CategoryRepositoryImpl.ts
 import {
   collection,
   getDocs,

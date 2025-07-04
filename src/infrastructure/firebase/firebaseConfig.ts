@@ -1,3 +1,4 @@
+// src/infrastructure/firebase/firebaseConfig.ts
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getFirestore } from 'firebase/firestore'
@@ -5,13 +6,13 @@ import { getAuth } from 'firebase/auth'
 // При необходимости импортируйте другие сервисы (firestore, auth, storage и т.д.)
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAiu8kdIgxf1INelHF62VIuVJTaFwzIIQM',
-  authDomain: 'boxing-club-e1de8.firebaseapp.com',
-  projectId: 'boxing-club-e1de8',
-  storageBucket: 'boxing-club-e1de8.firebasestorage.app',
-  messagingSenderId: '500885425374',
-  appId: '1:500885425374:web:16099d38364ccd1974864f',
-  measurementId: 'G-FP306CTB77'
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
 
 const firebaseApp = initializeApp(firebaseConfig)
