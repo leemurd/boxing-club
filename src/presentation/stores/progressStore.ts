@@ -34,7 +34,6 @@ export const useProgressStore = defineStore('progress', () => {
   const byExercise = ref<ProgressEntity<string>[]>([])
   const byCombo = ref<ProgressEntity<string>[]>([])
 
-  // Основная загрузка + пересчёт всех агрегатов
   async function loadAll() {
     const { from, to } = computeDateRange(periodType.value, cursor.value)
     const userId = await getUserId()
@@ -74,7 +73,6 @@ export const useProgressStore = defineStore('progress', () => {
     }
   }
 
-  // После логирования или удаления записи — просто вызвать loadAll()
   async function deleteRecord(id: string) {
     if (!id) return
     const userId = await getUserId()
@@ -83,7 +81,6 @@ export const useProgressStore = defineStore('progress', () => {
     await loadAll()
   }
 
-  // Перезагрузим при смене фильтра
   watch([periodType, cursor], loadAll, { immediate: true })
 
   return {

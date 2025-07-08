@@ -54,7 +54,6 @@ export const useComboStore = defineStore('combo', () => {
   const getCombinationById = async (comboId: string): Promise<Combination | null> => {
     const userId = await getUserId()
     return await getUC<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase).execute(userId, comboId)
-    // return combos.value.find((item) => item.id == comboId)
   }
 
   return {

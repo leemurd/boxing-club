@@ -22,20 +22,17 @@ export const useCategoryStore = defineStore('category', () => {
   const list = ref<ComboCategory[]>([])
   const comboStore = useComboStore()
 
-  // Получаем экземпляры use-case’ов из DI-контейнера
   const getCategoriesUC = getUC<GetCategoriesUseCase>(TYPES.GetCategoriesUseCase)
   const createCategoryUC = getUC<CreateCategoryUseCase>(TYPES.CreateCategoryUseCase)
   const updateCategoryUC = getUC<UpdateCategoryUseCase>(TYPES.UpdateCategoryUseCase)
   const deleteCategoryUC = getUC<DeleteCategoryUseCase>(TYPES.DeleteCategoryUseCase)
   const getCategoryByIdUC = getUC<GetCategoryByIdUseCase>(TYPES.GetCategoryByIdUseCase)
 
-  /** Загружает все категории текущего пользователя */
   async function load() {
     const userId = await getUserId()
     list.value = await getCategoriesUC.execute(userId)
   }
 
-  /** Создаёт новую категорию и добавляет её в список */
   async function add(name: string) {
     const userId = await getUserId()
     const cat = await createCategoryUC.execute(userId, name)
@@ -43,7 +40,6 @@ export const useCategoryStore = defineStore('category', () => {
     toast.info('Category has been created')
   }
 
-  /** Переименовывает категорию */
   async function update(category: ComboCategory) {
     const userId = await getUserId()
     await updateCategoryUC.execute(userId, category)
@@ -53,12 +49,10 @@ export const useCategoryStore = defineStore('category', () => {
     toast.info('Category updated')
   }
 
-  /** Удаляет категорию, очищает её у комбо и из списка */
   async function remove(id: string) {
     const userId = await getUserId()
     await deleteCategoryUC.execute(userId, id)
     list.value = list.value.filter((c) => c.id !== id)
-    // Обновляем комбо, убирая удалённый id из их categoryIds
     if (comboStore.removeDeletedCategories) {
       await comboStore.removeDeletedCategories()
     }

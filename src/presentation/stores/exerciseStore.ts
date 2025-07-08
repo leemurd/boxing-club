@@ -17,7 +17,6 @@ export const useExerciseStore = defineStore('exercise', () => {
   const current = ref<Exercise | null>(null)
   const loading = ref(false)
 
-  /** Загрузка всех упражнений (дефолтных + пользовательских) */
   async function loadAll() {
     const userId = await getUserId()
     if (!userId) return
@@ -31,7 +30,6 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
 
-  /** Загрузка одного упражнения по ID */
   async function loadById(id: string) {
     const userId = await getUserId()
     if (!userId) return
@@ -44,7 +42,6 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
 
-  /** Создание нового упражнения */
   async function createExercise(ex: Exercise) {
     const userId = await getUserId()
     if (!userId) return
@@ -59,9 +56,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
 
-  /** Обновление существующего упражнения */
   async function updateExercise(ex: Exercise) {
-    // console.log({ ...ex })
     const val = { ...ex }
     console.log(val)
     const userId = await getUserId()
@@ -77,7 +72,6 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
   }
 
-  /** Удаление упражнения по ID */
   async function removeExercise(id: string) {
     const userId = await getUserId()
     if (!userId) return

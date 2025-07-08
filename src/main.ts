@@ -39,7 +39,6 @@ app.use(IonicVue, {
 app.use(createPinia())
 app.use(router)
 app.use(Toast, toastOptions)
-// app.mount('#app')
 
 router.isReady().then(() => app.mount('#app'))
 

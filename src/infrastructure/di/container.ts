@@ -3,7 +3,8 @@ import 'reflect-metadata'
 import { Container } from 'inversify'
 import { TYPES } from './types'
 // Firebase
-import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
+import { firebaseApp, db } from '@/infrastructure/firebase/firebaseConfig'
+import type { Firestore } from 'firebase/firestore'
 // Repositories
 import type { IBoxingActionRepository } from '@/domain/repositories/IBoxingActionRepository'
 import { BoxingActionRepositoryMock } from '@/infrastructure/data/BoxingActionRepositoryMock'
@@ -61,6 +62,7 @@ const container = new Container()
 
 // --- Firebase ---
 container.bind(TYPES.FirebaseApp).toConstantValue(firebaseApp)
+container.bind<Firestore>('Firestore').toConstantValue(db)
 
 // --- Repositories ---
 container.bind<IBoxingActionRepository>(TYPES.IPunchRepository).to(BoxingActionRepositoryMock).inSingletonScope()

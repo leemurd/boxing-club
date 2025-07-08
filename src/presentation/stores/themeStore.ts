@@ -7,26 +7,20 @@ import { getUserId } from '@/presentation/utils/getUserId'
 export const useThemeStore = defineStore('theme', () => {
   const isDarkTheme = ref(false)
 
-  // Попытка загрузить из Firebase сразу при старте
   loadThemeFromFirebase()
 
-  // Инициализация из localStorage или системных настроек
   const stored = localStorage.getItem('darkTheme')
   if (stored !== null) {
-    // Ресторе из localStorage (приоритет)
     isDarkTheme.value = stored === 'true'
   } else {
-    // Инициализация на основе системной схемы
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
     applyTheme(prefersDark.matches)
     isDarkTheme.value = prefersDark.matches
-    // Слушаем изменения системной схемы
     prefersDark.addEventListener('change', ({ matches }) => {
       isDarkTheme.value = matches
     })
   }
 
-  // Apply CSS-классы и синхронизация при любом изменении
   watch(
     isDarkTheme,
     (newVal) => {

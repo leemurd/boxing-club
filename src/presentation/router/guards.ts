@@ -7,10 +7,8 @@ export function requireAuth(to: RouteLocationNormalized, from: RouteLocationNorm
   if (auth.currentUser) {
     next()
   } else {
-    // Подписываемся на изменение состояния авторизации,
-    // чтобы дождаться, если оно ещё не установлено.
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      unsubscribe() // отписываемся сразу после первого срабатывания
+      unsubscribe()
       if (user) {
         next()
       } else {

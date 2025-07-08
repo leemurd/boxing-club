@@ -1,6 +1,5 @@
 // src/domain/constants/defaultTags.ts
 
-/** Жёстко фиксированные ID для системных тегов */
 export const DEFAULT_TAG_IDS = {
   WEIGHT: 'tag-default-weight', // «с доп. весом»
   PACE: 'tag-default-pace', // «в ускорённом темпе»
@@ -16,7 +15,6 @@ export const DEFAULT_TAG_IDS = {
 
 export type DefaultTagId = (typeof DEFAULT_TAG_IDS)[keyof typeof DEFAULT_TAG_IDS]
 
-/** Список системных тегов с их ID и именами */
 export const DEFAULT_TAGS = [
   {
     id: DEFAULT_TAG_IDS.WEIGHT,

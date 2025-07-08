@@ -13,9 +13,7 @@ export interface Exercise {
   name: string
   category: ExerciseCategory
   measurement: MeasurementUnit
-  /** Может ли выполняться с дополнительным весом */
   canBeWeighted: boolean
-  /** Может ли выполняться в ускорённом темпе */
   canBeAccelerated: boolean
   alwaysWeighted?: boolean
   alwaysAccelerated?: boolean

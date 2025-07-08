@@ -8,6 +8,6 @@ export interface TrainingRecord {
   measurement: MeasurementUnit
   amount: number
   tagIds: string[]
-  timestamp: string // ISO строка
+  timestamp: string
   comboId: string | null
 }

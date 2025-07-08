@@ -11,7 +11,7 @@ export function onUserLoaded(callback: () => void): void {
       (newUser) => {
         if (newUser) {
           callback()
-          stop() // прекращаем наблюдение после загрузки пользователя
+          stop()
         }
       }
     )

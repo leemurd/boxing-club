@@ -16,31 +16,25 @@ import type { DeleteTagUseCase } from '@/application/useCases/tag/DeleteTagUseCa
 export const useTagStore = defineStore('tag', () => {
   const list = ref<Tag[]>([])
 
-  /** Загружает все теги и создаёт при необходимости дефолтные */
   async function load() {
     const userId = await getUserId()
 
-    // 1) Получаем существующие теги
     const existing: Tag[] = await getUC<GetTagsUseCase>(TYPES.GetTagsUseCase).execute(userId)
 
-    // 2) Сидируем дефолтные теги
     for (const def of DEFAULT_TAGS) {
       if (!existing.some((t) => t.id === def.id)) {
         await getUC<CreateTagUseCase>(TYPES.CreateTagUseCase).execute(userId, def)
       }
     }
 
-    // 3) Перечитываем всё
     list.value = await getUC<GetTagsUseCase>(TYPES.GetTagsUseCase).execute(userId)
   }
 
-  /** Возвращает один тег по ID */
   async function getById(id: string): Promise<Tag | null> {
     const userId = await getUserId()
     return getUC<GetTagByIdUseCase>(TYPES.GetTagByIdUseCase).execute(userId, id)
   }
 
-  /** Создаёт новый пользовательский тег */
   async function add(name: string) {
     const userId = await getUserId()
     const tag = await getUC<CreateTagUseCase>(TYPES.CreateTagUseCase).execute(userId, {
@@ -50,7 +44,6 @@ export const useTagStore = defineStore('tag', () => {
     list.value.push(tag)
   }
 
-  /** Переименовывает тег */
   async function rename(tag: Tag) {
     const userId = await getUserId()
     await getUC<UpdateTagUseCase>(TYPES.UpdateTagUseCase).execute(userId, tag)
@@ -58,7 +51,6 @@ export const useTagStore = defineStore('tag', () => {
     if (i !== -1) list.value[i] = tag
   }
 
-  /** Удаляет тег */
   async function remove(id: string) {
     const userId = await getUserId()
     await getUC<DeleteTagUseCase>(TYPES.DeleteTagUseCase).execute(userId, id)

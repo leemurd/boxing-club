@@ -103,7 +103,6 @@ ion-icon {
   color: var(--ion-text-color);
 }
 
-/* Стили активного пункта */
 ion-item.active {
   --background: var(--ion-color-primary-tint);
 }

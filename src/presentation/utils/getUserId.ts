@@ -7,8 +7,6 @@ import { until } from '@/presentation/utils/until'
  */
 export async function getUserId(): Promise<string> {
   const authStore = useAuthStore()
-  // 1) Если ещё нет пользователя — ждём, пока он появится
   await until(() => !!authStore.currentUser)
-  // 2) Теперь уверены, что currentUser !== null
   return authStore.currentUser!.id
 }

@@ -68,8 +68,4 @@ export const router = createRouter({
 
 router.afterEach((to) => {
   document.title = to.meta.name ? `${to.meta.name} | My Boxing` : 'My Boxing'
-
-  //
-  // const active = document.activeElement as HTMLElement
-  // if (active?.blur) active.blur()
 })

@@ -79,7 +79,5 @@ export function getExtendedFightStrategy(opts: FightOptions): string[] {
     )
   }
 
-  // Итоговый текст
-  // return parts.join('<br>')
   return parts
 }
