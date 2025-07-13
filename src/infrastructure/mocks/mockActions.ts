@@ -1,4 +1,9 @@
-import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingActionType } from '@/domain/entities/BoxingAction'
+import {
+  type BoxingAction,
+  BoxingActionCategory,
+  BoxingActionSide,
+  BoxingActionType
+} from '@/domain/entities/BoxingAction'
 
 export const MOCK_ACTIONS: BoxingAction[] = [
   // punches
@@ -44,8 +49,8 @@ export const MOCK_ACTIONS: BoxingAction[] = [
     side: BoxingActionSide.REAR,
     type: BoxingActionType.Uppercut
   },
-  // movements
 
+  // movements
   {
     id: 21,
     name: 'Slip L',

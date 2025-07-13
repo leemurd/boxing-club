@@ -2,11 +2,14 @@ import { type BoxingAction, BoxingActionType } from '@/domain/entities/BoxingAct
 import { getNextActions } from './getNextActions.ts'
 import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
 
-export function generateRandomCombo(allActions: BoxingAction[], counter: number = 5): BoxingAction[] {
+export function generateRandomCombo(
+  allActions: BoxingAction[],
+  counter: number = 5
+): BoxingAction[] {
   const combo: BoxingAction[] = []
 
   // Начинаем с джеба
-  const jab = allActions.find(a => a.type === BoxingActionType.Jab)
+  const jab = allActions.find((a) => a.type === BoxingActionType.Jab)
   if (!jab) return combo
 
   combo.push(jab)
@@ -19,7 +22,7 @@ export function generateRandomCombo(allActions: BoxingAction[], counter: number 
     const rawNext = getNextActions(lastAction, allActions)
 
     // Отфильтруем кандидатов с учётом «не более 1 движения/защиты» между ударами
-    const possibleNext = rawNext.filter(a => {
+    const possibleNext = rawNext.filter((a) => {
       // Если уже есть 1 nonPunch подряд, то следующий шаг должен быть удар
       if (nonPunchCount >= 1 && a.category !== BoxingActionCategory.PUNCH) {
         return false

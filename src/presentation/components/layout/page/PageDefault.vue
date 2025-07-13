@@ -3,10 +3,10 @@
   <ion-page>
     <slot name="header">
       <main-header :header-back="headerBack">
-        <template #start>
+        <template v-slot:start>
           <slot name="header-start"/>
         </template>
-        <template #end>
+        <template v-slot:end>
           <slot name="header-end"/>
         </template>
       </main-header>

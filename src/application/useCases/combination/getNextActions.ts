@@ -1,8 +1,16 @@
-import { type BoxingAction, BoxingActionCategory, BoxingActionSide, BoxingActionType } from '@/domain/entities/BoxingAction.ts'
+import {
+  type BoxingAction,
+  BoxingActionCategory,
+  BoxingActionSide,
+  BoxingActionType
+} from '@/domain/entities/BoxingAction.ts'
 
 export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): BoxingAction[] {
   // Особый случай для джеба (как раньше)
-  if (lastAction.category === BoxingActionCategory.PUNCH && lastAction.type === BoxingActionType.Jab) {
+  if (
+    lastAction.category === BoxingActionCategory.PUNCH &&
+    lastAction.type === BoxingActionType.Jab
+  ) {
     return all
   }
 
@@ -11,7 +19,10 @@ export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): B
   // но следующий MOVEMENT/DEFENSE идёт той же рукой
   if (lastAction.category === BoxingActionCategory.PUNCH) {
     return all.filter((action) => {
-      if (action.category === BoxingActionCategory.PUNCH || action.category === BoxingActionCategory.DEFENSE) {
+      if (
+        action.category === BoxingActionCategory.PUNCH ||
+        action.category === BoxingActionCategory.DEFENSE
+      ) {
         if (lastAction.side === BoxingActionSide.LEAD) {
           return action.side === BoxingActionSide.REAR || action.side === BoxingActionSide.ANY
         }
@@ -27,7 +38,10 @@ export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): B
   // Если последний action был MOVEMENT или DEFENSE,
   // то следующий PUNCH должен быть «противоположной» рукой,
   // а следующий MOVEMENT/DEFENSE остаётся на той же стороне
-  if (lastAction.category === BoxingActionCategory.MOVEMENT || lastAction.category === BoxingActionCategory.DEFENSE) {
+  if (
+    lastAction.category === BoxingActionCategory.MOVEMENT ||
+    lastAction.category === BoxingActionCategory.DEFENSE
+  ) {
     return all.filter((action) => {
       if (action.category === BoxingActionCategory.PUNCH) {
         // if slip next punch from the same side
@@ -48,7 +62,10 @@ export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): B
         }
         return true
       }
-      if (action.category === BoxingActionCategory.MOVEMENT || action.category === BoxingActionCategory.DEFENSE) {
+      if (
+        action.category === BoxingActionCategory.MOVEMENT ||
+        action.category === BoxingActionCategory.DEFENSE
+      ) {
         return action.side === lastAction.side || action.side === BoxingActionSide.ANY
       }
       return false

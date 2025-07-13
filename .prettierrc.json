@@ -1,9 +1,17 @@
 {
   "singleQuote": true,
   "trailingComma": "none",
-  "printWidth": 130,
   "tabWidth": 2,
   "semi": false,
   "endOfLine": "lf",
-  "singleAttributePerLine": true
+  "singleAttributePerLine": true,
+  "printWidth": 100,
+  "overrides": [
+    {
+      "files": ["*.vue", "*.html"],
+      "options": {
+        "printWidth": 130
+      }
+    }
+  ]
 }

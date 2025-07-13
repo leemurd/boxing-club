@@ -1,3 +1,4 @@
+// src/domain/repositories/ICategoryRepository.ts
 import type { ComboCategory } from '@/domain/entities/ComboCategory.ts'
 
 export interface ICategoryRepository {

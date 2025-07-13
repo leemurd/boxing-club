@@ -3,14 +3,15 @@
   <ion-menu
     side="start"
     menu-id="main-menu"
-    content-id="main-content"
     type="overlay"
     class="app-menu"
   >
-    <ion-header class="ion-no-border">
+    <ion-header
+      class="ion-no-border app-menu-header"
+    >
       <ion-toolbar>
-        <ion-title>
-          <header-logo>My Boxing</header-logo>
+        <ion-title class="ion-no-padding">
+          <header-logo :hide-logo="isSplitPaneVisible">My Boxing</header-logo>
         </ion-title>
       </ion-toolbar>
     </ion-header>
@@ -39,16 +40,16 @@
 
 <script setup lang="ts">
 import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel } from '@ionic/vue'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import { type RouteRecordRaw, useRoute } from 'vue-router'
 import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
-import { useThemeStore } from '@/presentation/stores/themeStore.ts'
+
+const isSplitPaneVisible = inject('isSplitPaneVisible')
 
 const authStore = useAuthStore()
 const router = useProjectRouter()
-const themeStore = useThemeStore()
 const routes = router.getRoutes()
 const route = useRoute()
 
@@ -73,6 +74,14 @@ function closeMenu() {
 </script>
 
 <style scoped lang="scss">
+ion-menu::part(backdrop) {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+ion-menu::part(container) {
+  box-shadow: 4px 0 46px rgba(255, 255, 255, 0.2);
+}
+
 .navbar-brand-logo {
   height: 24px;
   margin-right: 8px;
@@ -80,10 +89,6 @@ function closeMenu() {
 
 ion-item:not(.app-menu__item-selected)::part(native) {
   background: var(--ion-background-color);
-  //color: var(--color);
 }
 
-//ion-item.app-menu__item-selected::part(native) {
-  //background: var(--ion-card-background);
-//}
 </style>

@@ -1,0 +1,219 @@
+src
+├── App.vue
+├── application
+│ ├── services
+│ │ └── progressCalculators.ts
+│ └── useCases
+│     ├── category
+│     │ ├── CreateCategoryUseCase.ts
+│     │ ├── DeleteCategoryUseCase.ts
+│     │ ├── GetCategoriesUseCase.ts
+│     │ ├── GetCategoryByIdUseCase.ts
+│     │ └── UpdateCategoryUseCase.ts
+│     ├── combination
+│     │ ├── DeleteCombinationUseCase.ts
+│     │ ├── GetCombinationByIdUseCase.ts
+│     │ ├── GetCombinationsUseCase.ts
+│     │ ├── GetPunchesUseCase.ts
+│     │ ├── SaveCombinationUseCase.ts
+│     │ ├── UpdateCombinationUseCase.ts
+│     │ ├── generateRandomCombo.ts
+│     │ └── getNextActions.ts
+│     ├── exercise
+│     │ ├── CreateExerciseUseCase.ts
+│     │ ├── DeleteExerciseUseCase.ts
+│     │ ├── GetExerciseByIdUseCase.ts
+│     │ ├── GetExercisesUseCase.ts
+│     │ └── UpdateExerciseUseCase.ts
+│     ├── getEnemyCard.ts
+│     ├── record
+│     │ ├── DeleteRecordUseCase.ts
+│     │ ├── GetRecordsUseCase.ts
+│     │ └── LogExerciseUseCase.ts
+│     ├── tag
+│     │ ├── CreateTagUseCase.ts
+│     │ ├── DeleteTagUseCase.ts
+│     │ ├── GetTagByIdUseCase.ts
+│     │ ├── GetTagsUseCase.ts
+│     │ ├── UpdateTagUseCase.ts
+│     │ └── tests
+│     │     └── CreateTagUseCase.test.ts
+│     └── user
+│         └── RegisterUserUseCase.ts
+├── domain
+│ ├── constants
+│ │ ├── defaultTags.ts
+│ │ └── exercises.ts
+│ ├── entities
+│ │ ├── BoxingAction.ts
+│ │ ├── Combination.ts
+│ │ ├── ComboCategory.ts
+│ │ ├── Exercise.ts
+│ │ ├── Tag.ts
+│ │ ├── TrainingRecord.ts
+│ │ └── User.ts
+│ └── repositories
+│     ├── IAuthRepository.ts
+│     ├── IBoxingActionRepository.ts
+│     ├── ICategoryRepository.ts
+│     ├── ICombinationRepository.ts
+│     ├── IExerciseRepository.ts
+│     ├── ITagRepository.ts
+│     ├── ITrainingRepository.ts
+│     └── IUserRepository.ts
+├── infrastructure
+│ ├── data
+│ │ ├── AuthRepositoryFirebase.ts
+│ │ ├── BoxingActionRepositoryMock.ts
+│ │ ├── CategoryRepositoryImpl.ts
+│ │ ├── CombinationRepositoryImpl.ts
+│ │ ├── ExerciseRepositoryImpl.ts
+│ │ ├── TagRepositoryImpl.ts
+│ │ ├── TrainingRepositoryImpl.ts
+│ │ └── UserRepositoryFirebase.ts
+│ ├── di
+│ │ ├── container.ts
+│ │ ├── resolver.ts
+│ │ └── types.ts
+│ ├── firebase
+│ │ ├── FirestoreRepository.ts
+│ │ └── firebaseConfig.ts
+│ └── mocks
+│     └── mockActions.ts
+├── main.ts
+└── presentation
+    ├── assets
+    │ ├── adidas-logo-filled-white.svg
+    │ ├── adidas-logo-filled.svg
+    │ ├── adidas-logo-white.svg
+    │ ├── adidas-logo.svg
+    │ ├── app-logo.png
+    │ ├── app-logo3.png
+    │ ├── avatar-colored.svg
+    │ ├── avatar-fill.svg
+    │ ├── avatar.svg
+    │ ├── avatar.webp
+    │ └── logo.svg
+    ├── components
+    │ ├── layout
+    │ │ ├── footer
+    │ │ │ └── FooterMain.vue
+    │ │ ├── header
+    │ │ │ ├── AppMenu.vue
+    │ │ │ ├── HeaderLogo.vue
+    │ │ │ └── MainHeader.vue
+    │ │ ├── page
+    │ │ │ └── PageDefault.vue
+    │ │ └── router
+    │ │     ├── SectionLayout.vue
+    │ │     └── TabsLayout.vue
+    │ ├── modals
+    │ │ ├── BaseModal.vue
+    │ │ ├── BaseRenameModal.vue
+    │ │ ├── CategorySelectorModal.vue
+    │ │ ├── ComboSelectorModal.vue
+    │ │ ├── ConfirmationModal.vue
+    │ │ ├── ModalContainer.vue
+    │ │ └── TagSelectorModal.vue
+    │ ├── pages
+    │ │ ├── combos
+    │ │ │ ├── CombinationBuilderView.vue
+    │ │ │ ├── ComboCategoriesCard.vue
+    │ │ │ ├── ComboPreview.vue
+    │ │ │ └── RandomComboCard.vue
+    │ │ ├── profile
+    │ │ │ └── ThemeToggle.vue
+    │ │ └── progress
+    │ │     ├── FilterBar.vue
+    │ │     ├── ProgressStatsRow.vue
+    │ │     └── RecentRecords.vue
+    │ ├── shared
+    │ │ ├── BBadge.vue
+    │ │ ├── BButton.vue
+    │ │ ├── BButtonBlock.vue
+    │ │ ├── BCard.vue
+    │ │ ├── BCheckbox.vue
+    │ │ ├── BDropdown.vue
+    │ │ ├── BDropdownItem.vue
+    │ │ ├── BInput.vue
+    │ │ ├── BSelect.vue
+    │ │ ├── BToggle.vue
+    │ │ ├── EmptyState.vue
+    │ │ ├── HorizontalSegmentGroup.vue
+    │ │ ├── ListGroup.vue
+    │ │ ├── ProgressLine.vue
+    │ │ ├── VerticalRadioGroup.vue
+    │ │ └── types.ts
+    │ └── views
+    │     ├── Account.vue
+    │     ├── EnemyCard.vue
+    │     ├── PunchCounter.vue
+    │     ├── auth
+    │     │ ├── Login.vue
+    │     │ ├── NotFoundPage.vue
+    │     │ └── Signup.vue
+    │     ├── combos
+    │     │ ├── CategoryEditPage.vue
+    │     │ ├── CategoryListPage.vue
+    │     │ ├── ComboEditPage.vue
+    │     │ ├── ComboIndex.vue
+    │     │ └── ComboListPage.vue
+    │     ├── exercises
+    │     │ ├── ExerciseEditPage.vue
+    │     │ └── ExercisesIndex.vue
+    │     ├── progress
+    │     │ ├── ProgressPage.vue
+    │     │ └── RecordLogger.vue
+    │     └── tags
+    │         ├── TagEditPage.vue
+    │         └── TagListPage.vue
+    ├── composition
+    │ ├── useModalService.ts
+    │ └── useProjectRouter.ts
+    ├── constants
+    │ ├── combo
+    │ │ └── data.ts
+    │ └── progress
+    │     ├── data.ts
+    │     └── types.ts
+    ├── modals
+    │ ├── modalKeys.ts
+    │ └── modalMap.ts
+    ├── router
+    │ ├── auth
+    │ │ └── auth.ts
+    │ ├── guards.ts
+    │ ├── index.ts
+    │ ├── routerTypes.ts
+    │ ├── types.d.ts
+    │ └── user
+    │     ├── comboCategories.ts
+    │     ├── combos.ts
+    │     ├── exercises.ts
+    │     ├── progress.ts
+    │     └── tags.ts
+    ├── stores
+    │ ├── authStore.ts
+    │ ├── categoryStore.ts
+    │ ├── comboStore.ts
+    │ ├── exerciseStore.ts
+    │ ├── progressStore.ts
+    │ ├── tagStore.ts
+    │ └── themeStore.ts
+    ├── styles
+    │ ├── _custom-bootstrap.scss
+    │ ├── _custom-ionic.scss
+    │ ├── _custom-variables.scss
+    │ ├── imports.scss
+    │ ├── main.scss
+    │ ├── mixins.scss
+    │ ├── typography.scss
+    │ └── vue-toastification.scss
+    └── utils
+        ├── dateTime.ts
+        ├── exclusiveName.ts
+        ├── getUserId.ts
+        ├── onUserLoaded.ts
+        └── until.ts
+
+51 directories, 166 files

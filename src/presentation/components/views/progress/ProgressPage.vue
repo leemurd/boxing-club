@@ -103,11 +103,11 @@ import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 
-const progress   = useProgressStore()
-const exStore    = useExerciseStore()
-const tagStore   = useTagStore()
+const progress = useProgressStore()
+const exStore = useExerciseStore()
+const tagStore = useTagStore()
 const comboStore = useComboStore()
-const authStore  = useAuthStore()
+const authStore = useAuthStore()
 const router = useProjectRouter()
 
 onMounted(async () => {
@@ -124,23 +124,26 @@ onUpdated(async () => {
 const fullname = computed(() => `${authStore.currentUser?.firstName} ${authStore.currentUser?.lastName}`)
 
 const dailyTotals = computed(() => progress.dailyTotals)
-const byCategory  = computed(() => progress.byCategory)
-const byExercise  = computed(() => progress.byExercise)
-const byCombo     = computed(() => progress.byCombo)
-const topTags     = computed(() => [...progress.byTag].sort((a,b)=>b.reps-a.reps))
+const byCategory = computed(() => progress.byCategory)
+const byExercise = computed(() => progress.byExercise)
+const byCombo = computed(() => progress.byCombo)
+const topTags = computed(() => [...progress.byTag].sort((a, b) => b.reps - a.reps))
 
 const recentRecordsList = computed(() =>
-  progress.records.slice().sort((a,b)=>a.timestamp<b.timestamp?1:-1).slice(0,10)
+  progress.records
+    .slice()
+    .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
+    .slice(0, 10)
 )
 
 function getExerciseName(id: string) {
-  return exStore.exercises.find((e)=>e.id===id)?.name ?? id
+  return exStore.exercises.find((e) => e.id === id)?.name ?? id
 }
 function getTagName(id: string) {
-  return tagStore.list.find((t)=>t.id===id)?.name ?? id
+  return tagStore.list.find((t) => t.id === id)?.name ?? id
 }
 function getComboTitle(id: string) {
-  return comboStore.combos.find((c)=>c.id===id)?.title ?? id
+  return comboStore.combos.find((c) => c.id === id)?.title ?? id
 }
 </script>
 

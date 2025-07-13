@@ -1,21 +1,32 @@
 <!--src/App.vue-->
 <template>
   <ion-app>
-    <app-menu/>
+    <ion-split-pane
+      when="md"
+      content-id="main"
+      @ionSplitPaneVisible="onSplitPaneVisible"
+    >
+      <app-menu content-id="main"/>
 
-    <ion-content id="main-content">
-      <ion-router-outlet/>
-      <modal-container />
-    </ion-content>
+      <ion-content id="main">
+        <ion-router-outlet/>
+        <modal-container/>
+      </ion-content>
+    </ion-split-pane>
   </ion-app>
 </template>
 
 <script setup lang="ts">
-import {
-  IonApp,
-  IonContent,
-  IonRouterOutlet
-} from '@ionic/vue'
+import { IonApp, IonContent, IonRouterOutlet, IonSplitPane } from '@ionic/vue'
 import ModalContainer from '@/presentation/components/modals/ModalContainer.vue'
 import AppMenu from '@/presentation/components/layout/header/AppMenu.vue'
+import { provide, ref } from 'vue'
+
+const isSplitPaneVisible = ref(false)
+
+provide('isSplitPaneVisible', isSplitPaneVisible)
+
+const onSplitPaneVisible = (event: any): void => {
+  isSplitPaneVisible.value = event.detail.visible
+}
 </script>

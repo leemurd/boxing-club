@@ -24,3 +24,7 @@ html, body, #app, ion-app, ion-content {
 .w-100 {
   width: 100% !important;
 }
+
+.split-pane-visible ion-menu-button {
+  display: none;
+}

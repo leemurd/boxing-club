@@ -188,7 +188,7 @@ module.exports = {
     ],
     'no-bitwise': ['error', { allow: ['~'] }],
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    'max-len': ['error', { code: 130 }],
+    'max-len': ['error', { code: 100 }],
     'object-curly-newline': [
       'error',
       {
@@ -211,8 +211,30 @@ module.exports = {
       {
         endOfLine: 'lf'
       }
+    ],
+    'vue/attribute-hyphenation': ['warn', 'always'],
+    'vue/v-on-event-hyphenation': [
+      'warn',
+      'always',
+      {
+        ignore: ['ionSplitPaneVisible']
+      }
     ]
     // 'vue/max-attributes-per-line': 'off',
     // 'vue/html-closing-bracket-newline': 'off'
-  }
+  },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'max-len': ['error', { code: 100 }]
+      }
+    },
+    {
+      files: ['*.vue', '*.html'],
+      rules: {
+        'max-len': ['error', { code: 130 }]
+      }
+    }
+  ]
 }

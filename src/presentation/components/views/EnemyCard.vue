@@ -21,7 +21,6 @@
         </horizontal-segment-group>
       </div>
 
-
       <div class="enemy-card__item">
         <horizontal-segment-group
           v-model="myHandedness"
