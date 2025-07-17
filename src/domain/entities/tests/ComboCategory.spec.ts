@@ -1,6 +1,6 @@
 // src/domain/entities/ComboCategory.spec.ts
 import { describe, it, expect, beforeEach } from 'vitest'
-import { ComboCategory } from '@/domain/entities/ComboCategory'
+import { type ComboCategory } from '@/domain/entities/ComboCategory'
 
 describe.each([
   {
@@ -11,7 +11,10 @@ describe.each([
   let cat: ComboCategory
 
   beforeEach(() => {
-    cat = new ComboCategory(id, name)
+    cat = {
+      id,
+      name
+    }
   })
 
   it(`initializes with the provided id: [${id}] and name: [${name}]`, () => {

@@ -11,10 +11,10 @@
 
       <div class="mb-3">
         <b-card no-padding>
-          <template #header>
+          <template v-slot:header>
             <div class="text-center">Combinations</div>
           </template>
-          <template #default>
+          <template v-slot>
             <list-group
               v-if="combos.length"
               :items="combos"
@@ -24,7 +24,7 @@
               no-border
               :primary-callback="openCombo"
             >
-              <template #actions="{ item }">
+              <template v-slot:actions="{ item }">
                 <b-dropdown-item @click="openCombo(item)">Edit</b-dropdown-item>
               </template>
             </list-group>
@@ -33,7 +33,7 @@
               class="p-2 text-center"
             >Empty</div>
           </template>
-          <template #footer>
+          <template v-slot:footer>
             <div class="d-flex flex-column">
               <b-button
                 color="medium"
@@ -103,7 +103,11 @@ const createCombo = async () => {
 }
 
 const saveCombo = async () => {
-  await categoryStore.update(category.value)
+  if (isNew.value) {
+    await categoryStore.create(category.value)
+  } else {
+    await categoryStore.update(category.value)
+  }
   router.back()
 }
 

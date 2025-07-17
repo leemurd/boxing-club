@@ -3,7 +3,7 @@
 import { injectable, inject } from 'inversify'
 import type { ITrainingRepository } from '@/domain/repositories/ITrainingRepository'
 import { TYPES } from '@/infrastructure/di/types'
-import type { ExerciseCategory } from '@/domain/entities/Exercise.ts'
+import type { ExerciseCategory, MeasurementUnit } from '@/domain/entities/Exercise.ts'
 
 @injectable()
 export class LogExerciseUseCase {
@@ -16,7 +16,7 @@ export class LogExerciseUseCase {
     exerciseId: string,
     category: ExerciseCategory,
     amount: number,
-    unit: 'seconds' | 'repetitions',
+    unit: MeasurementUnit,
     tagIds: string[],
     comboId: string | null
   ): Promise<void> {

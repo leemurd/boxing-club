@@ -1,14 +1,23 @@
 // src/infrastructure/data/ExerciseRepositoryImpl.ts
 import { injectable } from 'inversify'
-import { getFirestore, collection, doc, getDocs, getDoc, addDoc, setDoc, deleteDoc, DocumentReference } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  addDoc,
+  setDoc,
+  deleteDoc,
+  DocumentReference
+} from 'firebase/firestore'
 import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
 import type { Exercise } from '@/domain/entities/Exercise'
-import { firebaseApp } from '@/infrastructure/firebase/firebaseConfig'
+import { db } from '@/infrastructure/firebase/firebaseConfig'
 import { EXERCISES } from '@/domain/constants/exercises.ts'
 
 @injectable()
 export class ExerciseRepositoryImpl implements IExerciseRepository {
-  private db = getFirestore(firebaseApp)
+  private db = db
   private col(userId: string) {
     return collection(this.db, 'users', userId, 'exercises')
   }

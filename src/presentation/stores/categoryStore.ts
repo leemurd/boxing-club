@@ -1,5 +1,4 @@
 // src/presentation/stores/categoryStore.ts
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { TYPES } from '@/infrastructure/di/types'
@@ -11,7 +10,7 @@ import type { GetCategoriesUseCase } from '@/application/useCases/category/GetCa
 import type { CreateCategoryUseCase } from '@/application/useCases/category/CreateCategoryUseCase'
 import type { UpdateCategoryUseCase } from '@/application/useCases/category/UpdateCategoryUseCase'
 import type { DeleteCategoryUseCase } from '@/application/useCases/category/DeleteCategoryUseCase'
-import type { GetCategoryByIdUseCase } from '@/application/useCases/category/GetCategoryByIdUseCase.ts'
+import type { GetCategoryByIdUseCase } from '@/application/useCases/category/GetCategoryByIdUseCase'
 import { useToast } from 'vue-toastification'
 import { getUC } from '@/infrastructure/di/resolver.ts'
 import type { Combination } from '@/domain/entities/Combination.ts'
@@ -33,9 +32,9 @@ export const useCategoryStore = defineStore('category', () => {
     list.value = await getCategoriesUC.execute(userId)
   }
 
-  async function add(name: string) {
+  async function create(category: ComboCategory) {
     const userId = await getUserId()
-    const cat = await createCategoryUC.execute(userId, name)
+    const cat = await createCategoryUC.execute(userId, category)
     list.value.push(cat)
     toast.info('Category has been created')
   }
@@ -72,7 +71,7 @@ export const useCategoryStore = defineStore('category', () => {
   return {
     list,
     load,
-    add,
+    create,
     update,
     remove,
     getById,

@@ -9,7 +9,7 @@ export class CreateCategoryUseCase {
     @inject(TYPES.ICategoryRepository) private repo: ICategoryRepository
   ) {}
 
-  execute(userId: string, name: string): Promise<ComboCategory> {
-    return this.repo.create(userId, name)
+  execute(userId: string, category: ComboCategory): Promise<ComboCategory> {
+    return this.repo.create(userId, category)
   }
 }

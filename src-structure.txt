@@ -76,7 +76,6 @@ src
 │ │ ├── resolver.ts
 │ │ └── types.ts
 │ ├── firebase
-│ │ ├── FirestoreRepository.ts
 │ │ └── firebaseConfig.ts
 │ └── mocks
 │     └── mockActions.ts

@@ -1,5 +1,5 @@
 export const TYPES = {
-  FirebaseApp: Symbol.for('FirebaseApp'),
+  Firestore: Symbol.for('Firestore'),
   // punches
   IPunchRepository: Symbol.for('IPunchRepository'),
   GetPunchesUseCase: Symbol.for('GetPunchesUseCase'),
