@@ -13,7 +13,7 @@
       :primary-callback="onEditCombo"
       item-link
     >
-      <template #actions="{ item }">
+      <template v-slot:actions="{ item }">
         <b-dropdown-item @click="onEditCombo(item)">Edit</b-dropdown-item>
         <b-dropdown-item @click="remove(item.id)">Remove</b-dropdown-item>
       </template>
@@ -26,6 +26,12 @@
         New combo
       </b-button-block>
     </template>
+
+    <b-alert
+      header="Confirm delete"
+      :is-open="isModalDeleteOpen"
+      :buttons="alertButtons"
+    />
   </page-default>
 </template>
 
@@ -34,16 +40,15 @@ import { useComboStore } from '@/presentation/stores/comboStore.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import type { Combination } from '@/domain/entities/Combination.ts'
-import { useModalService } from '@/presentation/composition/useModalService.ts'
-import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
+import BAlert from '@/presentation/components/shared/BAlert.vue'
+import { ref } from 'vue'
+import type { IAlertButton } from '@/presentation/components/shared/types.ts'
 
 const comboStore = useComboStore()
-const { openModalByKey } = useModalService()
-
 const router = useProjectRouter()
 
 const onEditCombo = (combo: Combination) => {
@@ -53,11 +58,28 @@ const onEditCombo = (combo: Combination) => {
   })
 }
 
+const removingId = ref('')
+const isModalDeleteOpen = ref(false)
+
 function remove(id: string) {
-  openModalByKey(ModalKey.CONFIRMATION, {
-    title: 'Confirm delete',
-    message: 'Are you sure?',
-    onApply: () => comboStore.remove(id)
-  })
+  removingId.value = id
+  isModalDeleteOpen.value = true
 }
+
+const alertButtons: IAlertButton[] = [
+  {
+    text: 'Cancel',
+    role: 'cancel',
+    handler: () => {
+      isModalDeleteOpen.value = false
+    }
+  },
+  {
+    text: 'Confirm',
+    role: 'confirm',
+    handler: async () => {
+      await comboStore.remove(removingId.value)
+    }
+  }
+]
 </script>

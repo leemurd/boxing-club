@@ -19,7 +19,6 @@
       <div v-if="selectedExercise">
         <h4 class="mb-3 mt-3 text-center">
           {{ selectedExercise.name }}
-          ({{ selectedExercise.measurement === 'seconds' ? 'sec' : 'reps' }})
         </h4>
 
         <b-card
@@ -81,28 +80,15 @@
 
         <div class="d-flex gap-2 mb-2 mt-4">
           <div class="col">
-            <b-button
-              color="medium"
-              outline
-              class="px-3 w-100"
-              @click="decrement"
-            >-</b-button></div>
-          <div class="col">
             <b-input
               v-model.number="quantity"
-              type="text"
+              type="number"
               placeholder="Count"
+              :label="selectedExercise.measurement"
               class="text-center"
               :min="0"
             />
           </div>
-          <div class="col">
-            <b-button
-              color="medium"
-              outline
-              class="px-3 w-100"
-              @click="increment"
-            >+</b-button></div>
         </div>
 
         <!-- Action Buttons -->
@@ -197,14 +183,6 @@ const selectExercise = (ex: Exercise) => {
   clear()
 }
 
-// Quantity controls
-const increment = () => {
-  quantity.value = quantity.value + 1
-}
-const decrement = () => {
-  if (quantity.value > 0) quantity.value--
-}
-
 // Открывает модалку выбора Combo
 const openComboSelector = () => {
   modal.openModalByKey(ModalKey.COMBO_SELECTOR, {
@@ -241,7 +219,6 @@ const makeRecord = () => {
   if (flags.accelerated || selectedExercise.value.alwaysAccelerated) {
     record.tagIds.push(DEFAULT_TAG_IDS.PACE)
   }
-
 }
 
 const canAdd = computed(() => {
@@ -286,8 +263,3 @@ onMounted(async () => {
   await init()
 })
 </script>
-
-<style scoped>
-.exercise-logger {
-}
-</style>

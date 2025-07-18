@@ -12,19 +12,6 @@ export type ButtonColor =
   | 'warning'
   | 'info'
 export type ButtonSize = 'small' | 'default' | 'large'
-// export type ButtonLocalSize = 'small' | 'medium' | 'large'
-
-// export const BtnSizeMap: Record<string, ButtonSize> = {
-//   small: 'small',
-//   medium: 'default',
-//   large: 'large'
-// }
-
-// export const BtnLocalSizeMap: Record<ButtonLocalSize, ButtonSize> = {
-//   small: 'small',
-//   medium: 'default',
-//   large: 'large'
-// }
 
 // time, date
 export enum TimeRange {
@@ -32,4 +19,13 @@ export enum TimeRange {
   WEEK = 'week',
   MONTH = 'month',
   ALL = 'all'
+}
+
+export interface IAlertButton {
+  text: string
+  role?: 'cancel' | 'destructive' | 'confirm' | string
+  cssClass?: string | string[]
+  id?: string
+  htmlAttributes?: { [key: string]: any }
+  handler?: (value: any) => any
 }

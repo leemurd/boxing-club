@@ -1,6 +1,6 @@
 <template>
   <!-- Ежедневная нагрузка -->
-  <b-card class="ion-no-margin">
+  <b-card>
     <template
       v-if="label?.length"
       #header

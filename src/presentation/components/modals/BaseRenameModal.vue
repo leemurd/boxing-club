@@ -1,16 +1,15 @@
 <template>
   <base-modal @close="onCancel">
-    <template #header>
+    <template v-slot:header>
       Enter new title
     </template>
-    <template #body>
+    <template v-slot:body>
       <b-input
         v-model="localValue"
-        autofocus
         class="w-100 text-center"
       />
     </template>
-    <template #footer>
+    <template v-slot:footer>
       <button
         class="btn btn-secondary"
         @click="onCancel"

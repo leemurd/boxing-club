@@ -63,7 +63,7 @@ export function getExtendedFightStrategy(opts: FightOptions): string[] {
     )
   }
 
-  // Гварды
+  // Защита
   if (opts.myGuard === 'closed' && opts.oppGuard === 'handsDown') {
     parts.push('У вас более надёжная защита, поэтому не бойтесь идти вперёд и вынуждать соперника раскрыться.')
     parts.push('Как только видите, что его руки опущены, вбрасывайте быстрые удары, заставляя его тратить силы на блоки.')

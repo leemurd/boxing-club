@@ -1,20 +1,29 @@
 <template>
-  <ion-input
-    ref="inputRef"
-    :value="modelValue"
-    :type="type"
-    :placeholder="placeholder"
-    :required="required"
-    :disabled="disabled"
-    :label="label"
-    :label-placement="labelPlacement"
-    @ion-input="onIonInput"
-  />
+  <ion-item>
+    <ion-input
+      ref="inputRef"
+      :value="modelValue"
+      :type="type"
+      :placeholder="placeholder"
+      :required="required"
+      :disabled="disabled"
+      :label="label"
+      :label-placement="labelPlacement"
+      v-bind="{
+        ...$attrs,
+      }"
+      @ion-input="onIonInput"
+    />
+  </ion-item>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { IonInput } from '@ionic/vue'
+import { IonInput, IonItem } from '@ionic/vue'
+
+defineOptions({
+  inheritAttrs: false
+})
 
 withDefaults(defineProps<{
   modelValue: string | number
@@ -27,7 +36,7 @@ withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   type: 'text',
-  placeholder: '',
+  placeholder: 'Enter text',
   required: false,
   autofocus: false,
   disabled: false,
@@ -43,10 +52,18 @@ const inputRef = ref<InstanceType<typeof IonInput> | null>(null)
 function onIonInput(event: CustomEvent) {
   emit('update:modelValue', event.detail.value)
 }
-
-// onMounted(() => {
-//   if (props.autofocus) {
-//     inputRef.value?.setFocus()
-//   }
-// })
 </script>
+
+<style lang="scss" scoped>
+// hide arrows for [type="number"]
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance:textfield; /* Firefox */
+}
+</style>

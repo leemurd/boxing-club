@@ -1,8 +1,6 @@
 <template>
   <ion-card
-    :class="{
-      'ion-no-padding': true,
-    }"
+    class="ion-no-padding ion-no-margin"
   >
     <ion-card-header v-if="$slots.header">
       <slot name="header"/>

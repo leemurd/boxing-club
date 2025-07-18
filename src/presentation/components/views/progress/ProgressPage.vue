@@ -1,7 +1,7 @@
 <!-- src/presentation/components/views/progress/ProgressPage.vue -->
 <template>
   <page-default>
-    <ion-card class="ion-no-margin">
+    <b-card>
       <ion-card-header>
         <ion-card-title class="ion-text-center">{{ fullname }}</ion-card-title>
       </ion-card-header>
@@ -18,7 +18,7 @@
         >New Record</b-button>
         <filter-bar />
       </ion-card-content>
-    </ion-card>
+    </b-card>
 
     <progress-stats-row
       v-if="dailyTotals.length"
@@ -88,7 +88,6 @@ import { useTagStore } from '@/presentation/stores/tagStore'
 import { useComboStore } from '@/presentation/stores/comboStore'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import {
-  IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
@@ -102,6 +101,7 @@ import avatarImg from '@/presentation/assets/avatar-colored.svg'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
+import BCard from '@/presentation/components/shared/BCard.vue'
 
 const progress = useProgressStore()
 const exStore = useExerciseStore()

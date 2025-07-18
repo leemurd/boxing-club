@@ -84,7 +84,7 @@ const slots = defineSlots<{
 }>()
 
 const hasIcon = computed<boolean>(() => !!slots.icon)
-const hasActions = computed<boolean>(() => !!slots.icon)
+const hasActions = computed<boolean>(() => !!slots.actions)
 
 // Вызывается при клике по строке
 function primaryAction(item: any) {

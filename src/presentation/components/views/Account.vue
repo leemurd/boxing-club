@@ -19,7 +19,7 @@
               color="danger"
               class="w-100 ion-padding"
               size="default"
-              @click="confirmLogout"
+              @click="isAlertOpen = true"
             >Log out</b-button>
           </template>
         </b-card>
@@ -27,6 +27,12 @@
       <b-card v-else>
         Пользователь не найден.
       </b-card>
+
+      <b-alert
+        header="Do you want to log out?"
+        :is-open="isAlertOpen"
+        :buttons="alertButtons"
+      />
     </div>
   </page-default>
 </template>
@@ -42,28 +48,21 @@ import ThemeToggle from '@/presentation/components/pages/profile/ThemeToggle.vue
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useAuthStore } from '@/presentation/stores/authStore.ts'
 import { useToast } from 'vue-toastification'
-import { useModalService } from '@/presentation/composition/useModalService.ts'
-import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import { getUC } from '@/infrastructure/di/resolver.ts'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import { IonCardTitle, IonCardSubtitle, IonItem } from '@ionic/vue'
+import type { IAlertButton } from '@/presentation/components/shared/types.ts'
+import BAlert from '@/presentation/components/shared/BAlert.vue'
 
-const { openModalByKey } = useModalService()
 
-function confirmLogout() {
-  openModalByKey(ModalKey.CONFIRMATION, {
-    title: 'Confirm logout',
-    message: 'Are you sure?',
-    onApply: handleLogout
-  })
-}
 
 const toast = useToast()
 
 const user = ref<User | null>(null)
 const loading = ref(true)
 const router = useProjectRouter()
+const isAlertOpen = ref(false)
 
 const userRepo = getUC<IUserRepository>(TYPES.IUserRepository)
 const authStore = useAuthStore()
@@ -98,6 +97,23 @@ async function handleLogout() {
     toast.error(error?.message || error)
   }
 }
+
+const alertButtons: IAlertButton[] = [
+  {
+    text: 'Cancel',
+    role: 'cancel',
+    handler: () => {
+      isAlertOpen.value = false
+    }
+  },
+  {
+    text: 'Confirm',
+    role: 'confirm',
+    handler: () => {
+      handleLogout()
+    }
+  }
+]
 
 onMounted(() => {
   loadUserProfile()

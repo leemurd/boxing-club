@@ -217,7 +217,7 @@ module.exports = {
       'warn',
       'always',
       {
-        ignore: ['ionSplitPaneVisible']
+        ignore: ['ionSplitPaneVisible', 'didDismiss']
       }
     ]
     // 'vue/max-attributes-per-line': 'off',

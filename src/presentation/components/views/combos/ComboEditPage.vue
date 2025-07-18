@@ -11,7 +11,7 @@
         <label class="form-label mb-2">Title (required)</label>
         <b-input
           v-model="combo.title"
-          placeholder="Combo name"
+          label="Combo name"
         />
       </div>
 

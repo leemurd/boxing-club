@@ -2,15 +2,14 @@
   <page-default header-back>
     <h1 class="mb-4">{{ isNew ? 'Новый тег' : 'Редактировать тег' }}</h1>
 
-    <ion-item>
-      <b-input
-        v-model="tag.name"
-        class="form-control me-2"
-        placeholder="Enter text"
-        label="New tag name"
-        @keyup.enter="saveTag"
-      />
-    </ion-item>
+    <b-input
+      v-model="tag.name"
+      class="form-control me-2"
+      placeholder="Enter text"
+      label="New tag name"
+      autofocus
+      @keyup.enter="saveTag"
+    />
 
     <template v-slot:footer>
       <b-button-block
@@ -31,17 +30,14 @@ import type { Tag } from '@/domain/entities/Tag'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
 import BInput from '@/presentation/components/shared/BInput.vue'
-import { IonItem } from '@ionic/vue'
 
 const route = useRoute()
 const router = useRouter()
 const tagStore = useTagStore()
 
-// Определяем, создаём ли новый или редактируем существующий
 const id = route.params.id as string | undefined
 const isNew = ref(!id)
 
-// Локальная модель тега
 const tag = reactive<Tag>({
   id: id ?? '',
   name: ''

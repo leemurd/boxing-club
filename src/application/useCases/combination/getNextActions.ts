@@ -6,7 +6,7 @@ import {
 } from '@/domain/entities/BoxingAction.ts'
 
 export function getNextActions(lastAction: BoxingAction, all: BoxingAction[]): BoxingAction[] {
-  // Особый случай для джеба (как раньше)
+  // Особый случай для джеба
   if (
     lastAction.category === BoxingActionCategory.PUNCH &&
     lastAction.type === BoxingActionType.Jab

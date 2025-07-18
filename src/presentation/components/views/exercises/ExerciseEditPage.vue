@@ -5,16 +5,14 @@
       <h1 class="mb-4">{{ isNew ? 'Create Exercise' : 'Edit Exercise' }}</h1>
 
       <ion-list lines="full">
-        <ion-item>
-          <b-input
-            v-model="form.name"
-            :loading="isLoading"
-            type="text"
-            label="Label"
-            required
-            :disabled="isDefault"
-          />
-        </ion-item>
+        <b-input
+          v-model="form.name"
+          :loading="isLoading"
+          type="text"
+          label="Label"
+          required
+          :disabled="isDefault"
+        />
         <ion-item>
           <b-select
             v-model="form.category"
@@ -88,7 +86,7 @@
 
       <div>
         <!-- Tags -->
-        <b-card class="mb-4 ion-no-margin ion-margin-top">
+        <b-card class="mb-4 ion-margin-top">
           <template v-slot:header>
             <div class="d-flex justify-content-between align-items-center">
               <label class="form-label mb-0">Tags</label>

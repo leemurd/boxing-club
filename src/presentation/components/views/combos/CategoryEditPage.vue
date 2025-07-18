@@ -10,7 +10,7 @@
       </div>
 
       <div class="mb-3">
-        <b-card no-padding>
+        <b-card>
           <template v-slot:header>
             <div class="text-center">Combinations</div>
           </template>
