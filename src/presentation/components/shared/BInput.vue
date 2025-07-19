@@ -1,5 +1,5 @@
 <template>
-  <ion-item>
+  <ion-item lines="full">
     <ion-input
       ref="inputRef"
       :value="modelValue"

@@ -2,10 +2,10 @@
 <template>
   <page-default>
     <b-card>
-      <ion-card-header>
+      <template v-slot:header>
         <ion-card-title class="ion-text-center">{{ fullname }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content class="ion-text-center">
+      </template>
+      <template v-slot>
         <ion-img
           :src="avatarImg"
           class="progress-page-main__avatar ioc-margin-bottom"
@@ -17,7 +17,7 @@
           @click="router.push({ name: 'ProgressRecord' })"
         >New Record</b-button>
         <filter-bar />
-      </ion-card-content>
+      </template>
     </b-card>
 
     <progress-stats-row
@@ -88,9 +88,7 @@ import { useTagStore } from '@/presentation/stores/tagStore'
 import { useComboStore } from '@/presentation/stores/comboStore'
 import { useAuthStore } from '@/presentation/stores/authStore'
 import {
-  IonCardHeader,
   IonCardTitle,
-  IonCardContent,
   IonImg
 } from '@ionic/vue'
 import FilterBar from '@/presentation/components/pages/progress/FilterBar.vue'

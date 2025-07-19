@@ -7,18 +7,18 @@ export const comboCategoryRoutes: RouteRecordRaw[] = [
     path: 'categories/index',
     name: 'ComboCategoriesIndex',
     component: CategoryListPage,
-    meta: { name: 'Combo Categories' }
+    meta: { name: 'Categories' }
   },
   {
     path: 'categories/new',
     name: 'ComboCategoriesNew',
     component: CategoryEditPage,
-    meta: { name: 'New Combo Category' }
+    meta: { name: 'New Category' }
   },
   {
     path: 'categories/:id',
     name: 'ComboCategoriesEdit',
     component: CategoryEditPage,
-    meta: { name: 'Edit Combo Category' }
+    meta: { name: 'Edit Category' }
   }
 ]

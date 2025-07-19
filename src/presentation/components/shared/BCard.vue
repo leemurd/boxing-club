@@ -1,19 +1,22 @@
 <template>
-  <ion-card
-    class="ion-no-padding ion-no-margin"
-  >
+  <ion-card :class="{'ion-no-margin': noMargin}">
     <ion-card-header v-if="$slots.header">
       <slot name="header"/>
     </ion-card-header>
 
     <ion-card-content
       v-if="$slots['default']"
-      :class="[contentClass]"
+      :class="[
+        contentClass,
+        { 'ion-no-padding': noContentPadding }
+      ]"
     >
       <slot/>
 
       <template v-if="$slots.footer">
-        <slot name="footer"/>
+        <div class="ion-margin-top">
+          <slot name="footer"/>
+        </div>
       </template>
     </ion-card-content>
   </ion-card>
@@ -24,7 +27,11 @@ import { IonCard, IonCardContent, IonCardHeader } from '@ionic/vue'
 
 withDefaults(defineProps<{
   contentClass?: string
+  noMargin?: boolean
+  noPadding?: boolean
+  noContentPadding?: boolean
 }>(), {
-  contentClass: ''
+  contentClass: '',
+  noMargin: true
 })
 </script>

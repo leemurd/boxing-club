@@ -5,24 +5,27 @@
       v-for="rec in items"
       :key="rec.id"
       class="ion-margin-bottom"
-      no-border
     >
-      <ion-card-header>
+      <template v-slot:header>
         <ion-card-title class="mb-2">{{ getExerciseName(rec.exerciseId) }}</ion-card-title>
         <ion-card-subtitle>{{ formatDateTime(rec.timestamp) }}</ion-card-subtitle>
-      </ion-card-header>
+      </template>
 
-      <ion-card-content class="ion-text-center">
-        {{ rec.amount }} {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}
-      </ion-card-content>
+      <template v-slot>
+        <div
+          class="ion-text-center"
+        >{{ rec.amount }} {{ rec.measurement === 'seconds' ? 'sec' : 'reps' }}</div>
+      </template>
 
-      <b-button
-        color="danger"
-        fill="outline"
-        @click="progress.deleteRecord(rec?.id || '')"
-      >
-        Delete
-      </b-button>
+      <template v-slot:footer>
+        <b-button
+          color="danger"
+          fill="outline"
+          @click="progress.deleteRecord(rec?.id || '')"
+        >
+          Delete
+        </b-button>
+      </template>
     </b-card>
   </div>
 </template>
@@ -32,7 +35,7 @@ import type { TrainingRecord } from '@/domain/entities/TrainingRecord.ts'
 import { useProgressStore } from '@/presentation/stores/progressStore.ts'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
 import { getShortDateWithTime } from '@/presentation/utils/dateTime.ts'
-import { IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue'
+import { IonCardTitle, IonCardSubtitle } from '@ionic/vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 

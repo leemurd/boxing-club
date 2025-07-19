@@ -3,12 +3,12 @@
   <b-card>
     <template
       v-if="label?.length"
-      #header
+      v-slot:header
     >
       <ion-card-title class="mb-2 ion-text-center">{{ label }}</ion-card-title>
     </template>
 
-    <template #default>
+    <template v-slot>
       <div
         v-for="(item, index) in items"
         :key="item.name"
@@ -24,7 +24,7 @@
           :sets="item.sets"
           :loading="false"
         >
-          <template #name="{ name }">
+          <template v-slot:name="{ name }">
             <slot
               name="name"
               v-bind="{ name }"

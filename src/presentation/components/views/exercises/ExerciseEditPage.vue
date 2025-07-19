@@ -116,7 +116,6 @@
                   {{ tagStore.list.find(t => t.id === tagId)?.name }}
                 </b-badge>
               </div>
-
             </div>
           </template>
         </b-card>

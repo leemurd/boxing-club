@@ -8,16 +8,17 @@
             <ion-card-title>{{ `${user.firstName} ${user.lastName}` }}</ion-card-title>
             <ion-card-subtitle>{{ user.email }}</ion-card-subtitle>
           </template>
+
           <template v-slot>
             <ion-item lines="none">
               <theme-toggle/>
             </ion-item>
-
           </template>
+
           <template v-slot:footer>
             <b-button
               color="danger"
-              class="w-100 ion-padding"
+              class="w-100"
               size="default"
               @click="isAlertOpen = true"
             >Log out</b-button>
