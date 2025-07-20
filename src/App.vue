@@ -10,7 +10,6 @@
 
       <ion-content id="main">
         <ion-router-outlet/>
-        <modal-container/>
       </ion-content>
     </ion-split-pane>
   </ion-app>
@@ -18,7 +17,6 @@
 
 <script setup lang="ts">
 import { IonApp, IonContent, IonRouterOutlet, IonSplitPane } from '@ionic/vue'
-import ModalContainer from '@/presentation/components/modals/ModalContainer.vue'
 import AppMenu from '@/presentation/components/layout/header/AppMenu.vue'
 import { provide, ref } from 'vue'
 

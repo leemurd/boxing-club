@@ -17,7 +17,7 @@
 
       <combo-categories-card
         :category-ids="combo.categoryIds"
-        @on-edit="openCategoryModal"
+        @on-edit="openComboSelector"
       />
 
       <div class="d-flex flex-column mt-3 gap-2">
@@ -39,16 +39,15 @@ import { type Combination } from '@/domain/entities/Combination.ts'
 import CombinationBuilderView from '@/presentation/components/pages/combos/CombinationBuilderView.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
-import { useModalService } from '@/presentation/composition/useModalService.ts'
-import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import ComboCategoriesCard from '@/presentation/components/pages/combos/ComboCategoriesCard.vue'
 import { BoxingActionCategory } from '@/domain/entities/BoxingAction.ts'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
+import { modalController } from '@ionic/vue'
+import CategorySelectorModal from '@/presentation/components/modals/CategorySelectorModal.vue'
 
 const route = useRoute()
 const router = useRouter()
-const modal = useModalService()
 const categoryStore = useCategoryStore()
 const comboStore = useComboStore()
 
@@ -60,13 +59,21 @@ const combo = ref<Combination>({
   categoryIds: (route.query?.categoryIds as string[]) || []
 })
 
-function openCategoryModal() {
-  modal.openModalByKey(ModalKey.CATEGORY_SELECTOR, {
-    selected: combo.value.categoryIds,
-    onSave: (ids: string[]) => {
-      combo.value.categoryIds = ids
+const openComboSelector = async () => {
+  const modal = await modalController.create({
+    component: CategorySelectorModal,
+    componentProps: {
+      selected: combo.value.categoryIds ?? null
     }
   })
+
+  await modal.present()
+
+  const { data, role } = await modal.onWillDismiss()
+
+  if (role === 'confirm') {
+    combo.value.categoryIds = data
+  }
 }
 
 onBeforeMount(async () => {
@@ -90,7 +97,6 @@ const loadCombo = async () => {
 
 async function saveCombo() {
   await comboStore.save(combo.value)
-  // await router.push({ name: 'ComboList' })
   await router.back()
 }
 

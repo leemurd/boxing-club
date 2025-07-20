@@ -154,8 +154,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { ExerciseCategory, type Exercise } from '@/domain/entities/Exercise'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { useTagStore } from '@/presentation/stores/tagStore'
-import { useModalService } from '@/presentation/composition/useModalService'
-import { ModalKey } from '@/presentation/modals/modalKeys'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import { onUserLoaded } from '@/presentation/utils/onUserLoaded.ts'
 import { defaultExercise, EXERCISES } from '@/domain/constants/exercises.ts'
@@ -166,13 +164,13 @@ import BCheckbox from '@/presentation/components/shared/BCheckbox.vue'
 import { DEFAULT_TAG_IDS } from '@/domain/constants/defaultTags.ts'
 import BBadge from '@/presentation/components/shared/BBadge.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
-import { IonItem, IonList } from '@ionic/vue'
+import { IonItem, IonList, modalController } from '@ionic/vue'
+import TagSelectorModal from '@/presentation/components/modals/TagSelectorModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const exStore = useExerciseStore()
 const tagStore = useTagStore()
-const modal = useModalService()
 
 const id = computed<string | undefined>(() => (route.params?.id as string | undefined))
 const isNew = ref(!id.value)
@@ -203,7 +201,6 @@ onUserLoaded(async () => {
     await exStore.loadById(id.value!)
     const {current} = exStore
     if (current) {
-      console.log(current)
       Object.assign(form.value, current)
     }
   } else {
@@ -216,13 +213,21 @@ onBeforeUnmount(() => {
   exStore.current = null
 })
 
-function openTagModal() {
-  modal.openModalByKey(ModalKey.TAG_SELECTOR, {
-    selected: form.value.tagIds,
-    onSave(ids: string[]) {
-      form.value.tagIds = ids
+const openTagModal = async () => {
+  const modal = await modalController.create({
+    component: TagSelectorModal,
+    componentProps: {
+      selected: form.value.tagIds ?? null
     }
   })
+
+  await modal.present()
+
+  const { data, role } = await modal.onWillDismiss()
+
+  if (role === 'confirm') {
+    form.value.tagIds = data
+  }
 }
 
 async function onSave() {

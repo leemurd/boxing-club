@@ -107,12 +107,8 @@ src
     │ │     ├── SectionLayout.vue
     │ │     └── TabsLayout.vue
     │ ├── modals
-    │ │ ├── BaseModal.vue
-    │ │ ├── BaseRenameModal.vue
     │ │ ├── CategorySelectorModal.vue
     │ │ ├── ComboSelectorModal.vue
-    │ │ ├── ConfirmationModal.vue
-    │ │ ├── ModalContainer.vue
     │ │ └── TagSelectorModal.vue
     │ ├── pages
     │ │ ├── combos
@@ -167,7 +163,6 @@ src
     │         ├── TagEditPage.vue
     │         └── TagListPage.vue
     ├── composition
-    │ ├── useModalService.ts
     │ └── useProjectRouter.ts
     ├── constants
     │ ├── combo

@@ -58,7 +58,6 @@ export const useExerciseStore = defineStore('exercise', () => {
 
   async function updateExercise(ex: Exercise) {
     const val = { ...ex }
-    console.log(val)
     const userId = await getUserId()
     if (!userId) return
     loading.value = true

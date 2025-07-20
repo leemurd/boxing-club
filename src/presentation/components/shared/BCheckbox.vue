@@ -2,6 +2,7 @@
   <ion-checkbox
     ref="checkboxRef"
     :value="modelValue"
+    :checked="modelValue"
     label-placement="end"
     :disabled="disabled"
     @ion-change="$emit('update:model-value', $event.target.checked)"

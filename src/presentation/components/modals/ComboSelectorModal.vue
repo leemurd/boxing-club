@@ -1,65 +1,67 @@
 <!-- src/presentation/components/modals/ComboSelectorModal.vue -->
 <template>
-  <base-modal title="Select Tags">
-    <template #body>
-      <div
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button
+          color="medium"
+          @click="cancel"
+        >Cancel</ion-button>
+      </ion-buttons>
+      <ion-title>Select combo</ion-title>
+      <ion-buttons slot="end">
+        <ion-button
+          :strong="true"
+          @click="confirm"
+        >Confirm</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-radio-group
+      v-model="selectedLocal"
+      value="combos"
+    >
+      <template
         v-for="combo in comboStore.combos"
         :key="combo.id"
-        class="form-check"
       >
-        <input
-          :id="combo.id"
-          v-model="selectedLocal"
-          class="form-check-input"
-          type="radio"
+        <ion-radio
           :value="combo.id"
-        >
-        <label
-          class="form-check-label form-label"
-          :for="combo.id"
-        >
-          {{ combo.title }}
-        </label>
-      </div>
-    </template>
-    <template #footer>
-      <button
-        class="btn btn-secondary"
-        @click="close"
-      >Cancel</button>
-      <button
-        class="btn btn-primary"
-        @click="save"
-      >Select</button>
-    </template>
-  </base-modal>
+          label-placement="end"
+        >{{ combo.title }}</ion-radio><br>
+      </template>
+    </ion-radio-group>
+  </ion-content>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { useModalService } from '@/presentation/composition/useModalService'
-import BaseModal from '@/presentation/components/modals/BaseModal.vue'
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonRadio,
+  IonRadioGroup,
+  modalController
+} from '@ionic/vue'
+import { onMounted, ref } from 'vue'
 import { useComboStore } from '@/presentation/stores/comboStore.ts'
 
 const props = defineProps<{
   selected?: string
-  onSave: (id?: string) => void
 }>()
 
-const modal    = useModalService()
+const cancel = () => modalController.dismiss(null, 'cancel')
+const confirm = () => modalController.dismiss(selectedLocal.value, 'confirm')
+
 const comboStore = useComboStore()
 const selectedLocal = ref<string | null>(props.selected || null)
 
 onMounted(async () => {
   await comboStore.load()
+  selectedLocal.value = comboStore.combos[0].id
 })
-
-function save() {
-  props.onSave(selectedLocal.value || undefined)
-  modal.closeModal()
-}
-
-function close() {
-  modal.closeModal()
-}
 </script>

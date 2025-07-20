@@ -99,10 +99,6 @@
           >
             Add Progress
           </b-button>
-          <b-button color="dark">
-            <!-- @click="enqueue()" -->
-            Add to Queue
-          </b-button>
         </div>
       </div>
     </div>
@@ -114,8 +110,6 @@ import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useExerciseStore } from '@/presentation/stores/exerciseStore.ts'
 import { useTagStore } from '@/presentation/stores/tagStore.ts'
 import { useComboStore } from '@/presentation/stores/comboStore.ts'
-import { useModalService } from '@/presentation/composition/useModalService.ts'
-import { ModalKey } from '@/presentation/modals/modalKeys.ts'
 import type { Combination } from '@/domain/entities/Combination.ts'
 import { type Exercise, ExerciseCategory } from '@/domain/entities/Exercise.ts'
 import BButton from '@/presentation/components/shared/BButton.vue'
@@ -130,24 +124,23 @@ import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
 import VerticalRadioGroup from '@/presentation/components/shared/VerticalRadioGroup.vue'
+import { modalController } from '@ionic/vue'
+import ComboSelectorModal from '@/presentation/components/modals/ComboSelectorModal.vue'
+
 
 // STORES и SERVICES
 const exStore = useExerciseStore()
 const progressStore = useProgressStore()
 const tagStore = useTagStore()
 const comboStore = useComboStore()
-const modal = useModalService()
 const router = useProjectRouter()
 
-// Список категорий и текущее значение
 const categories = [ExerciseCategory.PHYSICS, ExerciseCategory.TECHNIQUE, ExerciseCategory.PRACTICE]
 const selectedCategory = ref<ExerciseCategory>(ExerciseCategory.PHYSICS)
 
-// Текущее выбранное упражнение и комбо
 const selectedExercise = ref<Exercise | null>(null)
 const selectedCombo = ref<Combination | null>(null)
 
-// Флаги weight/accelerated
 const flags = reactive({
   weighted: false,
   accelerated: false
@@ -156,7 +149,6 @@ const flags = reactive({
 // Количество подходов/секунд
 const quantity = ref<number>(0)
 
-// Объект записи без полей id/userId/timestamp, но со всеми остальными
 const record = reactive<Omit<TrainingRecord, 'id' | 'userId' | 'timestamp'>>({
   exerciseId: '',
   comboId: null,
@@ -166,7 +158,6 @@ const record = reactive<Omit<TrainingRecord, 'id' | 'userId' | 'timestamp'>>({
   tagIds: []
 })
 
-// Фильтрованный список упражнений по выбранной категории
 const filteredExercises = computed<Exercise[]>(() => {
   return exStore.exercises.filter((e) => e.category === selectedCategory.value)
 })
@@ -177,22 +168,28 @@ const clear = () => {
   selectedCombo.value = null
 }
 
-// Вызывается, когда мы выбираем упражнение в BButtonGroup
 const selectExercise = (ex: Exercise) => {
   selectedExercise.value = ex
   clear()
 }
 
-// Открывает модалку выбора Combo
-const openComboSelector = () => {
-  modal.openModalByKey(ModalKey.COMBO_SELECTOR, {
-    mode: 'combo',
-    selected: selectedCombo.value?.id || '',
-    onSave(id: string) {
-      selectedCombo.value = comboStore.combos.find((c) => c.id === id) || null
+const openComboSelector = async () => {
+  const modal = await modalController.create({
+    component: ComboSelectorModal,
+    componentProps: {
+      selected: selectedCombo.value ?? null
     }
   })
+
+  await modal.present()
+
+  const { data, role } = await modal.onWillDismiss()
+
+  if (role === 'confirm') {
+    selectedCombo.value = comboStore.combos.find((c) => c.id === data) ?? null
+  }
 }
+
 const clearCombo = () => {
   selectedCombo.value = null
 }

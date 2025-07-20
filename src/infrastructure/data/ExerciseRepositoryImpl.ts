@@ -59,10 +59,13 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
       name: exercise.name,
       category: exercise.category,
       measurement: exercise.measurement,
-      canBeWeighted: exercise.canBeWeighted,
-      canBeAccelerated: exercise.canBeAccelerated,
+      canBeWeighted: exercise.canBeWeighted || exercise.alwaysWeighted,
+      canBeAccelerated: exercise.canBeAccelerated || exercise.alwaysAccelerated,
+      alwaysAccelerated: exercise.alwaysAccelerated || false,
+      alwaysWeighted: exercise.alwaysWeighted || false,
       tagIds: exercise.tagIds,
-      isFavorite: exercise.isFavorite
+      isFavorite: exercise.isFavorite,
+      canHaveCombo: exercise.canHaveCombo
     })
     return {
       ...exercise,
@@ -83,7 +86,8 @@ export class ExerciseRepositoryImpl implements IExerciseRepository {
         alwaysAccelerated: exercise.alwaysAccelerated || false,
         alwaysWeighted: exercise.alwaysWeighted || false,
         tagIds: exercise.tagIds,
-        isFavorite: exercise.isFavorite
+        isFavorite: exercise.isFavorite,
+        canHaveCombo: exercise.canHaveCombo
       },
       { merge: true }
     )
