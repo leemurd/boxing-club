@@ -177,7 +177,9 @@ const isNew = ref(!id.value)
 const isLoading = computed(() => exStore.loading)
 
 const currentExercise = computed<Exercise | null>(() => exStore.current || null)
-const isDefault = computed(() => isNew.value ? false : !!(DEFAULT_EXERCISES.find((item) => item.id === currentExercise.value?.id)))
+const isDefault = computed(
+  () => isNew.value ? false : !!(DEFAULT_EXERCISES.find((item) => item.id === currentExercise.value?.id))
+)
 const categories = Object.values(ExerciseCategory)
 
 const form = ref<Exercise>({

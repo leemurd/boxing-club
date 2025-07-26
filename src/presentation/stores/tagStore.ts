@@ -1,5 +1,4 @@
 // src/presentation/stores/tagStore.ts
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getUserId } from '@/presentation/utils/getUserId'

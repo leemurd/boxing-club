@@ -15,7 +15,7 @@
     >
       <template v-slot:actions="{ item }">
         <b-dropdown-item @click="onEditCombo(item)">Edit</b-dropdown-item>
-        <b-dropdown-item @click="remove(item.id)">Remove</b-dropdown-item>
+        <b-dropdown-item @click="onRemove(item.id)">Remove</b-dropdown-item>
       </template>
     </list-group>
 
@@ -26,12 +26,6 @@
         New combo
       </b-button-block>
     </template>
-
-    <b-alert
-      header="Confirm delete"
-      :is-open="isModalDeleteOpen"
-      :buttons="alertButtons"
-    />
   </page-default>
 </template>
 
@@ -44,9 +38,7 @@ import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
-import { ref } from 'vue'
-import type { IAlertButton } from '@/presentation/components/shared/types.ts'
+import { useDeleteAlerts } from '@/presentation/composition/useAlerts.ts'
 
 const comboStore = useComboStore()
 const router = useProjectRouter()
@@ -58,28 +50,7 @@ const onEditCombo = (combo: Combination) => {
   })
 }
 
-const removingId = ref('')
-const isModalDeleteOpen = ref(false)
-
-function remove(id: string) {
-  removingId.value = id
-  isModalDeleteOpen.value = true
+const onRemove = (id: string) => {
+  useDeleteAlerts(id, comboStore.remove)
 }
-
-const alertButtons: IAlertButton[] = [
-  {
-    text: 'Cancel',
-    role: 'cancel',
-    handler: () => {
-      isModalDeleteOpen.value = false
-    }
-  },
-  {
-    text: 'Confirm',
-    role: 'confirm',
-    handler: async () => {
-      await comboStore.remove(removingId.value)
-    }
-  }
-]
 </script>

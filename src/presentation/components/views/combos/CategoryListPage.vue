@@ -12,7 +12,7 @@
         </template>
         <template v-slot:actions="{ item }">
           <b-dropdown-item @click="openCategory(item)">Edit</b-dropdown-item>
-          <b-dropdown-item @click="remove(item.id)">Remove</b-dropdown-item>
+          <b-dropdown-item @click="onRemove(item.id)">Remove</b-dropdown-item>
         </template>
       </list-group>
     </div>
@@ -24,17 +24,11 @@
         New category
       </b-button-block>
     </template>
-
-    <b-alert
-      header="Confirm delete"
-      :is-open="isModalDeleteOpen"
-      :buttons="alertButtons"
-    />
   </page-default>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import { type ComboCategory } from '@/domain/entities/ComboCategory.ts'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
@@ -42,8 +36,7 @@ import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
-import type { IAlertButton } from '@/presentation/components/shared/types.ts'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
+import { useDeleteAlerts } from '@/presentation/composition/useAlerts.ts'
 
 const categoryStore = useCategoryStore()
 const router = useProjectRouter()
@@ -60,28 +53,7 @@ const openAddCategory = () => {
   router.push(`/categories/new`)
 }
 
-const removingId = ref('')
-const isModalDeleteOpen = ref(false)
-
-function remove(id: string) {
-  removingId.value = id
-  isModalDeleteOpen.value = true
+const onRemove = (id: string) => {
+  useDeleteAlerts(id, categoryStore.remove)
 }
-
-const alertButtons: IAlertButton[] = [
-  {
-    text: 'Cancel',
-    role: 'cancel',
-    handler: () => {
-      isModalDeleteOpen.value = false
-    }
-  },
-  {
-    text: 'Confirm',
-    role: 'confirm',
-    handler: async () => {
-      await categoryStore.remove(removingId.value)
-    }
-  }
-]
 </script>

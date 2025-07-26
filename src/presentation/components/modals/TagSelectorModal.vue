@@ -20,7 +20,7 @@
   <ion-content class="ion-padding">
     <b-checkbox-list
       v-model="selectedLocal"
-      :items="tagStore.list"
+      :items="tagList"
       option-label="name"
       disabled-item="isAutomatic"
     />
@@ -37,7 +37,7 @@ import {
   IonButton,
   modalController
 } from '@ionic/vue'
-import { onMounted, toRef } from 'vue'
+import { computed, onMounted, toRef } from 'vue'
 import BCheckboxList from '@/presentation/components/shared/BCheckboxList.vue'
 import { useTagStore }     from '@/presentation/stores/tagStore'
 
@@ -51,6 +51,8 @@ const selectedLocal = toRef<any[]>(props.selected)
 onMounted(async () => {
   await tagStore.load()
 })
+
+const tagList = computed(() => tagStore.list.filter((tag) => !tag.isAutomatic))
 
 const cancel = () => modalController.dismiss(null, 'cancel')
 const confirm = () => modalController.dismiss(selectedLocal.value, 'confirm')

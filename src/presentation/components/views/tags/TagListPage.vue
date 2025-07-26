@@ -10,7 +10,7 @@
       </template>
       <template v-slot:actions="{ item }">
         <b-dropdown-item @click="goEdit(item)">Edit</b-dropdown-item>
-        <b-dropdown-item @click="remove(item.id)">Delete</b-dropdown-item>
+        <b-dropdown-item @click="onRemove(item.id)">Delete</b-dropdown-item>
       </template>
     </list-group>
 
@@ -21,17 +21,11 @@
         New tag
       </b-button-block>
     </template>
-
-    <b-alert
-      header="Confirm delete"
-      :is-open="isModalDeleteOpen"
-      :buttons="alertButtons"
-    />
   </page-default>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import ListGroup from '@/presentation/components/shared/ListGroup.vue'
 import type { Tag } from '@/domain/entities/Tag.ts'
@@ -39,8 +33,7 @@ import BDropdownItem from '@/presentation/components/shared/BDropdownItem.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
-import type { IAlertButton } from '@/presentation/components/shared/types.ts'
-import BAlert from '@/presentation/components/shared/BAlert.vue'
+import { useDeleteAlerts } from '@/presentation/composition/useAlerts.ts'
 
 const tagStore = useTagStore()
 const router = useProjectRouter()
@@ -60,28 +53,7 @@ const createNewTag = () => {
   router.push({ name: 'TagCreate' })
 }
 
-const removingId = ref('')
-const isModalDeleteOpen = ref(false)
-
-function remove(id: string) {
-  removingId.value = id
-  isModalDeleteOpen.value = true
+const onRemove = (id: string) => {
+  useDeleteAlerts(id, tagStore.remove)
 }
-
-const alertButtons: IAlertButton[] = [
-  {
-    text: 'Cancel',
-    role: 'cancel',
-    handler: () => {
-      isModalDeleteOpen.value = false
-    }
-  },
-  {
-    text: 'Confirm',
-    role: 'confirm',
-    handler: async () => {
-      await tagStore.remove(removingId.value)
-    }
-  }
-]
 </script>

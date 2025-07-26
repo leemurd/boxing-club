@@ -22,14 +22,18 @@ export class TagRepositoryImpl extends AbstractFirestoreClass<Tag> implements IT
     // for default tags from const
     if (tag.id) {
       ref = doc(colRef, tag.id)
-      await setDoc(ref, { name: tag.name })
+      await setDoc(ref, {
+        name: tag.name,
+        isAutomatic: tag.isAutomatic ?? false
+      })
       return tag
     } else {
       // for new tags
       ref = await addDoc(colRef, { name: tag.name })
       return {
         id: ref.id,
-        name: tag.name
+        name: tag.name,
+        isAutomatic: tag.isAutomatic ?? false
       }
     }
   }
