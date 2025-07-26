@@ -15,7 +15,7 @@ import { getUC } from '@/infrastructure/di/resolver.ts'
 export const useExerciseStore = defineStore('exercise', () => {
   const exercises = ref<Exercise[]>([])
   const current = ref<Exercise | null>(null)
-  const loading = ref(false)
+  const loading = ref(true)
 
   async function loadAll() {
     const userId = await getUserId()
@@ -33,8 +33,14 @@ export const useExerciseStore = defineStore('exercise', () => {
       }
     }
 
-    // load all from db
-    exercises.value = await getUC<GetExercisesUseCase>(TYPES.GetExercisesUseCase).execute(userId)
+    try {
+      // load all from db
+      exercises.value = await getUC<GetExercisesUseCase>(TYPES.GetExercisesUseCase).execute(userId)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      loading.value = false
+    }
   }
 
   async function loadById(id: string) {

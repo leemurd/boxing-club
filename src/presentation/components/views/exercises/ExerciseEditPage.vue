@@ -133,12 +133,12 @@
           </b-button>
 
           <b-button
-            v-if="!isDefault && !isNew"
+            v-if="!isLoading && !isDefault && !isNew"
             color="danger"
             class="w-100 mt-2"
             type="button"
             fill="outline"
-            @click="onRemove"
+            @click="onDelete"
           >
             Remove
           </b-button>
@@ -166,6 +166,7 @@ import BBadge from '@/presentation/components/shared/BBadge.vue'
 import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import { IonItem, IonList, modalController } from '@ionic/vue'
 import TagSelectorModal from '@/presentation/components/modals/TagSelectorModal.vue'
+import { useDeleteSheets } from '@/presentation/composition/useSheets.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -241,9 +242,11 @@ async function onSave() {
   await router.push({ name: 'ExercisesIndex' })
 }
 
-const onRemove = async () => {
-  await exStore.removeExercise(form.value.id)
-  router.back()
+const onDelete = () => {
+  useDeleteSheets(form.value.id, async (id) => {
+    await exStore.removeExercise(id)
+    router.back()
+  })
 }
 
 watch(() => [form.value.alwaysAccelerated, form.value.alwaysWeighted], ([newAlwaysAccelerated, newAlwaysWeighted]) => {

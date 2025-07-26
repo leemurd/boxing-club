@@ -28,7 +28,7 @@
           >Open</b-dropdown-item>
           <b-dropdown-item
             v-if="!exStore.isDefault(item.id)"
-            @click="removeExercise(item)"
+            @click="onRemove(item)"
           >Remove</b-dropdown-item>
         </template>
       </list-group>
@@ -54,6 +54,7 @@ import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalSegmentGroup.vue'
 import BButtonBlock from '@/presentation/components/shared/BButtonBlock.vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
+import { useDeleteAlerts } from '@/presentation/composition/useAlerts.ts'
 
 const router = useProjectRouter()
 const exStore = useExerciseStore()
@@ -70,10 +71,9 @@ const openExercise = (ex: Exercise) => {
   })
 }
 
-const removeExercise = async (ex: Exercise) => {
-  if (!exStore.isDefault(ex.id)) {
-    await exStore.removeExercise(ex.id)
-  }
+const onRemove = (ex: Exercise) => {
+  if (exStore.isDefault(ex.id)) return
+  useDeleteAlerts(ex.id, exStore.removeExercise)
 }
 
 onMounted(async () => {
