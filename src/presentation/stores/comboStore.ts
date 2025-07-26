@@ -4,21 +4,22 @@ import { ref } from 'vue'
 import { TYPES } from '@/infrastructure/di/types'
 import type { Combination } from '@/domain/entities/Combination'
 import { useAuthStore } from './authStore'
-import { GetCombinationsUseCase } from '@/application/useCases/combination/GetCombinationsUseCase.ts'
-import { CreateCombinationUseCase } from '@/application/useCases/combination/CreateCombinationUseCase.ts'
-import { DeleteCombinationUseCase } from '@/application/useCases/combination/DeleteCombinationUseCase.ts'
-import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
-import type { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase.ts'
-import { getUserId } from '@/presentation/utils/getUserId.ts'
-import { getUC } from '@/infrastructure/di/resolver.ts'
-import { GetCombinationByIdUseCase } from '@/application/useCases/combination/GetCombinationByIdUseCase.ts'
+import { useCategoryStore } from '@/presentation/stores/categoryStore'
+import { getUserId } from '@/presentation/utils/getUserId'
+import { getUC } from '@/infrastructure/di/resolver'
+import type { GetCombinationsUseCase } from '@/application/useCases/combination/GetCombinationsUseCase'
+import type { CreateCombinationUseCase } from '@/application/useCases/combination/CreateCombinationUseCase'
+import type { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase'
+import type { DeleteCombinationUseCase } from '@/application/useCases/combination/DeleteCombinationUseCase'
+import type { GetCombinationByIdUseCase } from '@/application/useCases/combination/GetCombinationByIdUseCase'
+import { withLoading } from '@/presentation/utils/withLoading'
 
 export const useComboStore = defineStore('combo', () => {
   const combos = ref<Combination[]>([])
   const authStore = useAuthStore()
   const categoryStore = useCategoryStore()
 
-  async function removeDeletedCategories() {
+  const removeDeletedCategories = withLoading(async () => {
     const userId = authStore.currentUser!.id
     await categoryStore.load()
 
@@ -34,38 +35,40 @@ export const useComboStore = defineStore('combo', () => {
     }
 
     await load()
-  }
+  })
 
-  async function load() {
+  const load = withLoading(async () => {
     const userId = await getUserId()
-    combos.value = await getUC<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase).execute(userId)
-  }
+    const getUCase = getUC<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase)
+    combos.value = await getUCase.execute(userId)
+  })
 
-  async function save(combo: Combination) {
+  const save = withLoading(async (combo: Combination) => {
     const userId = await getUserId()
-    await getUC<CreateCombinationUseCase>(TYPES.CreateCombinationUseCase).execute(userId, combo)
+    const createUC = getUC<CreateCombinationUseCase>(TYPES.CreateCombinationUseCase)
+    await createUC.execute(userId, combo)
     await load()
-  }
+  })
 
-  async function update(combo: Combination) {
+  const update = withLoading(async (combo: Combination) => {
     const userId = await getUserId()
-    await getUC<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase).execute(userId, combo)
+    const updateUC = getUC<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase)
+    await updateUC.execute(userId, combo)
     await load()
-  }
+  })
 
-  async function remove(comboId: string) {
+  const remove = withLoading(async (comboId: string) => {
     const userId = await getUserId()
-    await getUC<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).execute(userId, comboId)
+    const deleteUC = getUC<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase)
+    await deleteUC.execute(userId, comboId)
     await load()
-  }
+  })
 
-  const getCombinationById = async (comboId: string): Promise<Combination | null> => {
+  const getCombinationById = withLoading(async (comboId: string): Promise<Combination | null> => {
     const userId = await getUserId()
-    return await getUC<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase).execute(
-      userId,
-      comboId
-    )
-  }
+    const getByIdUC = getUC<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase)
+    return await getByIdUC.execute(userId, comboId)
+  })
 
   return {
     combos,

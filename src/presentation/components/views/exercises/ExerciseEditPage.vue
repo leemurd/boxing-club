@@ -167,15 +167,18 @@ import PageDefault from '@/presentation/components/layout/page/PageDefault.vue'
 import { IonItem, IonList, modalController } from '@ionic/vue'
 import TagSelectorModal from '@/presentation/components/modals/TagSelectorModal.vue'
 import { useDeleteSheets } from '@/presentation/composition/useSheets.ts'
+import { useLoadingStore } from '@/presentation/stores/loadingStore.ts'
+
 
 const route = useRoute()
 const router = useRouter()
 const exStore = useExerciseStore()
 const tagStore = useTagStore()
+const loadingStore = useLoadingStore()
 
 const id = computed<string | undefined>(() => (route.params?.id as string | undefined))
 const isNew = ref(!id.value)
-const isLoading = computed(() => exStore.loading)
+const isLoading = computed(() => loadingStore.isLoading)
 
 const currentExercise = computed<Exercise | null>(() => exStore.current || null)
 const isDefault = computed(

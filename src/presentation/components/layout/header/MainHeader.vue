@@ -24,17 +24,24 @@
         v-if="$slots['end']"
         slot="end"
       >
-        <!--        :collapse="true"-->
         <slot name="end"/>
       </ion-buttons>
+
+      <ion-progress-bar
+        v-if="loading.isLoading"
+        type="indeterminate"
+      />
     </ion-toolbar>
   </ion-header>
 </template>
 
 <script setup lang="ts">
-import { IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonBackButton } from '@ionic/vue'
+import { IonButtons, IonHeader, IonMenuButton, IonTitle, IonToolbar, IonBackButton, IonProgressBar } from '@ionic/vue'
 import useProjectRouter from '@/presentation/composition/useProjectRouter.ts'
 import HeaderLogo from '@/presentation/components/layout/header/HeaderLogo.vue'
+import { useLoadingStore } from '@/presentation/stores/loadingStore'
+
+const loading = useLoadingStore()
 
 defineProps<{
   headerBack?: boolean

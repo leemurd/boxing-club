@@ -1,119 +1,90 @@
 // src/presentation/stores/exerciseStore.ts
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { getUserId } from '@/presentation/utils/getUserId'
+import { withLoading } from '@/presentation/utils/withLoading'
+import { getUC } from '@/infrastructure/di/resolver'
 import { TYPES } from '@/infrastructure/di/types'
 import type { Exercise } from '@/domain/entities/Exercise'
-import { getUserId } from '@/presentation/utils/getUserId'
-import { DEFAULT_EXERCISES } from '@/domain/constants/defaultExercises.ts'
 import type { GetExercisesUseCase } from '@/application/useCases/exercise/GetExercisesUseCase'
 import type { GetExerciseByIdUseCase } from '@/application/useCases/exercise/GetExerciseByIdUseCase'
 import type { CreateExerciseUseCase } from '@/application/useCases/exercise/CreateExerciseUseCase'
 import type { UpdateExerciseUseCase } from '@/application/useCases/exercise/UpdateExerciseUseCase'
 import type { DeleteExerciseUseCase } from '@/application/useCases/exercise/DeleteExerciseUseCase'
-import { getUC } from '@/infrastructure/di/resolver.ts'
+import { DEFAULT_EXERCISES } from '@/domain/constants/defaultExercises'
 
 export const useExerciseStore = defineStore('exercise', () => {
   const exercises = ref<Exercise[]>([])
   const current = ref<Exercise | null>(null)
-  const loading = ref(true)
 
-  async function loadAll() {
+  const loadAll = withLoading(async () => {
     const userId = await getUserId()
     if (!userId) return
-    loading.value = true
 
-    // init defaults to db
-    const existing: Exercise[] = await getUC<GetExercisesUseCase>(
-      TYPES.GetExercisesUseCase
-    ).execute(userId)
+    const getAllUC = getUC<GetExercisesUseCase>(TYPES.GetExercisesUseCase)
+    const existing = await getAllUC.execute(userId)
 
     for (const def of DEFAULT_EXERCISES) {
       if (!existing.some((t) => t.id === def.id)) {
-        await getUC<CreateExerciseUseCase>(TYPES.CreateExerciseUseCase).execute(userId, def)
+        const createUC = getUC<CreateExerciseUseCase>(TYPES.CreateExerciseUseCase)
+        await createUC.execute(userId, def)
       }
     }
 
-    try {
-      // load all from db
-      exercises.value = await getUC<GetExercisesUseCase>(TYPES.GetExercisesUseCase).execute(userId)
-    } catch (e) {
-      console.log(e)
-    } finally {
-      loading.value = false
-    }
-  }
+    exercises.value = await getAllUC.execute(userId)
+  })
 
-  async function loadById(id: string) {
+  const loadById = withLoading(async (id: string) => {
     const userId = await getUserId()
     if (!userId) return
-    loading.value = true
-    try {
-      const uc = getUC<GetExerciseByIdUseCase>(TYPES.GetExerciseByIdUseCase)
-      current.value = await uc.execute(userId, id)
-    } finally {
-      loading.value = false
-    }
-  }
 
-  async function createExercise(ex: Exercise) {
+    const uc = getUC<GetExerciseByIdUseCase>(TYPES.GetExerciseByIdUseCase)
+    current.value = await uc.execute(userId, id)
+  })
+
+  const createExercise = withLoading(async (ex: Exercise) => {
     const userId = await getUserId()
     if (!userId) return
-    loading.value = true
-    try {
-      const uc = getUC<CreateExerciseUseCase>(TYPES.CreateExerciseUseCase)
-      const created = await uc.execute(userId, ex)
-      exercises.value.push(created)
-      return created
-    } finally {
-      loading.value = false
-    }
-  }
 
-  async function updateExercise(ex: Exercise) {
-    const val = { ...ex }
+    const uc = getUC<CreateExerciseUseCase>(TYPES.CreateExerciseUseCase)
+    const created = await uc.execute(userId, ex)
+    exercises.value.push(created)
+    return created
+  })
+
+  const updateExercise = withLoading(async (ex: Exercise) => {
     const userId = await getUserId()
     if (!userId) return
-    loading.value = true
-    try {
-      const uc = getUC<UpdateExerciseUseCase>(TYPES.UpdateExerciseUseCase)
-      await uc.execute(userId, val)
-      const idx = exercises.value.findIndex((e) => e.id === val.id)
-      if (idx !== -1) exercises.value.splice(idx, 1, val)
-    } finally {
-      loading.value = false
-    }
-  }
 
-  async function removeExercise(id: string) {
+    const uc = getUC<UpdateExerciseUseCase>(TYPES.UpdateExerciseUseCase)
+    await uc.execute(userId, ex)
+    const idx = exercises.value.findIndex((e) => e.id === ex.id)
+    if (idx !== -1) exercises.value[idx] = ex
+  })
+
+  const removeExercise = withLoading(async (id: string) => {
     const userId = await getUserId()
     if (!userId) return
-    loading.value = true
-    try {
-      const uc = getUC<DeleteExerciseUseCase>(TYPES.DeleteExerciseUseCase)
-      await uc.execute(userId, id)
-      exercises.value = exercises.value.filter((e) => e.id !== id)
-    } finally {
-      loading.value = false
-    }
-  }
+
+    const uc = getUC<DeleteExerciseUseCase>(TYPES.DeleteExerciseUseCase)
+    await uc.execute(userId, id)
+    exercises.value = exercises.value.filter((e) => e.id !== id)
+  })
 
   const getExerciseById = (id: string): Exercise | undefined =>
     exercises.value.find((ex) => ex.id === id)
 
-  const isDefault = (id: string): boolean => {
-    return DEFAULT_EXERCISES.some((e) => e.id === id)
-  }
+  const isDefault = (id: string): boolean => DEFAULT_EXERCISES.some((e) => e.id === id)
 
   return {
-    isDefault,
     exercises,
     current,
-    loading,
     loadAll,
     loadById,
     createExercise,
     updateExercise,
     removeExercise,
-    getExerciseById
+    getExerciseById,
+    isDefault
   }
 })
