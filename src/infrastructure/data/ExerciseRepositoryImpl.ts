@@ -1,100 +1,95 @@
 // src/infrastructure/data/ExerciseRepositoryImpl.ts
 import { injectable } from 'inversify'
 import {
-  collection,
   doc,
-  getDocs,
-  getDoc,
   addDoc,
   setDoc,
-  deleteDoc,
-  DocumentReference
+  DocumentReference,
+  type QueryDocumentSnapshot,
+  type DocumentData
 } from 'firebase/firestore'
 import type { IExerciseRepository } from '@/domain/repositories/IExerciseRepository'
 import type { Exercise } from '@/domain/entities/Exercise'
-import { db } from '@/infrastructure/firebase/firebaseConfig'
-import { EXERCISES } from '@/domain/constants/exercises.ts'
+import { AbstractFirestoreClass } from '@/infrastructure/firebase/AbstractFirestoreClass.ts'
 
 @injectable()
-export class ExerciseRepositoryImpl implements IExerciseRepository {
-  private db = db
-  private col(userId: string) {
-    return collection(this.db, 'users', userId, 'exercises')
-  }
-
-  async getAll(userId: string): Promise<Exercise[]> {
-    const snap = await getDocs(this.col(userId))
-    return [
-      // ...EXERCISES,
-      ...snap.docs.map((d) => ({
-        id: d.id,
-        ...(d.data() as Omit<Exercise, 'id'>)
-      }))
-    ]
-  }
-
-  async getById(userId: string, id: string): Promise<Exercise | null> {
-    // 1) Сначала пытаемся найти в дефолтных константах
-    const defaultEx = EXERCISES.find((e) => e.id === id)
-    if (defaultEx) {
-      return { ...defaultEx }
-    }
-
-    // 2) Если не нашли среди дефолтов — ищем в Firestore (пользовательские)
-    const ref = doc(this.db, 'users', userId, 'exercises', id)
-    const snap = await getDoc(ref)
-    if (snap.exists()) {
-      return {
-        id: snap.id,
-        ...(snap.data() as Omit<Exercise, 'id'>)
-      }
-    }
-
-    return null
-  }
+export class ExerciseRepositoryImpl
+  extends AbstractFirestoreClass<Exercise>
+  implements IExerciseRepository
+{
+  protected readonly collectionName = 'exercises'
 
   async create(userId: string, exercise: Exercise): Promise<Exercise> {
     const colRef = this.col(userId)
-    const ref: DocumentReference = await addDoc(colRef, {
-      name: exercise.name,
-      category: exercise.category,
-      measurement: exercise.measurement,
-      canBeWeighted: exercise.canBeWeighted || exercise.alwaysWeighted,
-      canBeAccelerated: exercise.canBeAccelerated || exercise.alwaysAccelerated,
-      alwaysAccelerated: exercise.alwaysAccelerated || false,
-      alwaysWeighted: exercise.alwaysWeighted || false,
-      tagIds: exercise.tagIds,
-      isFavorite: exercise.isFavorite,
-      canHaveCombo: exercise.canHaveCombo
-    })
+    let ref: DocumentReference
+
+    // if default ex - set with default-id
+    if (exercise.id) {
+      ref = doc(colRef, exercise.id)
+      await setDoc(ref, {
+        name: exercise.name,
+        category: exercise.category,
+        measurement: exercise.measurement,
+        canBeWeighted: exercise.canBeWeighted ?? exercise.alwaysWeighted ?? false,
+        canBeAccelerated: exercise.canBeAccelerated ?? exercise.alwaysAccelerated ?? false,
+        alwaysAccelerated: exercise.alwaysAccelerated || false,
+        alwaysWeighted: exercise.alwaysWeighted || false,
+        tagIds: exercise.tagIds,
+        isFavorite: exercise.isFavorite,
+        canHaveCombo: exercise.canHaveCombo
+      })
+
+      return exercise
+    } else {
+      ref = await addDoc(colRef, {
+        name: exercise.name,
+        category: exercise.category,
+        measurement: exercise.measurement,
+        canBeWeighted: exercise.canBeWeighted ?? exercise.alwaysWeighted ?? false,
+        canBeAccelerated: exercise.canBeAccelerated ?? exercise.alwaysAccelerated ?? false,
+        alwaysAccelerated: exercise.alwaysAccelerated || false,
+        alwaysWeighted: exercise.alwaysWeighted || false,
+        tagIds: exercise.tagIds,
+        isFavorite: exercise.isFavorite,
+        canHaveCombo: exercise.canHaveCombo
+      })
+    }
+
     return {
       ...exercise,
       id: ref.id
     }
   }
 
-  async update(userId: string, exercise: Exercise): Promise<void> {
-    const ref = doc(this.db, 'users', userId, 'exercises', exercise.id)
-    await setDoc(
-      ref,
-      {
-        name: exercise.name,
-        category: exercise.category,
-        measurement: exercise.measurement,
-        canBeWeighted: exercise.canBeWeighted || exercise.alwaysWeighted,
-        canBeAccelerated: exercise.canBeAccelerated || exercise.alwaysAccelerated,
-        alwaysAccelerated: exercise.alwaysAccelerated || false,
-        alwaysWeighted: exercise.alwaysWeighted || false,
-        tagIds: exercise.tagIds,
-        isFavorite: exercise.isFavorite,
-        canHaveCombo: exercise.canHaveCombo
-      },
-      { merge: true }
-    )
+  protected toDomain(snapshot: QueryDocumentSnapshot<DocumentData>): Exercise {
+    const data = snapshot.data()
+    return {
+      id: snapshot.id,
+      name: data.name,
+      category: data.category,
+      measurement: data.measurement,
+      canBeWeighted: data.canBeWeighted ?? data.alwaysWeighted ?? false,
+      canBeAccelerated: data.canBeAccelerated ?? data.alwaysAccelerated ?? false,
+      alwaysAccelerated: data.alwaysAccelerated || false,
+      alwaysWeighted: data.alwaysWeighted || false,
+      tagIds: data.tagIds,
+      isFavorite: data.isFavorite,
+      canHaveCombo: data.canHaveCombo
+    }
   }
 
-  async delete(userId: string, id: string): Promise<void> {
-    const ref = doc(this.db, 'users', userId, 'exercises', id)
-    await deleteDoc(ref)
+  protected toFirestore(entity: Exercise): DocumentData {
+    return {
+      name: entity.name,
+      category: entity.category,
+      measurement: entity.measurement,
+      canBeWeighted: entity.canBeWeighted ?? entity.alwaysWeighted ?? false,
+      canBeAccelerated: entity.canBeAccelerated ?? entity.alwaysAccelerated ?? false,
+      alwaysAccelerated: entity.alwaysAccelerated || false,
+      alwaysWeighted: entity.alwaysWeighted || false,
+      tagIds: entity.tagIds,
+      isFavorite: entity.isFavorite,
+      canHaveCombo: entity.canHaveCombo
+    }
   }
 }

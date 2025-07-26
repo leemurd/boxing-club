@@ -17,16 +17,16 @@
       v-if="categoryIds.length"
       v-slot
     >
-      <div class="d-flex align-items-center justify-content-center">
-        <div v-if="categoryIds.length">
-          <span
+      <div class="d-flex gap-1 align-items-center justify-content-center">
+        <template v-if="categoryIds.length">
+          <b-badge
             v-for="id in categoryIds"
             :key="id"
-            class="badge bg-secondary me-1"
+            color="medium"
           >
             {{ getCategoryName(id) }}
-          </span>
-        </div>
+          </b-badge>
+        </template>
         <template v-else>
           <span class="small">Empty</span>
         </template>
@@ -39,6 +39,7 @@
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
+import BBadge from '@/presentation/components/shared/BBadge.vue'
 
 defineProps<{
   categoryIds: string[],

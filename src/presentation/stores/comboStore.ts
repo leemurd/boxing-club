@@ -5,7 +5,7 @@ import { TYPES } from '@/infrastructure/di/types'
 import type { Combination } from '@/domain/entities/Combination'
 import { useAuthStore } from './authStore'
 import { GetCombinationsUseCase } from '@/application/useCases/combination/GetCombinationsUseCase.ts'
-import { SaveCombinationUseCase } from '@/application/useCases/combination/SaveCombinationUseCase.ts'
+import { CreateCombinationUseCase } from '@/application/useCases/combination/CreateCombinationUseCase.ts'
 import { DeleteCombinationUseCase } from '@/application/useCases/combination/DeleteCombinationUseCase.ts'
 import { useCategoryStore } from '@/presentation/stores/categoryStore.ts'
 import type { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase.ts'
@@ -23,7 +23,9 @@ export const useComboStore = defineStore('combo', () => {
     await categoryStore.load()
 
     for (const comboItem of combos.value) {
-      const filtered = comboItem.categoryIds.filter((id) => categoryStore.list.some((cat) => cat.id === id))
+      const filtered = comboItem.categoryIds.filter((id) =>
+        categoryStore.list.some((cat) => cat.id === id)
+      )
       if (filtered.length !== comboItem.categoryIds.length) {
         comboItem.categoryIds = filtered
         const updateUC = getUC<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase)
@@ -41,7 +43,13 @@ export const useComboStore = defineStore('combo', () => {
 
   async function save(combo: Combination) {
     const userId = await getUserId()
-    await getUC<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).execute(userId, combo)
+    await getUC<CreateCombinationUseCase>(TYPES.CreateCombinationUseCase).execute(userId, combo)
+    await load()
+  }
+
+  async function update(combo: Combination) {
+    const userId = await getUserId()
+    await getUC<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase).execute(userId, combo)
     await load()
   }
 
@@ -53,13 +61,17 @@ export const useComboStore = defineStore('combo', () => {
 
   const getCombinationById = async (comboId: string): Promise<Combination | null> => {
     const userId = await getUserId()
-    return await getUC<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase).execute(userId, comboId)
+    return await getUC<GetCombinationByIdUseCase>(TYPES.GetCombinationByIdUseCase).execute(
+      userId,
+      comboId
+    )
   }
 
   return {
     combos,
     load,
     save,
+    update,
     remove,
     removeDeletedCategories,
     getCombinationById

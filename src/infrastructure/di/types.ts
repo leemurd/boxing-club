@@ -22,7 +22,7 @@ export const TYPES = {
   // combos
   CombinationRepository: Symbol.for('CombinationRepository'),
   GetCombinationsUseCase: Symbol.for('GetCombinationsUseCase'),
-  SaveCombinationUseCase: Symbol.for('SaveCombinationUseCase'),
+  CreateCombinationUseCase: Symbol.for('CreateCombinationUseCase'),
   UpdateCombinationUseCase: Symbol.for('UpdateCombinationUseCase'),
   DeleteCombinationUseCase: Symbol.for('DeleteCombinationUseCase'),
   GetCombinationByIdUseCase: Symbol.for('GetCombinationByIdUseCase'),

@@ -1,16 +1,18 @@
 // src/domain/constants/defaultTags.ts
 
 export const DEFAULT_TAG_IDS = {
-  WEIGHT: 'tag-default-weight', // «с доп. весом»
-  PACE: 'tag-default-pace', // «в ускорённом темпе»
-  PHYSICS: 'tag-default-physics', // «Physics»
-  PRACTICE: 'tag-default-practice', // «Practice»
-  TECHNIQUE: 'tag-default-technique', // «Technique»
-  CARDIO: 'tag-default-cardio', // «Cardio»
-  HANDS: 'tag-default-hands', // «Hands»
-  LEGS: 'tag-default-legs', // «Legs»
-  PRESS: 'tag-default-press', // «Press»
-  BACK: 'tag-default-back' // «Back»
+  WEIGHT: 'tag-weight-default', // «с доп. весом»
+  PACE: 'tag-pace-default', // «в ускорённом темпе»
+
+  PHYSICS: 'tag-physics-default', // «Physics»
+  PRACTICE: 'tag-practice-default', // «Practice»
+  TECHNIQUE: 'tag-technique-default', // «Technique»
+
+  CARDIO: 'tag-cardio-default', // «Cardio»
+  HANDS: 'tag-hands-default', // «Hands»
+  LEGS: 'tag-legs-default', // «Legs»
+  PRESS: 'tag-press-default', // «Press»
+  BACK: 'tag-back-default' // «Back»
 } as const
 
 export type DefaultTagId = (typeof DEFAULT_TAG_IDS)[keyof typeof DEFAULT_TAG_IDS]

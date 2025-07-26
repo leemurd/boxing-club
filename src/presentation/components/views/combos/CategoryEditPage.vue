@@ -90,7 +90,7 @@ const loadCategory = async (id: string) => {
 }
 
 const openCombo = async (combo: Combination) => {
-  await router.push(`/combos/${combo.id}`)
+  await router.push(`/combos/combos/${combo.id}`)
 }
 
 const createCombo = async () => {

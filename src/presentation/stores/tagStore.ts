@@ -19,6 +19,7 @@ export const useTagStore = defineStore('tag', () => {
   async function load() {
     const userId = await getUserId()
 
+    // init defaults to db
     const existing: Tag[] = await getUC<GetTagsUseCase>(TYPES.GetTagsUseCase).execute(userId)
 
     for (const def of DEFAULT_TAGS) {
@@ -27,6 +28,7 @@ export const useTagStore = defineStore('tag', () => {
       }
     }
 
+    // load all from db
     list.value = await getUC<GetTagsUseCase>(TYPES.GetTagsUseCase).execute(userId)
   }
 

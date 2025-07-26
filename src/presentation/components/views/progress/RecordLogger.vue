@@ -28,12 +28,12 @@
           <template v-slot>
             <div class="d-flex justify-content-center align-items-center gap-2">
               Use combo
-              <span
+              <b-badge
                 v-if="selectedCombo"
-                class="badge bg-primary"
+                color="primary"
               >
                 {{ selectedCombo.title }}
-              </span>
+              </b-badge>
             </div>
           </template>
           <template v-slot:footer>
@@ -126,6 +126,7 @@ import HorizontalSegmentGroup from '@/presentation/components/shared/HorizontalS
 import VerticalRadioGroup from '@/presentation/components/shared/VerticalRadioGroup.vue'
 import { modalController } from '@ionic/vue'
 import ComboSelectorModal from '@/presentation/components/modals/ComboSelectorModal.vue'
+import BBadge from '@/presentation/components/shared/BBadge.vue'
 
 
 // STORES и SERVICES

@@ -60,7 +60,7 @@ function updateVh() {
 window.addEventListener('resize', updateVh)
 updateVh()
 
-// 3) На мобильных дополнительно ловим скрытие клавиатуры
+// reset viewHeight on hideKeyboard
 if (Capacitor.getPlatform() !== 'web') {
   Keyboard.addListener('keyboardDidHide', updateVh)
 }

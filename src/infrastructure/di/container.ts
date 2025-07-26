@@ -42,7 +42,7 @@ import { DeleteExerciseUseCase } from '@/application/useCases/exercise/DeleteExe
 // Use-cases — комбо
 import { GetCombinationsUseCase } from '@/application/useCases/combination/GetCombinationsUseCase'
 import { GetPunchesUseCase } from '@/application/useCases/combination/GetPunchesUseCase.ts'
-import { SaveCombinationUseCase } from '@/application/useCases/combination/SaveCombinationUseCase'
+import { CreateCombinationUseCase } from '@/application/useCases/combination/CreateCombinationUseCase.ts'
 import { DeleteCombinationUseCase } from '@/application/useCases/combination/DeleteCombinationUseCase'
 import { UpdateCombinationUseCase } from '@/application/useCases/combination/UpdateCombinationUseCase'
 // Use-cases — категории
@@ -85,7 +85,7 @@ container.bind<UpdateExerciseUseCase>(TYPES.UpdateExerciseUseCase).to(UpdateExer
 container.bind<DeleteExerciseUseCase>(TYPES.DeleteExerciseUseCase).to(DeleteExerciseUseCase).inSingletonScope()
 // --- Use Cases: комбо ---
 container.bind<GetCombinationsUseCase>(TYPES.GetCombinationsUseCase).to(GetCombinationsUseCase).inSingletonScope()
-container.bind<SaveCombinationUseCase>(TYPES.SaveCombinationUseCase).to(SaveCombinationUseCase).inSingletonScope()
+container.bind<CreateCombinationUseCase>(TYPES.CreateCombinationUseCase).to(CreateCombinationUseCase).inSingletonScope()
 container.bind<DeleteCombinationUseCase>(TYPES.DeleteCombinationUseCase).to(DeleteCombinationUseCase).inSingletonScope()
 container.bind<UpdateCombinationUseCase>(TYPES.UpdateCombinationUseCase).to(UpdateCombinationUseCase).inSingletonScope()
 container.bind<GetPunchesUseCase>(TYPES.GetPunchesUseCase).to(GetPunchesUseCase).inSingletonScope()

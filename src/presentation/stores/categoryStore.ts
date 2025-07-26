@@ -14,6 +14,7 @@ import type { GetCategoryByIdUseCase } from '@/application/useCases/category/Get
 import { useToast } from 'vue-toastification'
 import { getUC } from '@/infrastructure/di/resolver.ts'
 import type { Combination } from '@/domain/entities/Combination.ts'
+import { DEFAULT_CATEGORIES } from '@/domain/constants/defaultCategories.ts'
 
 const toast = useToast()
 
@@ -29,6 +30,15 @@ export const useCategoryStore = defineStore('category', () => {
 
   async function load() {
     const userId = await getUserId()
+
+    // init defaults to db
+    const existing: ComboCategory[] = await getCategoriesUC.execute(userId)
+    for (const def of DEFAULT_CATEGORIES) {
+      if (!existing.some((t) => t.id === def.id)) {
+        await createCategoryUC.execute(userId, def)
+      }
+    }
+
     list.value = await getCategoriesUC.execute(userId)
   }
 
@@ -60,8 +70,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   async function getById(categoryId: string) {
     const userId = await getUserId()
-    const res = await getCategoryByIdUC.execute(userId, categoryId)
-    return res
+    return await getCategoryByIdUC.execute(userId, categoryId)
   }
 
   const getCombosByCategoryId = (categoryId: string): Combination[] => {

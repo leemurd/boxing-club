@@ -15,7 +15,7 @@ src
 │     │ ├── GetCombinationByIdUseCase.ts
 │     │ ├── GetCombinationsUseCase.ts
 │     │ ├── GetPunchesUseCase.ts
-│     │ ├── SaveCombinationUseCase.ts
+│     │ ├── CreateCombinationUseCase.ts
 │     │ ├── UpdateCombinationUseCase.ts
 │     │ ├── generateRandomCombo.ts
 │     │ └── getNextActions.ts
@@ -43,7 +43,7 @@ src
 ├── domain
 │ ├── constants
 │ │ ├── defaultTags.ts
-│ │ └── exercises.ts
+│ │ └── defaultExercises.ts
 │ ├── entities
 │ │ ├── BoxingAction.ts
 │ │ ├── Combination.ts
@@ -181,9 +181,9 @@ src
     │ ├── routerTypes.ts
     │ ├── types.d.ts
     │ └── user
-    │     ├── comboCategories.ts
+    │     ├── categories.ts
     │     ├── combos.ts
-    │     ├── exercises.ts
+    │     ├── defaultExercises.ts
     │     ├── progress.ts
     │     └── tags.ts
     ├── stores

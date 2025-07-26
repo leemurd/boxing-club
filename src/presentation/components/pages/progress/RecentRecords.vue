@@ -21,7 +21,7 @@
         <b-button
           color="danger"
           fill="outline"
-          @click="progress.deleteRecord(rec?.id || '')"
+          @click="onDelete(rec.id)"
         >
           Delete
         </b-button>
@@ -38,6 +38,7 @@ import { getShortDateWithTime } from '@/presentation/utils/dateTime.ts'
 import { IonCardTitle, IonCardSubtitle } from '@ionic/vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
+import { useDeleteSheets } from '@/presentation/composition/useSheets.ts'
 
 defineProps<{
   items: TrainingRecord[]
@@ -51,6 +52,11 @@ function getExerciseName(id: string) {
 }
 function formatDateTime(ts: string) {
   return getShortDateWithTime(new Date(ts))
+}
+
+const onDelete = (id?: string) => {
+  if (!id) return
+  useDeleteSheets(id, progress.deleteRecord)
 }
 
 </script>

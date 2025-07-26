@@ -1,6 +1,6 @@
 <template>
   <b-card>
-    <template #header>
+    <template v-slot:header>
       <div class="d-flex justify-content-between align-items-center">
         <div class="card-title mb-0">
           Preview
@@ -31,16 +31,16 @@
     </template>
     <template
       v-if="comboActions.length"
-      #default
+      v-slot
     >
       <div class="d-flex justify-content-center flex-wrap gap-1">
-        <span
+        <b-badge
           v-for="(item, index) in comboActions"
           :key="index"
-          class="badge text-bg-primary"
+          color="primary"
         >
           {{ item.name }}
-        </span>
+        </b-badge>
       </div>
     </template>
   </b-card>
@@ -50,6 +50,7 @@
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import type { BoxingAction } from '@/domain/entities/BoxingAction.ts'
+import BBadge from '@/presentation/components/shared/BBadge.vue'
 
 defineProps<{
   comboActions: BoxingAction[],

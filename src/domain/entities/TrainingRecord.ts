@@ -1,7 +1,7 @@
 import { ExerciseCategory, type MeasurementUnit } from '@/domain/entities/Exercise.ts'
 
 export interface TrainingRecord {
-  id?: string
+  id: string
   userId: string
   exerciseId: string
   category: ExerciseCategory

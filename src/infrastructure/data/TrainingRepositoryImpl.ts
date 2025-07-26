@@ -38,7 +38,11 @@ export class TrainingRepositoryImpl implements ITrainingRepository {
   }
 
   async getRecords(userId: string, from: Date, to: Date): Promise<TrainingRecord[]> {
-    const q = query(this.col(userId), where('timestamp', '>=', from.toISOString()), where('timestamp', '<', to.toISOString()))
+    const q = query(
+      this.col(userId),
+      where('timestamp', '>=', from.toISOString()),
+      where('timestamp', '<', to.toISOString())
+    )
     const snap = await getDocs(q)
     return snap.docs.map(
       (d) =>

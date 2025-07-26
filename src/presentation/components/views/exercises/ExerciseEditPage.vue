@@ -156,7 +156,7 @@ import { useExerciseStore } from '@/presentation/stores/exerciseStore'
 import { useTagStore } from '@/presentation/stores/tagStore'
 import BInput from '@/presentation/components/shared/BInput.vue'
 import { onUserLoaded } from '@/presentation/utils/onUserLoaded.ts'
-import { defaultExercise, EXERCISES } from '@/domain/constants/exercises.ts'
+import { defaultExercise, DEFAULT_EXERCISES } from '@/domain/constants/defaultExercises.ts'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BSelect from '@/presentation/components/shared/BSelect.vue'
@@ -177,7 +177,7 @@ const isNew = ref(!id.value)
 const isLoading = computed(() => exStore.loading)
 
 const currentExercise = computed<Exercise | null>(() => exStore.current || null)
-const isDefault = computed(() => isNew.value ? false : !!(EXERCISES.find((item) => item.id === currentExercise.value?.id)))
+const isDefault = computed(() => isNew.value ? false : !!(DEFAULT_EXERCISES.find((item) => item.id === currentExercise.value?.id)))
 const categories = Object.values(ExerciseCategory)
 
 const form = ref<Exercise>({

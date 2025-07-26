@@ -96,7 +96,11 @@ const loadCombo = async () => {
 }
 
 async function saveCombo() {
-  await comboStore.save(combo.value)
+  if (isNew.value) {
+    await comboStore.save(combo.value)
+  } else {
+    await comboStore.update(combo.value)
+  }
   await router.back()
 }
 

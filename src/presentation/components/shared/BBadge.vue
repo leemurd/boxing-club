@@ -2,7 +2,8 @@
 <template>
   <ion-badge
     :color="color"
-    :class="{ 'badge-pill': rounded }"
+    :disabled="disabled"
+    :outline="outline"
   >
     <slot />
   </ion-badge>
@@ -15,17 +16,11 @@ import type { ButtonColor } from '@/presentation/components/shared/types'
 withDefaults(
   defineProps<{
     color?: ButtonColor
-    rounded?: boolean
+    outline?: boolean
+    disabled?: boolean
   }>(),
   {
-    color: 'medium',
-    rounded: false
+    color: 'medium'
   }
 )
 </script>
-
-<style scoped lang="scss">
-.badge-pill {
-  border-radius: 10px;
-}
-</style>

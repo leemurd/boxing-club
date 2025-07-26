@@ -44,7 +44,7 @@
   - Используют Firestore SDK
   - Содержат только низкоуровневые операции с БД
 - **Utils & Constants**
-  - `defaultTags.ts`, `exercises.ts`, `dateTime.ts`
+  - `defaultTags.ts`, `defaultExercises.ts`, `dateTime.ts`
 
 ### Presentation
 

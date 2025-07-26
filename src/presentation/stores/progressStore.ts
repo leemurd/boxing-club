@@ -39,7 +39,11 @@ export const useProgressStore = defineStore('progress', () => {
     const userId = await getUserId()
     if (!userId) return
 
-    records.value = await getUC<GetRecordsUseCase>(TYPES.GetRecordsUseCase).execute(userId, from, to)
+    records.value = await getUC<GetRecordsUseCase>(TYPES.GetRecordsUseCase).execute(
+      userId,
+      from,
+      to
+    )
     dailyTotals.value = calcDailyTotals(records.value)
     byCategory.value = calcByCategory(records.value)
     byTag.value = calcByTag(records.value)
@@ -74,6 +78,7 @@ export const useProgressStore = defineStore('progress', () => {
   }
 
   async function deleteRecord(id: string) {
+    console.log(id)
     if (!id) return
     const userId = await getUserId()
     if (!userId) return
