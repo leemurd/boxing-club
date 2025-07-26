@@ -75,11 +75,7 @@ function closeMenu() {
 
 <style scoped lang="scss">
 ion-menu::part(backdrop) {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-ion-menu::part(container) {
-  box-shadow: 4px 0 46px rgba(255, 255, 255, 0.2);
+  background-color: var(--ion-text-color);
 }
 
 .navbar-brand-logo {
