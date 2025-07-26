@@ -8,7 +8,7 @@
     }"
   >
     <ion-item
-      v-for="(item, key) in items"
+      v-for="(item, key) in itemsFilteredByName"
       :key="key"
       button
       :detail="false"
@@ -85,6 +85,16 @@ const slots = defineSlots<{
 
 const hasIcon = computed<boolean>(() => !!slots.icon)
 const hasActions = computed<boolean>(() => !!slots.actions)
+
+const itemsFilteredByName = computed(() => [...props.items].sort((a, b) => {
+  if ((props.optionLabel ? a[props.optionLabel] : a) < (props.optionLabel ? b[props.optionLabel] : b)) {
+    return -1
+  } else if ((props.optionLabel ? a[props.optionLabel] : a) > (props.optionLabel ? b[props.optionLabel] : b)) {
+    return 1
+  } else {
+    return 0
+  }
+}))
 
 // Вызывается при клике по строке
 function primaryAction(item: any) {

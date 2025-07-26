@@ -14,18 +14,14 @@
 
         <span class="small">with</span>
 
-        <b-dropdown
-          :model-value="iterations"
-          :items="comboRandomItems"
-          size="default"
-          color="medium"
-          class="w-100"
-          @update:model-value="$emit('update:iterations', $event)"
-        >
-          <template #btn-text="{ modelValueLabel }">
-            <span class="small">{{ modelValueLabel }}</span>
-          </template>
-        </b-dropdown>
+        <ion-item>
+          <b-select
+            v-model="localValue"
+            :items="comboRandomItems"
+            option-label="label"
+            label="Number of moves"
+          />
+        </ion-item>
       </div>
     </b-card>
   </div>
@@ -35,17 +31,25 @@
 import BButton from '@/presentation/components/shared/BButton.vue'
 import BCard from '@/presentation/components/shared/BCard.vue'
 import { comboRandomItems } from '@/presentation/constants/combo/data.ts'
-import BDropdown from '@/presentation/components/shared/BDropdown.vue'
+import BSelect from '@/presentation/components/shared/BSelect.vue'
+import { ref, watch } from 'vue'
+import { IonItem } from '@ionic/vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   iterations?: number,
 }>(), {
   iterations: 5
 })
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'on-generate'): void,
   (e: 'update:iterations', value: number): void
 }>()
+
+const localValue = ref(props.iterations)
+
+watch(localValue, (value: number): void => {
+  emit('update:iterations', value)
+})
 
 </script>

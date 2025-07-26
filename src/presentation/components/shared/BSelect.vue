@@ -1,7 +1,7 @@
 <template>
   <ion-select
     v-model="internalValue"
-    interface="popover"
+    :interface="interface"
     :disabled="disabled"
   >
     <ion-select-option
@@ -26,12 +26,14 @@ const props = withDefaults(
     disabled?: boolean
     items: any[]
     optionId?: string
-    optionValue?: string
+    optionLabel?: string,
+    interface?: 'action-sheet' | 'popover' | 'alert' | 'modal'
   }>(),
   {
     disabled: false,
     optionId: 'id',
-    optionValue: 'name'
+    optionLabel: 'name',
+    interface: 'alert'
   }
 )
 
@@ -54,8 +56,6 @@ function getValue(item: Item) {
 
 // Получить отображаемый текст опции
 function getLabel(item: Item) {
-  return props.optionValue && item[props.optionValue] != null
-    ? item[props.optionValue]
-    : item
+  return props.optionLabel && item[props.optionLabel] ? item[props.optionLabel] : item
 }
 </script>
